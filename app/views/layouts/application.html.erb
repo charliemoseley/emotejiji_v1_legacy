@@ -22,6 +22,7 @@
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory: mathiasbynens.be/notes/touch-icons -->
 
   <%= stylesheet_link_tag "application" %>
+
   <%= csrf_meta_tags %>
 
   <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
@@ -33,6 +34,31 @@
 </head>
 
 <body>
+  <header>
+    <h1>emotejiji</h1>
+    <h2>Σ(゜д゜;)</h2>
+    <h3>beta</h3>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="#">about</a></li>
+      <li><a href="#">login</a></li>
+      <li><a class="inactive" href="#">profile</a></li>
+      <li><a class="inactive" href="#">add emote</a></li>
+      <li><a class="inactive" href="#">favorites</a></li>
+      <li><a class="inactive" href="#">recent</a></li>
+    </ul>
+  </nav>
+  <div id="search-tag">
+    <input type="text" value="Search Emoticons With Tags Here" />
+    <input type="button" value="Search"/>
+    <ul>
+      <li><a href="#">happy</a></li>
+      <li><a href="#">cat</a></li>
+      <li><a href="#">dog</a></li>
+    </ul>
+  </div>
+  <div style="clear: both;"></div>
   <%= yield %>
 
   <!-- JavaScript at the bottom for fast page loading -->

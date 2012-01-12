@@ -6,3 +6,135 @@
  *= require_self
  *= require_tree . 
 */
+@import url(http://fonts.googleapis.com/css?family=Lato&text=emotejiji);
+
+body { 
+  font:  12px 'lucida grande', tahoma, verdana, arial, sans-serif;
+  color: #5C5C5C;
+  background: #E8E8E8;
+}
+
+a {
+  text-decoration: none;
+  color: #999;
+}
+a:visited { color: #999; }
+
+header {
+  position: relative;
+  height: 35px;
+  width: 250px;
+  margin: 3px auto 0 auto;
+}
+
+header h1, header h2, header h3 {
+ font-weight: normal;
+ margin: 0;
+ position: absolute;
+}
+
+header h1 {
+  font-family: 'Lato', sans-serif;
+  font-weight: normal;
+  font-size: 28px;
+  letter-spacing: -1px;
+  top: 0;
+  left: 0;
+}
+
+header h2 {
+  background: #EB8014;
+  color: #FFF;
+  padding: 2px 7px 2px 7px;
+  top: 3px;
+  left: 102px;
+}
+
+header h3 {
+  font-family: 'Lato', sans-serif;
+  font-size: 24px;
+  color: #BBB;
+  margin: 0;
+  top: 4px;
+  left: 195px;
+}
+
+nav { width: 630px; margin: auto; }
+
+nav ul { text-align: center; margin: 20px 0 0 0; }
+nav li { display: inline; margin: 0 20px; }
+nav a { color: #5C5C5C; }
+nav a:hover { color: #5C5C5C; text-decoration: underline; }
+nav a.inactive { color: #CCC; cursor: default; }
+nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
+/* http://cssglobe.com/post/9435/pure-css3-post-tags */
+#search-tag { width: 630px; margin: 3px auto 0 auto; text-align: center; }
+#search-tag input[type=text] {
+  width: 280px;
+  height: 29px;
+  padding: 0px 8px;
+  font-size: 12px;
+  color: #999;
+  border: solid 1px #CECFD1;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+#search-tag input[type=button] {
+  min-width: 54px;
+  height: 31px;
+  margin: 11px 0px 0px 6px;
+  padding: 0 8px;
+  position: relative;
+  top: -1px;
+  left: -3px;
+  color: #999;
+  background-image: -webkit-gradient(linear,left top,left bottom,from(whiteSmoke),to(#F1F1F1));
+  background-image: -webkit-linear-gradient(top,whiteSmoke,#F1F1F1);
+  background-color: whiteSmoke;
+  background-image: linear-gradient(top,whiteSmoke,#F1F1F1);
+  background-image: -o-linear-gradient(top,whiteSmoke,#F1F1F1);
+  border: 1px solid #CECFD1;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -webkit-user-select: none;
+  -moz-border-radius: 3px;
+  line-height: 27px;
+  cursor: pointer;
+}
+#search-tag ul { 
+  list-style: none; 
+  width: 366px; 
+  margin: 5px auto 0 auto; 
+  padding: 0;
+  position: relative;
+  left: -8px; }
+#search-tag li,
+#search-tag a {
+  float:left;
+  height:17px;
+  line-height: 17px;
+  position:relative;
+  font-size:10px;
+}
+#search-tag li { margin-bottom: 7px; }
+#search-tag a {
+  margin-left: 20px;
+  padding: 0 10px 0 9px;
+  background: #FFFCF2;
+  text-decoration: none;
+}
+#search-tag a:before{
+  content: "";
+  float: left;
+  position: absolute;
+  top: 0px;
+  left: -9px;
+  width: 0;
+  height: 0;
+  border-color: transparent #FFFCF2 transparent transparent;
+  border-style: solid;
+  border-width: 9px 9px 9px 0;
+}
+#search-tag a:hover { background: #FFBAC0;}
+#search-tag a:hover:before { border-color: transparent #FFBAC0 transparent transparent; }
