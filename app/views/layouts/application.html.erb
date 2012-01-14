@@ -43,7 +43,11 @@
   <nav>
     <ul>
       <li><a href="#">about</a></li>
-      <li><a href="#">login</a></li>
+      <% if current_user %>
+        <li><%= link_to "sign out", signout_path %></li>
+      <% else %>
+        <li><%= link_to "login", "/auth/twitter" %></li>
+      <% end %>
       <li><a class="inactive" href="#">profile</a></li>
       <li><a class="inactive" href="#">add emote</a></li>
       <li><a class="inactive" href="#">favorites</a></li>
