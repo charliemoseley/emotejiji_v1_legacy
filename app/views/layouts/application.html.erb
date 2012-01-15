@@ -45,16 +45,23 @@
       <li><a href="#">about</a></li>
       <% if current_user %>
         <li><%= link_to "sign out", signout_path %></li>
+        <li><a class="inactive" href="#">profile</a></li>
+        <li><%= link_to "add emote", new_emote_path %></li>
+        <li><a class="inactive" href="#">favorites</a></li>
+        <li><a class="inactive" href="#">recent</a></li>
       <% else %>
         <li><%= link_to "login", "/auth/twitter" %></li>
+        <li><a class="inactive" href="#">profile</a></li>
+        <li><a class="inactive" href="#">add emote</a></li>
+        <li><a class="inactive" href="#">favorites</a></li>
+        <li><a class="inactive" href="#">recent</a></li>
       <% end %>
-      <li><a class="inactive" href="#">profile</a></li>
-      <li><a class="inactive" href="#">add emote</a></li>
-      <li><a class="inactive" href="#">favorites</a></li>
-      <li><a class="inactive" href="#">recent</a></li>
     </ul>
   </nav>
   
+  <% flash.each do |key, value| %>
+    <div class="flash <%= key %>"><%= value %></div>
+  <% end %>
   <%= yield %>
 
   <!-- JavaScript at the bottom for fast page loading -->

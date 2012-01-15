@@ -11,19 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120114011645) do
+ActiveRecord::Schema.define(:version => 20120115054446) do
 
   create_table "emotes", :force => true do |t|
     t.string   "text"
     t.string   "note"
     t.integer  "display_length"
     t.integer  "popularity"
-    t.integer  "created_by"
+    t.integer  "owner_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "emotes", ["created_by"], :name => "index_emotes_on_created_by"
+  add_index "emotes", ["owner_id"], :name => "index_emotes_on_created_by"
   add_index "emotes", ["popularity"], :name => "index_emotes_on_popularity"
 
   create_table "users", :force => true do |t|
