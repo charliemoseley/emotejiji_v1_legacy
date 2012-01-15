@@ -2,6 +2,7 @@ Emotejiji::Application.routes.draw do
   # Omniauth routes
   match "/auth/:provider/callback" => "sessions#create"
   match "/signout" => "sessions#destroy", :as => :signout
+  match "test" => "emotes#signintest"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -52,7 +53,7 @@ Emotejiji::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'pages#index'
+  root :to => 'emotes#index'
 
   # See how all your routes lay out with "rake routes"
 
