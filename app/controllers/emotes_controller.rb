@@ -2,6 +2,7 @@ class EmotesController < ApplicationController
   before_filter :is_signed_in?, :only => [:new, :update, :signintest]
   
   def index
+    @emotes = Emote.all
   end
   
   def new

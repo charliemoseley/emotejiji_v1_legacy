@@ -9,8 +9,8 @@
 </section>
 
 <section id="emoticon-display">
-  <p>a very angry face</p>
-  <h1>(╬ ಠ益ಠ)</h1>
+  <p id="selected-note">a very angry face</p>
+  <h1 id="selected-emoticon">(╬ ಠ益ಠ)</h1>
   <input type="button" value="Copy to Clipboard" />
   <input type="button" value="Tweet" />
   <input type="button" value="Add to Favorites" />
@@ -35,25 +35,13 @@
 
 <section id="emoticon-list">
   <ul>
-    <li>
-      <a href="/emotes/198" class="width-1">=P</a>
-    </li>
-    <li>
-      <a href="/emotes/198" class="width-1">=P</a>
-    </li>
-    <li>
-      <a href="/emotes/198" class="width-1">=P</a>
-    </li>
-    <li>
-      <a href="/emotes/198" class="width-1">=P</a>
-    </li>
-    <li>
-      <a href="/emotes/198" class="width-1">=P</a>
-    </li>
-    <li>
-      <a href="/emotes/198" class="width-1">=P</a>
-    </li>
-  </ul>
+    <% @emotes.each do |emote| %>
+      <li id="emote-<%= emote.id %>">
+        <article class="width-<%= emote.width %>"><%= emote.text %></article>
+        <aside><%= emote.note %></aside>
+      </li>
+    <% end %>
+    </ul>
     <!--
     <div class="emote grid_8">
       <p id="emote-192" class="emoticon">お(^o^)や(^O^)す(^｡^)みぃ(^-^)ﾉﾞ</p>
