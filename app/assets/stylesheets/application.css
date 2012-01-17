@@ -97,6 +97,7 @@ nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
 #emoticon-display input[type=text] { width: 360px; }
 
 #search-tag input[type=button],
+#emoticon-display input[type=submit],
 #emoticon-display input[type=button] {
   min-width: 54px;
   height: 31px;
@@ -121,6 +122,7 @@ nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
   cursor: pointer;
 }
 
+#emoticon-display input[type=submit],
 #emoticon-display input[type=button] {
   height: 22px;
   line-height: 22px;
@@ -130,7 +132,7 @@ nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
   background-image: none;
 }
 
-#emoticon-display input[type=button].add {
+#emoticon-display input[type=submit].add {
   min-width: 54px;
   height: 31px;
   margin: 11px 0px 0px 6px;

@@ -10,6 +10,7 @@ gem 'sqlite3'
 
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'acts-as-taggable-on'
 
 
 # Gems used only for assets and not required

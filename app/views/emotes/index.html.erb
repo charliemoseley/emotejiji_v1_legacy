@@ -17,9 +17,13 @@
   
   <br />
   
-  <input type="text" value="Add a New Tag to this Emoticon" />
-  <input type="button" value="" class="add"/>
-  <ul>
+  <%= form_for(@emote, :remote => false) do |f| %>
+    <%= f.hidden_field :id, :value => "0", :id => "selected-id" %>
+    <%= f.text_field :tag_list, :value => "Add a New Tag to this Emoticon" %>
+    <%= f.submit :value => "", :class => 'add' %>
+  <% end %>
+  
+  <ul id="tag-list">
     <li><a href="#">happy</a></li>
     <li><a href="#">cat</a></li>
     <li><a href="#">dog</a></li>
@@ -39,6 +43,7 @@
       <li id="emote-<%= emote.id %>">
         <article class="width-<%= emote.width %>"><%= emote.text %></article>
         <aside><%= emote.note %></aside>
+        <input type="hidden" value="<%= emote.tag_list_js %>" />
       </li>
     <% end %>
     </ul>
