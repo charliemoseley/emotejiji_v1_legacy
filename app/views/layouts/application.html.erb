@@ -48,7 +48,7 @@
         <li><a class="inactive" href="#">profile</a></li>
         <li><%= link_to "add emote", new_emote_path %></li>
         <li><a class="inactive" href="#">favorites</a></li>
-        <li><a class="inactive" href="#">recent</a></li>
+        <li><%= link_to "recent", recent_path, :remote => true, :id => 'link-recent' %></li>
       <% else %>
         <li><%= link_to "login", "/auth/twitter" %></li>
         <li><a class="inactive" href="#">profile</a></li>

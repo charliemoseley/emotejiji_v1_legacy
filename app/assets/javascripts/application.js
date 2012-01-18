@@ -14,7 +14,39 @@
 
 $(document).ready(function() {
   $('#emoticon-list li').click(function() { emoticon_clicked($(this)) });
+  setup_links();
 });
+
+setup_links = function() {
+  console.log('init');
+  $('#link-recent').bind('ajax:beforeSend', function(){
+    console.log('ajax loading');
+    $('#loading').show();
+  });
+  $('#link-recent').bind('ajax:success', function(event, data, status, xhr) {
+    console.log('ajax data');
+    $('#emoticon-list').html(data);
+  });
+  $('#link-recent').bind('ajax:complete', function(event, data, status, xhr) {
+    console.log('ajax complete');
+    $('#loading').hide();
+  });
+  
+  /*console.log("test");
+  var $recent;
+  $recent = $('#link-recent');
+  
+  $recent.click(function(event) {
+    event.preventDefault();
+    
+    $.post('/recent',
+      function(data) {
+        console.log(data);
+        //$('emoticon-list').html(data);
+      }
+    );
+  });*/
+}
 
 emoticon_clicked = function($container) {
   var emoticon, note, id, $form;

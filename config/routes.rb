@@ -2,9 +2,10 @@ Emotejiji::Application.routes.draw do
   # Omniauth routes
   match "/auth/:provider/callback" => "sessions#create"
   match "/signout" => "sessions#destroy", :as => :signout
-  match "test" => "emotes#signintest"
   
+  match '/recent' => "emotes#recent", :as => :recent
   resources :emotes
+  
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
