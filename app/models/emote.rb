@@ -1,7 +1,10 @@
 class Emote < ActiveRecord::Base
   attr_accessible :text, :note, :tag_list
   
-  belongs_to :user, :class_name => "Owner", :foreign_key => "owner_id"
+  # Q?: Figure out how to set this properly ->
+  # belongs_to :user, :foreign_key => "owner_id", :class_name => "Owner"
+  has_many :recent_emotes
+  has_many :users, :through => :recent_emotes
   
   acts_as_taggable_on :tags
   
