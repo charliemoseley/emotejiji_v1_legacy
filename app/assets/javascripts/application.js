@@ -13,7 +13,7 @@
 // point.  Till then, pure JS below.
 
 $(document).ready(function() {
-  $('#emoticon-list li').click(function() { emoticon_clicked($(this)) });
+  $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)) });
   setup_links();
 });
 
