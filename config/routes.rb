@@ -4,6 +4,7 @@ Emotejiji::Application.routes.draw do
   match "/signout" => "sessions#destroy", :as => :signout
   
   match '/recent' => "emotes#recent", :as => :recent
+  match '/emotes/record_recent' => 'emotes#record_recent'
   resources :emotes
   
 

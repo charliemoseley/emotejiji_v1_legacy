@@ -57,14 +57,13 @@ emoticon_clicked = function($container) {
   note = $container.children('aside').text();
   tag_list = eval($container.children('input').val());
   
-  
-  // $('#selected-id').val(id)
   // Q? This is tightly bound to the model, any way we can better abstract this?
   $form.attr('action', '/emotes/' + id);
   $form.attr('id', 'edit_emote_' + id);
   $('#selected-emoticon').text(emoticon);
   $('#selected-note').text(note);
   refresh_tag_list(tag_list);
+  update_recent_emotes(id);
 }
 
 refresh_tag_list = function(tag_list) {
@@ -74,4 +73,8 @@ refresh_tag_list = function(tag_list) {
   $.each(tag_list, function(index, value) {
     $container.append('<li><a>' + value + "</a></li>");
   });
+}
+
+update_recent_emotes = function(id) {
+  $.post('/emotes/record_recent', { id: id }, function() { console.log('recent-remote'); });
 }

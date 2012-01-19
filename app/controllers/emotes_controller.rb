@@ -36,7 +36,17 @@ class EmotesController < ApplicationController
   
   def recent
     @emote = Emote.first
-    @emotes = Emote.limit(5)
+    
+    # Q? Couldn't really figure out a good way to do do this with current_user.emotes while getting the right search
+    # order and disabling query caching.
+    RecentEmote.uncached do
+      recent_emotes = RecentEmote.where(:user_id => current_user.id).limit(15)
+      
+      @emotes = []
+      recent_emotes.each do |re|
+        @emotes << Emote.find(re.emote_id)
+      end
+    end
     
     # Q? Most elegant way to handle this?
     respond_to do |format|
@@ -48,6 +58,24 @@ class EmotesController < ApplicationController
         end
       end
     end
+  end
+  
+  def record_recent
+    unless current_user.nil?
+      recent_emote = RecentEmote.where :user_id => current_user.id, :emote_id => params[:id]
+      logger.debug "emote id: #{recent_emote.count}"
+       # Q? Most elegant way to handle this?
+      if recent_emote.empty?
+        recent_emote = RecentEmote.new
+        recent_emote.user_id = current_user.id
+        recent_emote.emote_id = params[:id]
+      else
+        recent_emote = recent_emote[0]
+      end
+      recent_emote.updated_at = Time.now
+      recent_emote.save
+    end
+    render :text => ''
   end
   
   def signintest
