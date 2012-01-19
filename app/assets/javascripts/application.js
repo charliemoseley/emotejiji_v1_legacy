@@ -42,6 +42,16 @@ setup_links = function() {
   $('#link-favorites').bind('ajax:complete', function(event, data, status, xhr) {
     $('#loading').hide();
   });
+  
+  $('#link-home').bind('ajax:beforeSend', function(){
+    $('#loading').show();
+  });
+  $('#link-home').bind('ajax:success', function(event, data, status, xhr) {
+    $('#emoticon-list').html(data);
+  });
+  $('#link-home').bind('ajax:complete', function(event, data, status, xhr) {
+    $('#loading').hide();
+  });
 }
 
 emoticon_clicked = function($container) {

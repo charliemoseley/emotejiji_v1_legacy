@@ -42,6 +42,7 @@
   
   <nav>
     <ul>
+      <li><%= link_to "home", root_path, :remote => true, :id => 'link-home' %></li>
       <li><a href="#">about</a></li>
       <% if current_user %>
         <li><%= link_to "sign out", signout_path %></li>

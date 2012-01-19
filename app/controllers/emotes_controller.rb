@@ -6,6 +6,16 @@ class EmotesController < ApplicationController
     # updating an emote.  Any more elegant solution?
     @emote = Emote.first
     @emotes = Emote.all
+    
+    respond_to do |format|
+      format.html do
+        if request.xhr?
+         render :partial => "emotes/emote_list", :locals => { :emotes => @emotes }, :layout => false
+        else
+          render :index
+        end
+      end
+    end
   end
   
   def new
