@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120118025110) do
+ActiveRecord::Schema.define(:version => 20120119165536) do
 
   create_table "emotes", :force => true do |t|
     t.string   "text"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(:version => 20120118025110) do
 
   add_index "emotes", ["owner_id"], :name => "index_emotes_on_created_by"
   add_index "emotes", ["popularity"], :name => "index_emotes_on_popularity"
+
+  create_table "favorite_emotes", :force => true do |t|
+    t.integer  "emote_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "favorite_emotes", ["user_id"], :name => "index_favorite_emotes_on_user_id"
 
   create_table "recent_emotes", :force => true do |t|
     t.integer  "emote_id"

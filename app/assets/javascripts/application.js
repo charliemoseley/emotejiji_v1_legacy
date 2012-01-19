@@ -9,43 +9,39 @@
 //= require jquery_ujs
 //= require_tree .
 
-// No clue how to write my jQuery in CoffeeScript (though I do want to try to convert it over at some
+// Todo: No clue how to write my jQuery in CoffeeScript (though I do want to try to convert it over at some
 // point.  Till then, pure JS below.
 
+// Q? When porting over to coffeescript, I'd like to have it so javascript that doesnt need to render when
+// a user is not logged in is not rendered… but that might be issue with caching? Not sure.
+
 $(document).ready(function() {
-  $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)) });
+  $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)); });
+  $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
   setup_links();
 });
 
 setup_links = function() {
-  console.log('init');
+  // ToDo: Clean this up a little, probably also encapsulate it better
   $('#link-recent').bind('ajax:beforeSend', function(){
-    console.log('ajax loading');
     $('#loading').show();
   });
   $('#link-recent').bind('ajax:success', function(event, data, status, xhr) {
-    console.log('ajax data');
     $('#emoticon-list').html(data);
   });
   $('#link-recent').bind('ajax:complete', function(event, data, status, xhr) {
-    console.log('ajax complete');
     $('#loading').hide();
   });
   
-  /*console.log("test");
-  var $recent;
-  $recent = $('#link-recent');
-  
-  $recent.click(function(event) {
-    event.preventDefault();
-    
-    $.post('/recent',
-      function(data) {
-        console.log(data);
-        //$('emoticon-list').html(data);
-      }
-    );
-  });*/
+  $('#link-favorites').bind('ajax:beforeSend', function(){
+    $('#loading').show();
+  });
+  $('#link-favorites').bind('ajax:success', function(event, data, status, xhr) {
+    $('#emoticon-list').html(data);
+  });
+  $('#link-favorites').bind('ajax:complete', function(event, data, status, xhr) {
+    $('#loading').hide();
+  });
 }
 
 emoticon_clicked = function($container) {
@@ -60,6 +56,7 @@ emoticon_clicked = function($container) {
   // Q? This is tightly bound to the model, any way we can better abstract this?
   $form.attr('action', '/emotes/' + id);
   $form.attr('id', 'edit_emote_' + id);
+  $('#selected-id').val(id);
   $('#selected-emoticon').text(emoticon);
   $('#selected-note').text(note);
   refresh_tag_list(tag_list);
@@ -77,4 +74,13 @@ refresh_tag_list = function(tag_list) {
 
 update_recent_emotes = function(id) {
   $.post('/emotes/record_recent', { id: id }, function() { console.log('recent-remote'); });
+}
+
+current_emoticon_id = function() {
+  return $('#selected-id').val();
+}
+
+add_to_favorites = function(id) {
+  $.post('/emotes/record_favorite', { id: id }, function() { console.log('favorite-emote'); });
+  console.log('Favorite Emote ID:' + id);
 }

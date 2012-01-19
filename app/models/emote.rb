@@ -3,6 +3,10 @@ class Emote < ActiveRecord::Base
   
   # Q?: Figure out how to set this properly ->
   # belongs_to :user, :foreign_key => "owner_id", :class_name => "Owner"
+  
+  # Q?: I want to setup easy functions so I can go current_user.recents and current_user.favorites
+  # to get the appropriate emotes, but not sure how to do that with polymorphic + has_many :through
+  # and  maintain the proper order and caching I want
   has_many :recent_emotes
   has_many :users, :through => :recent_emotes
   

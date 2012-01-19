@@ -60,10 +60,32 @@ class EmotesController < ApplicationController
     end
   end
   
+  def favorites
+    @emote = Emote.first
+    
+    FavoriteEmote.uncached do
+      favorite_emotes = FavoriteEmote.where(:user_id => current_user.id).limit(15)
+      
+      @emotes = []
+      favorite_emotes.each do |fe|
+        @emotes << Emote.find(fe.emote_id)
+      end
+    end
+    
+    respond_to do |format|
+      format.html do
+        if request.xhr?
+         render :partial => "emotes/emote_list", :locals => { :emotes => @emotes }, :layout => false
+        else
+          render :index
+        end
+      end
+    end
+  end
+  
   def record_recent
     unless current_user.nil?
       recent_emote = RecentEmote.where :user_id => current_user.id, :emote_id => params[:id]
-      logger.debug "emote id: #{recent_emote.count}"
        # Q? Most elegant way to handle this?
       if recent_emote.empty?
         recent_emote = RecentEmote.new
@@ -76,6 +98,26 @@ class EmotesController < ApplicationController
       recent_emote.save
     end
     render :text => ''
+  end
+  
+  # ToDo: Make it so that when you favorite an emote, on the view it'll update the button text
+  # allowing you to unfavorite.
+  def record_favorite
+    unless current_user.nil?
+      favorite_emote = FavoriteEmote.where :user_id => current_user.id, :emote_id => params[:id]
+      emote = Emote.find(params[:id])
+      
+      if favorite_emote.empty?
+        favorite_emote = FavoriteEmote.new
+        favorite_emote.user_id = current_user.id
+        favorite_emote.emote_id = params[:id]
+        favorite_emote.save
+        
+        render :text => "#{emote.text} successfully saved as a favorite."
+      else
+        render :text => "#{emote.text} is already saved as a favorite."
+      end
+    end
   end
   
   def signintest
