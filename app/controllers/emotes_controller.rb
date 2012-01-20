@@ -1,5 +1,6 @@
 class EmotesController < ApplicationController
   before_filter :is_signed_in?, :only => [:new, :update, :recent]
+  autocomplete :tag, :name
   
   def index
     # Q? This is a hack so I can use a form helper that automatically has the fields for 

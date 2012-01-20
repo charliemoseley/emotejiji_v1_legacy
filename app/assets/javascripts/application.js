@@ -7,6 +7,8 @@
 //= require plugins
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
+//= require autocomplete-rails
 //= require_tree .
 
 // Todo: No clue how to write my jQuery in CoffeeScript (though I do want to try to convert it over at some

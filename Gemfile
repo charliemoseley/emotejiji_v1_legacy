@@ -11,6 +11,7 @@ gem 'sqlite3'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'acts-as-taggable-on'
+gem 'rails3-jquery-autocomplete'
 
 
 # Gems used only for assets and not required

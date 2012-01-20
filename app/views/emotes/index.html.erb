@@ -1,6 +1,9 @@
 <section id="search-tag" class="clearfix">
-  <input type="text" value="Search Emoticons With Tags Here" />
+  <!-- <input type="text" value="Search Emoticons With Tags Here" /> -->
+  
+  <%= autocomplete_field_tag 'tag', '', autocomplete_tag_name_emotes_path, :size => 75 %>
   <input type="button" value=""/>
+  
   <ul>
     <li><a href="#">happy</a></li>
     <li><a href="#">cat</a></li>
