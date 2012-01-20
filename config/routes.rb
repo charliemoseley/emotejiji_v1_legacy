@@ -8,6 +8,9 @@ Emotejiji::Application.routes.draw do
   match '/favorites' => "emotes#favorites", :as => :favorites
   match '/emotes/record_favorite'  => 'emotes#record_favorite'
   
+  match '/emotes/search' => "emotes#tag_search"
+  
+  # Autocomplete routes
   resources :emotes do
     get :autocomplete_tag_name, :on => :collection
   end

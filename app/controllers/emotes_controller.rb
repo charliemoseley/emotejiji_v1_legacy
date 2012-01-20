@@ -131,6 +131,33 @@ class EmotesController < ApplicationController
     end
   end
   
+  def tag_search
+    tags = params[:tags]
+    new_tag = tags.first.downcase
+    
+    json = { 'status' => '', 'view' => '' }
+    
+    # Run a query against the newest tag to determine if it is even in the database
+    tag_from_db = Tag.where :name => new_tag
+    unless tag_from_db.empty?
+      # If the tag exists, attempt to find emotes that fit all the tags submitted
+      @emotes = Emote.tagged_with(tags)
+      
+      # Updated the return with wheter results where found and with the view
+      if(@emotes.count >= 1)
+        json[:status] = 'valid_results'
+      else
+        json[:status] = 'no_results'
+      end
+      json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes }, :layout => false
+    else
+      # Otherwise the newest submitted tag doesn't exist in our database
+      json[:status] = 'invalid_tag'
+    end
+    
+    render :json => json
+  end
+  
   def signintest
   end
   
