@@ -22,46 +22,50 @@ $(document).ready(function() {
   $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
   setup_links();
   
-  // ToDo: Clean up this and really tighten up the selectors
-  $('#search').keyup(function(event) {
-    if(event.which == 13) { // Enter Key
-      $('#loading').show();
-      
-      // Build up a list of existing tags
-      tags = [];
-      $('#search-tags li').each(function() {
-        tags.unshift( $(this).text() );
-      });
-      // Get the tag value from the search bar
-      searchTag = $(this).val();
-      tags.unshift(searchTag);
-      
-      add_tag_to_tag_list = false;
-      $.post('/emotes/search', { tags: tags }, function(data) {
-        switch(data.status) {
-          case 'valid_results':
-          case 'no_results':
-            $('#emoticon-list').html(data.view);
-            add_tag_to_tag_list = true;
-          break;
-          case 'invalid_tag':
-            console.log("Tag doesn't exist!");
-          break;
-        }
-        if(add_tag_to_tag_list == true) {
-          $('#search-tags').prepend('<li><a href="#">' + searchTag + '</a></li>');
-        }
-        $('#loading').hide();
-        $('.ui-autocomplete').hide();
-        $('#search').val('');
-      });
-      
-      $(this).val('');
-      
-      console.log(tags);
-    }
-  });
+
+  $('#search').keyup(function(event) { tag_search(event.which, $(this)); });
+  $('#btn-search').click(function()  { tag_search(13, $('#search')); });
 });
+
+  // ToDo: Clean up this and really tighten up the selectors
+tag_search = function(key_press, $search) {
+  if(key_press == 13) { // Enter Key
+    $('#loading').show();
+    
+    // Build up a list of existing tags
+    tags = [];
+    $('#search-tags li').each(function() {
+      tags.unshift( $search.text() );
+    });
+    // Get the tag value from the search bar
+    searchTag = $search.val();
+    tags.unshift(searchTag);
+    
+    add_tag_to_tag_list = false;
+    $.post('/emotes/search', { tags: tags }, function(data) {
+      switch(data.status) {
+        case 'valid_results':
+        case 'no_results':
+          $('#emoticon-list').html(data.view);
+          add_tag_to_tag_list = true;
+        break;
+        case 'invalid_tag':
+          console.log("Tag doesn't exist!");
+        break;
+      }
+      if(add_tag_to_tag_list == true) {
+        $('#search-tags').prepend('<li><a href="#">' + searchTag + '</a></li>');
+      }
+      $('#loading').hide();
+      // Sometimes autocomplete doesnt disappear if you type in the whole word and hit
+      // enter.  By hiding it, we garuntee that it goes away.
+      $('.ui-autocomplete').hide();
+      $('#search').val('');
+    });
+    
+    $search.val('');
+  }
+}
 
 setup_links = function() {
   // ToDo: Clean this up a little, probably also encapsulate it better
