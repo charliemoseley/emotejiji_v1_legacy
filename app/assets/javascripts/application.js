@@ -22,9 +22,32 @@ $(document).ready(function() {
   $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
   setup_links();
   
-
   $('#search').keyup(function(event) { tag_search(event.which, $(this)); });
   $('#btn-search').click(function()  { tag_search(13, $('#search')); });
+  
+  // ToDo: Abstract this out with the normal search function
+  $('#search-tags li').live('click', function() {
+    console.log("I ran");
+    $(this).remove();
+    // Build up a list of existing tags
+    tags = [];
+    $('#search-tags li').each(function() {
+      tags.unshift( $(this).text() );
+    });
+    
+    $.post('/emotes/search', { tags: tags }, function(data) {
+      switch(data.status) {
+        case 'valid_results':
+        case 'no_results':
+        case 'reset_results':
+          $('#emoticon-list').html(data.view);
+        break;
+        case 'invalid_tag':
+          console.log("Tag doesn't exist!");
+        break;
+      }
+    });
+  });
 });
 
   // ToDo: Clean up this and really tighten up the selectors
@@ -35,7 +58,7 @@ tag_search = function(key_press, $search) {
     // Build up a list of existing tags
     tags = [];
     $('#search-tags li').each(function() {
-      tags.unshift( $search.text() );
+      tags.unshift( $(this).text() );
     });
     // Get the tag value from the search bar
     searchTag = $search.val();
@@ -46,6 +69,7 @@ tag_search = function(key_press, $search) {
       switch(data.status) {
         case 'valid_results':
         case 'no_results':
+        case 'reset_results':
           $('#emoticon-list').html(data.view);
           add_tag_to_tag_list = true;
         break;
