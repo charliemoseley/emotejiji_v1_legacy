@@ -64,6 +64,7 @@ tag_search = function(key_press, $search) {
     searchTag = $search.val();
     tags.unshift(searchTag);
     
+    error = false;
     add_tag_to_tag_list = false;
     $.post('/emotes/search', { tags: tags }, function(data) {
       switch(data.status) {
@@ -74,7 +75,15 @@ tag_search = function(key_press, $search) {
           add_tag_to_tag_list = true;
         break;
         case 'invalid_tag':
-          console.log("Tag doesn't exist!");
+          $search.attr('disabled', 'disabled');
+          $search.attr('style', 'background-color: red; color: #FFFFFF;');
+          $search.val("Sorry, that tag doesn't exist.");
+          $search.animate({ backgroundColor: '#FFFFFF' }, 1500, 'easeInCubic', function() {
+            $search.val('');
+            $search.removeAttr('disabled');
+            $search.removeAttr('style');
+          });
+          error = true;
         break;
       }
       if(add_tag_to_tag_list == true) {
@@ -84,7 +93,9 @@ tag_search = function(key_press, $search) {
       // Sometimes autocomplete doesnt disappear if you type in the whole word and hit
       // enter.  By hiding it, we garuntee that it goes away.
       $('.ui-autocomplete').hide();
-      $('#search').val('');
+      if(!error) {
+        $('#search').val('');
+      }
     });
     
     $search.val('');
