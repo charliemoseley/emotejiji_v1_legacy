@@ -210,11 +210,25 @@ input.rounded {
   clear: both;
 }
 
+/*
 #emoticon-list,
 #add-emoticon-section {
   margin: auto;
   width: 640px;
   clear: both;
+}*/
+
+
+section, footer {
+  margin: auto;
+  width: 640px;
+  clear: both;
+}
+
+footer {
+  margin-top: 40px;
+  margin-bottom: 10px;
+  text-align: right;
 }
 
 #add-emoticon-section { text-align: center; margin-top: 30px; }
