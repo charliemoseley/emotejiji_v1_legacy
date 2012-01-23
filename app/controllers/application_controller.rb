@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  helper_method :current_user, :is_logged_in?
+  helper_method :current_user, :is_logged_in?, :determine_remote_status
   
   private
   
@@ -10,6 +10,19 @@ class ApplicationController < ActionController::Base
   
   def is_logged_in?
     current_user ? true : false
+  end
+  
+  # Used to change whether the top navigation links are remote or not depending
+  # on the current loaded page/
+  def determine_remote_status
+    current_uri = request.env['PATH_INFO']
+    case current_uri
+      when '/about'
+      when '/emotes/new'
+        false
+      else
+        true
+    end
   end
   
   def redirect_if_not_logged_in

@@ -3,6 +3,8 @@ Emotejiji::Application.routes.draw do
   match "/auth/:provider/callback" => "sessions#create"
   match "/signout" => "sessions#destroy", :as => :signout
   
+  match '/about' => 'pages#about', :as => :about
+  
   match '/recent' => "emotes#recent", :as => :recent
   match '/emotes/record_recent' => 'emotes#record_recent'
   match '/favorites' => "emotes#favorites", :as => :favorites

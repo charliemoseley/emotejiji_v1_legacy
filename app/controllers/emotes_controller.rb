@@ -74,6 +74,7 @@ class EmotesController < ApplicationController
   end
   
   def favorites
+    logger.info('Current Path?: ' + params[:controller] + " Method: " + params[:action])
     @emote = Emote.first
     
     FavoriteEmote.uncached do
