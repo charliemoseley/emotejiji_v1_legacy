@@ -156,6 +156,10 @@ emoticon_clicked = function($container) {
   $('#selected-note').text(note);
   refresh_tag_list(tag_list);
   update_recent_emotes(id);
+  
+  if($('#emoticon-display').is(':hidden')) {
+    $('#emoticon-display').slideDown();
+  }
 }
 
 refresh_tag_list = function(tag_list) {
