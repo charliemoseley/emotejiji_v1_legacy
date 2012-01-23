@@ -40,6 +40,7 @@ $(document).ready(function() {
         case 'valid_results':
         case 'no_results':
         case 'reset_results':
+          $('#results-counter').text(data.results_count);
           $('#emoticon-list').html(data.view);
         break;
         case 'invalid_tag':
@@ -78,6 +79,7 @@ tag_search = function(key_press, $search) {
         case 'no_results':
         case 'reset_results':
           $('#emoticon-list').html(data.view);
+          $('#results-counter').text(data.results_count);
           add_tag_to_tag_list = true;
         break;
         case 'invalid_tag':

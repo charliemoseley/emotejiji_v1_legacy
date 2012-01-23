@@ -133,7 +133,7 @@ class EmotesController < ApplicationController
   
   def tag_search
     tags = params[:tags]
-    json = { 'status' => '', 'view' => '' }
+    json = { 'status' => '', 'view' => '', 'results_count' => 0 }
     
     # Check first if we even have any tags being submitted
     unless tags.nil?
@@ -153,6 +153,7 @@ class EmotesController < ApplicationController
           json[:status] = 'no_results'
         end
         json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes }, :layout => false
+        json[:results_count] = @emotes.count
       else
         # Otherwise the newest submitted tag doesn't exist in our database
         json[:status] = 'invalid_tag'
