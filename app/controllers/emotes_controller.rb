@@ -37,6 +37,8 @@ class EmotesController < ApplicationController
   def update
     @emote = Emote.find(params[:id])
     @emote.tag_list = params[:emote][:tag_list]
+    # Takes the tag that was submitted by the user and attributes that to them
+    current_user.tag(@emote, :with => @emote.tag_list.first, :on => :tags)
     
     if @emote.save
        redirect_to root_path, :notice => "#{@emote.text} successfully updated"
