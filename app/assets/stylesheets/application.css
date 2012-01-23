@@ -81,11 +81,8 @@ nav a { color: #5C5C5C; }
 nav a:hover { color: #5C5C5C; text-decoration: underline; }
 nav a.inactive { color: #CCC; cursor: default; }
 nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
-/* http://cssglobe.com/post/9435/pure-css3-post-tags */
-#search-tag { width: 630px; margin: 3px auto 0 auto; text-align: center; }
-#search-tag input[type=text],
-#emoticon-display input[type=text] {
-  width: 280px;
+
+input.rounded {
   height: 29px;
   padding: 0px 8px;
   font-size: 12px;
@@ -94,6 +91,13 @@ nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
+}
+
+/* http://cssglobe.com/post/9435/pure-css3-post-tags */
+#search-tag { width: 630px; margin: 3px auto 0 auto; text-align: center; }
+#search-tag input[type=text],
+#emoticon-display input[type=text] {
+  width: 280px;
 }
 #emoticon-display input[type=text] { width: 360px; }
 
@@ -206,11 +210,17 @@ nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
   clear: both;
 }
 
-#emoticon-list {
+#emoticon-list,
+#add-emoticon-section {
   margin: auto;
   width: 640px;
   clear: both;
 }
+
+#add-emoticon-section { text-align: center; margin-top: 30px; }
+#add-emoticon-section input { text-align: center; }
+#add-emoticon-tagline { width: 300px; }
+
 
 #emoticon-list ul {
   list-style: none;

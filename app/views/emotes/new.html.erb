@@ -1,30 +1,31 @@
-<h1>Add an emoticon to the emotejiji library.</h1>
-
-<%= form_for(@emote) do |f| %>
-  <% if @emote.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@emote.errors.count, "error") %> prohibited this user from being saved:</h2>
-
-      <ul>
-      <% @emote.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+<section id="add-emoticon-section">
+  <%= form_for(@emote) do |f| %>
+    <% if @emote.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@emote.errors.count, "error") %> prohibited this user from being saved:</h2>
+  
+        <ul>
+        <% @emote.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <div class="field" style="margin-bottom: 20px;">
+      <%= f.label :text, 'emoticon text', :style => 'color: #999;' %><br />
+      <%= f.text_field :text, :class => 'rounded', :value => 'example ::  Σ(゜д゜;)', :id => 'add-emoticon-text', :style => 'margin-top: 5px;' %>
+    </div>
+    <div class="field" style="margin-bottom: 40px;">
+      <%= f.label :note, 'a tagline to explain the emoticon (optional)', :style => 'color: #999;' %><br />
+      <%= f.text_field :note, :class => 'rounded', :value => 'example :: a strange face', :id => 'add-emoticon-tagline', :style => 'margin-top: 5px;'  %>
+    </div>
+    <div class="field" style="margin-bottom: 60px;">
+      <%= f.label :tags, 'tags', :style => 'color: #999;' %><br />
+      <%= f.autocomplete_field :tag_list, autocomplete_tag_name_emotes_path, :value => "tags", :id => 'add_tags', :class => 'rounded', :id => 'add-emoticon-tags' %>
+    </div>
+    <div class="actions">
+      <%= f.submit %>
     </div>
   <% end %>
-
-  <div class="field">
-    <%= f.label :text %><br />
-    <%= f.text_field :text %>
-  </div>
-  <div class="field">
-    <%= f.label :note %><br />
-    <%= f.text_field :note %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
-
-
-<%= link_to 'Back', emotes_path %>
+</section>
