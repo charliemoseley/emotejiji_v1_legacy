@@ -48,6 +48,12 @@ $(document).ready(function() {
       }
     });
   });
+  
+  
+  $("input").textReplacement({
+      'activeClass': 'active',	//set :focus class
+      'dataEnteredClass': 'data_entered', //set additional class for when data has been entered by the user
+  });
 });
 
   // ToDo: Clean up this and really tighten up the selectors
