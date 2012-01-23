@@ -133,6 +133,10 @@ setup_links = function() {
   $('#link-home').bind('ajax:complete', function(event, data, status, xhr) {
     $('#loading').hide();
   });
+  
+  $('#add_tags').bind('railsAutocomplete.select', function(event, data) {
+    console.log('Data:' + data.item.name);
+  });
 }
 
 emoticon_clicked = function($container) {

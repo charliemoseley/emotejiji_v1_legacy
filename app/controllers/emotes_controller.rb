@@ -51,7 +51,7 @@ class EmotesController < ApplicationController
     # Q? Couldn't really figure out a good way to do do this with current_user.emotes while getting the right search
     # order and disabling query caching.
     RecentEmote.uncached do
-      recent_emotes = RecentEmote.where(:user_id => current_user.id).limit(15)
+      recent_emotes = RecentEmote.where(:user_id => current_user.id).limit(30)
       
       @emotes = []
       recent_emotes.each do |re|

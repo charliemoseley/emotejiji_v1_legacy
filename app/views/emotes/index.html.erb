@@ -1,7 +1,8 @@
 <section id="search-tag" class="clearfix">
   <!-- <input type="text" value="Search Emoticons With Tags Here" /> -->
   
-  <%= autocomplete_field_tag 'tag', '', autocomplete_tag_name_emotes_path, :size => 75, :id => 'search' %>
+  <%= autocomplete_field_tag 'tag', '', autocomplete_tag_name_emotes_path, :size => 75, 
+     :id => 'search', :value => "Search emotes with tags", :autocomplete => "off" %>
   <input id="btn-search" type="button" value=""/>
   
   <ul id="search-tags">
@@ -24,7 +25,8 @@
   
   <%= form_for(@emote, :remote => false) do |f| %>
     <%= f.hidden_field :id, :value => "0", :id => "selected-id" %>
-    <%= f.text_field :tag_list, :value => "Add a New Tag to this Emoticon" %>
+    <!-- <%= f.text_field :tag_list, :value => "Add a New Tag to this Emoticon" %> -->
+    <%= f.autocomplete_field :tag_list, autocomplete_tag_name_emotes_path, :value => "Add a New Tag to this Emoticon", :id => 'add_tags' %>
     <%= f.submit :value => "", :class => 'add' %>
   <% end %>
   
