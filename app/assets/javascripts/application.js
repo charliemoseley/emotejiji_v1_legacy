@@ -115,6 +115,7 @@ setup_links = function() {
   });
   $('#link-recent').bind('ajax:success', function(event, data, status, xhr) {
     $('#emoticon-list').html(data);
+    clear_search_tags();
   });
   $('#link-recent').bind('ajax:complete', function(event, data, status, xhr) {
     $('#loading').hide();
@@ -125,6 +126,7 @@ setup_links = function() {
   });
   $('#link-favorites').bind('ajax:success', function(event, data, status, xhr) {
     $('#emoticon-list').html(data);
+    clear_search_tags();
   });
   $('#link-favorites').bind('ajax:complete', function(event, data, status, xhr) {
     $('#loading').hide();
@@ -135,6 +137,7 @@ setup_links = function() {
   });
   $('#link-home').bind('ajax:success', function(event, data, status, xhr) {
     $('#emoticon-list').html(data);
+    clear_search_tags();
   });
   $('#link-home').bind('ajax:complete', function(event, data, status, xhr) {
     $('#loading').hide();
@@ -188,4 +191,8 @@ current_emoticon_id = function() {
 add_to_favorites = function(id) {
   $.post('/emotes/record_favorite', { id: id }, function() { console.log('favorite-emote'); });
   console.log('Favorite Emote ID:' + id);
+}
+
+clear_search_tags = function() {
+  $('#search-tags li').remove();
 }
