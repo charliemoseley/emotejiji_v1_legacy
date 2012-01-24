@@ -1,16 +1,26 @@
-<section id="emoticon-list-navigation">
+<nav id="emoticon-list-navigation">
   <%= image_tag "ajax-loading.gif", :style => "display: none;", :id => "loading" %>
-  <span id="results-counter"><!-- &#8734; --><%= @emotes.count %></span>
-  <span id="currently-displaying"><%= @display_type %></span>
+  <ul id="sort-list-active">
+    <li id="sort-newest" class="active">newest</li>
+  </ul>
+  <ul id="sort-list-inactive">
+        <li id="sort-popular">popular</li>
+    <li id="sort-ranedom">random</li>
+  </ul>
+  <div class="results-info">
+    <span id="results-counter"><!-- &#8734; --><%= @emotes.count %></span>
+    <span id="currently-displaying"><%= @display_type %></span>
+  </div>
+</nav>
+
+<section id="emoticon-list" class="clearfix">
+  <ul>
+    <% @emotes.each do |emote| %>
+      <li id="emote-<%= emote.id %>">
+        <article class="width-<%= emote.width %>"><%= emote.text %></article>
+        <aside><%= emote.note %></aside>
+        <input type="hidden" value="<%= emote.tag_list_js %>" />
+      </li>
+    <% end %>
+  </ul>
 </section>
-
-
-<ul>
-  <% @emotes.each do |emote| %>
-    <li id="emote-<%= emote.id %>">
-      <article class="width-<%= emote.width %>"><%= emote.text %></article>
-      <aside><%= emote.note %></aside>
-      <input type="hidden" value="<%= emote.tag_list_js %>" />
-    </li>
-  <% end %>
-</ul>

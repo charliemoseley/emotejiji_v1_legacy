@@ -206,7 +206,7 @@ input.rounded {
 
 #emoticon-list-navigation {
   margin: auto;
-  width: 740px;
+  width: 640px;
   clear: both;
 }
 
@@ -268,11 +268,47 @@ footer {
 #results-counter {
   padding: 5px 10px;
   color: #666;
-  margin-left: 5px;
+
   background: #CCC;
   font-size: 12px;
   line-height: 12px;
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
+}
+
+currently-displaying {
+  font-size: 12px;
+  line-height: 12px;
+  padding: 5px 10px;
+}
+
+#emoticon-list-navigation .results-info {
+  background: whiteSmoke;
+  padding: 5px 0;
+  margin-left: 5px;
+  width: 100px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+
+#emoticon-list-navigation {
+  
+}
+
+#sort-list-active,
+#sort-list-inactive {
+  float: right;
+  text-align: right;
+}
+
+#sort-list-inactive {
+  display: none;
+}
+
+#sort-list-active li,
+#sort-list-inactive li {
+  float: left;
+  list-style: none;
 }

@@ -40,7 +40,7 @@ $(document).ready(function() {
         case 'valid_results':
         case 'no_results':
         case 'reset_results':
-          $('#emoticon-list').html(data.view);
+          $('#content').html(data.view);
         break;
         case 'invalid_tag':
           console.log("Tag doesn't exist!");
@@ -49,10 +49,14 @@ $(document).ready(function() {
     });
   });
   
-  
   $("input").textReplacement({
       'activeClass': 'active',	//set :focus class
       'dataEnteredClass': 'data_entered', //set additional class for when data has been entered by the user
+  });
+  
+  $('#sort-list-active li').live('click', function() {
+    console.log('toggle ran');
+    $('#sort-list-inactive').toggle('slide');
   });
 });
 
@@ -77,7 +81,7 @@ tag_search = function(key_press, $search) {
         case 'valid_results':
         case 'no_results':
         case 'reset_results':
-          $('#emoticon-list').html(data.view);
+          $('#content').html(data.view);
           add_tag_to_tag_list = true;
         break;
         case 'invalid_tag':
@@ -114,7 +118,7 @@ setup_links = function() {
     $('#loading').show();
   });
   $('#link-recent').bind('ajax:success', function(event, data, status, xhr) {
-    $('#emoticon-list').html(data);
+    $('#content').html(data);
     clear_search_tags();
   });
   $('#link-recent').bind('ajax:complete', function(event, data, status, xhr) {
@@ -125,7 +129,7 @@ setup_links = function() {
     $('#loading').show();
   });
   $('#link-favorites').bind('ajax:success', function(event, data, status, xhr) {
-    $('#emoticon-list').html(data);
+    $('#content').html(data);
     clear_search_tags();
   });
   $('#link-favorites').bind('ajax:complete', function(event, data, status, xhr) {
@@ -136,7 +140,7 @@ setup_links = function() {
     $('#loading').show();
   });
   $('#link-home').bind('ajax:success', function(event, data, status, xhr) {
-    $('#emoticon-list').html(data);
+    $('#content').html(data);
     clear_search_tags();
   });
   $('#link-home').bind('ajax:complete', function(event, data, status, xhr) {
