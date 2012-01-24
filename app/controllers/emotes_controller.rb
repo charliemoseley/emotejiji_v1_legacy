@@ -7,6 +7,7 @@ class EmotesController < ApplicationController
     # updating an emote.  Any more elegant solution?
     @emote = Emote.first
     @emotes = Emote.all
+    @display_type = 'all'
     
     respond_to do |format|
       format.html do
@@ -49,6 +50,7 @@ class EmotesController < ApplicationController
   
   def recent
     @emote = Emote.first
+    @display_type = 'recent'
     
     # Q? Couldn't really figure out a good way to do do this with current_user.emotes while getting the right search
     # order and disabling query caching.
@@ -74,8 +76,8 @@ class EmotesController < ApplicationController
   end
   
   def favorites
-    logger.info('Current Path?: ' + params[:controller] + " Method: " + params[:action])
     @emote = Emote.first
+    @display_type = 'favorites'
     
     FavoriteEmote.uncached do
       favorite_emotes = FavoriteEmote.where(:user_id => current_user.id).limit(15)
@@ -135,6 +137,8 @@ class EmotesController < ApplicationController
   end
   
   def tag_search
+    @display_type = 'search'
+    
     tags = params[:tags]
     json = { 'status' => '', 'view' => '', 'results_count' => 0 }
     
@@ -164,6 +168,7 @@ class EmotesController < ApplicationController
     else
       # Otherwise we just return the full list again
       @emotes = Emote.all
+      @display_type = 'all'
       json[:status] = 'reset_results'
       json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes }, :layout => false
     end

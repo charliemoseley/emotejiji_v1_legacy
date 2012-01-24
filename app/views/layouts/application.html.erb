@@ -42,7 +42,6 @@
   
   <nav>
     <ul>
-      
       <li><%= link_to "home", root_path, :remote => determine_remote_status, :id => 'link-home' %></li>
       <li><%= link_to "about", about_path %></li>
       <% if is_logged_in? %>
