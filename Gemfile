@@ -10,6 +10,7 @@ gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'acts-as-taggable-on'
 gem 'rails3-jquery-autocomplete'
+gem 'rails-boilerplate'
 
 
 # Gems used only for assets and not required
@@ -23,7 +24,6 @@ end
 gem 'jquery-rails'
 
 group :development, :test do
-  gem 'rails-boilerplate'
   gem 'sqlite3'
 end
 
