@@ -75,8 +75,8 @@ header h4 {
 
 nav { width: 630px; margin: auto; }
 
-nav ul { text-align: center; margin: 20px 0 0 0; }
-nav li { display: inline; margin: 0 20px; }
+nav.global ul { text-align: center; margin: 20px 0 0 0; }
+nav.global li { display: inline; margin: 0 20px; }
 nav a { color: #5C5C5C; }
 nav a:hover { color: #5C5C5C; text-decoration: underline; }
 nav a.inactive { color: #CCC; cursor: default; }
@@ -294,21 +294,27 @@ currently-displaying {
 }
 
 #emoticon-list-navigation {
-  
+  overflow: hidden;
+  position: relative;
 }
 
-#sort-list-active,
-#sort-list-inactive {
+#sort-list-active {
   float: right;
   text-align: right;
 }
 
-#sort-list-inactive {
-  display: none;
-}
-
-#sort-list-active li,
-#sort-list-inactive li {
+#sort-list-active li {
   float: left;
   list-style: none;
+  background: #E8E8E8;
+  margin: 0;
+  padding: 0 20px;
+  position: relative;
 }
+
+#sort-list-active li.inactive {
+  position: absolute;
+  z-index: 0;
+}
+
+#sort-list-active li.active {  z-index: 10; }

@@ -54,9 +54,82 @@ $(document).ready(function() {
       'dataEnteredClass': 'data_entered', //set additional class for when data has been entered by the user
   });
   
+  
+  // ToDo: Clean this guy up
+  // This is really dumb, but might be the only way to pull this off
   $('#sort-list-active li').live('click', function() {
-    console.log('toggle ran');
-    $('#sort-list-inactive').toggle('slide');
+    $list      = $('#sort-list-active li');
+    $active    = $('#sort-list-active li.active');
+    $inactive1 = $('#sort-list-active li.inactive:first');
+    $inactive2 = $('#sort-list-active li.inactive:last');
+      
+    
+    // Check to see if the element has been position
+    if(isNaN(parseInt($inactive1.css('right')))) {
+      // Prep the off screen locations of two inactive li
+      $inactive1.css('right', -$inactive1.outerWidth());
+      $inactive2.css('right', -$inactive1.outerWidth() + -$inactive2.outerWidth());
+      
+      // This allows both to move linear while keeping the appearance that they are together
+      $inactive1.animate({'right': $active.outerWidth() + $inactive2.outerWidth()}, 200, 'linear');
+      $inactive2.animate({'right': $active.outerWidth()}, 200, 'linear');
+    } else {
+      // Check first if the newly selected active li is not the same as the old one
+      if($(this).hasClass('active')) {
+        $inactive1.animate({'right': -$inactive1.outerWidth()}, 200, 'linear', function() { $(this).removeAttr('style'); });
+        $inactive2.animate({'right': -$inactive1.outerWidth() + -$inactive2.outerWidth()}, 200, 'linear', function() { $(this).removeAttr('style'); })
+      } else {
+        // Reassign the classes and temporarily absolutely position the active class
+        $right = $active.css('right', 0).removeClass().addClass('inactive');
+        $active = $(this).css('position', 'absolute').removeClass().addClass('active');
+        
+        // Determine which inactive li was not convereted to the active class
+        if(parseInt($active.css('right')) == parseInt($inactive1.css('right'))) {
+          $unknown = $inactive2;
+        } else {
+          $unknown = $inactive1;
+        }
+        
+        // Figure out the left and middle position lis in addition to determine
+        // the position of the active li
+        is_middle_active = true;
+        if(parseInt($active.css('right')) > parseInt($unknown.css('right'))) {
+          $left = $active;
+          $middle = $unknown;
+          is_middle_active = false;
+        } else {
+          $left = $unknown;
+          $middle = $active;
+        }
+        
+        // To give the illusion that the element on the far right is sliding
+        // undeneath is own padding, we temporarily create an absolutely positioned
+        // div to cover the text
+        $('#sort-list-active').append('<li style="position: absolute; right: 0;"></li>');
+        $cover = $('#sort-list-active li').last();
+        $cover.css('width', $right.css('padding')).css('height', $right.css('height')).css('background-color', $active.css('background-color')).css('z-index',  parseInt($unknown.css('z-index')) + 1);
+        
+        // To garuantee that the middle li gracefully slides over the cover, we
+        // increase it's z-index (assuming it's the active li)
+        if(is_middle_active) {
+          $middle.css('z-index', parseInt($cover.css('z-index')) + 1);
+        }
+        
+        // Animate everything to the 0 position knowning the active class will
+        // float to the top.  Have the right most li animate off the screen (since
+        // we know it can never be the active li).
+        $left.animate({'right': 0}, 200, 'linear', function() { $list.removeAttr('style'); });
+        // If the middle is not the active li, it needs to slide off the screen.
+        $middle.animate({'right': 0}, 100, 'linear', function() {
+          if(!is_middle_active) {
+            // The additioinal remoteAttr on this guy is because you not garuanteed that the $left.animate will finish last
+            // so you need to clear it again to make sure the styles are removed on all the lis
+            $middle.animate({'right': -$middle.outerWidth()}, 100, 'linear', function() { $cover.remove(); $list.removeAttr('style');  });
+          }
+        });
+        $right.animate({'right': -$right.outerWidth()}, 100, 'linear', function() { if(is_middle_active) { $cover.remove(); } })
+      }
+    }
   });
 });
 

@@ -1,16 +1,16 @@
 <nav id="emoticon-list-navigation">
   <%= image_tag "ajax-loading.gif", :style => "display: none;", :id => "loading" %>
-  <ul id="sort-list-active">
-    <li id="sort-newest" class="active">newest</li>
-  </ul>
-  <ul id="sort-list-inactive">
-        <li id="sort-popular">popular</li>
-    <li id="sort-ranedom">random</li>
-  </ul>
+  
   <div class="results-info">
     <span id="results-counter"><!-- &#8734; --><%= @emotes.count %></span>
     <span id="currently-displaying"><%= @display_type %></span>
   </div>
+  
+  <ul id="sort-list-active" style="position: absolute; top: 0px; right: 0px;">
+    <li id="sort-newest" class="active">newest</li>
+    <li id="sort-ranedom" class="inactive">random</li>
+    <li id="sort-popular" class="inactive">popular</li>
+  </ul>
 </nav>
 
 <section id="emoticon-list" class="clearfix">
