@@ -6,8 +6,18 @@ class EmotesController < ApplicationController
     # Q? This is a hack so I can use a form helper that automatically has the fields for 
     # updating an emote.  Any more elegant solution?
     @emote = Emote.first
-    @emotes = Emote.all
     @display_type = 'all'
+    
+    @sort = params[:sort].nil? ? 'newest' : params[:sort]
+    case @sort
+    when 'newest'
+      @emotes = Emote.order('id DESC').all
+    when 'popular'
+      @emotes = Emote.order('popularity DESC').all
+    when 'random'
+      emotes = Emote.all
+      @emotes = emotes.sort_by { rand }
+    end
     
     respond_to do |format|
       format.html do
@@ -51,6 +61,7 @@ class EmotesController < ApplicationController
   def recent
     @emote = Emote.first
     @display_type = 'recent'
+    @sort = 'disable'
     
     # Q? Couldn't really figure out a good way to do do this with current_user.emotes while getting the right search
     # order and disabling query caching.
@@ -78,6 +89,7 @@ class EmotesController < ApplicationController
   def favorites
     @emote = Emote.first
     @display_type = 'favorites'
+    @sort = 'disable'
     
     FavoriteEmote.uncached do
       favorite_emotes = FavoriteEmote.where(:user_id => current_user.id).limit(15)
@@ -140,18 +152,30 @@ class EmotesController < ApplicationController
     @display_type = 'search'
     
     tags = params[:tags]
+    @sort = params[:sort]
     json = { 'status' => '', 'view' => ''}
     
     # Check first if we even have any tags being submitted
     unless tags.nil?
       # If we do have tags, we handle all the searching
       new_tag = tags.first.downcase
-    
+      
       # Run a query against the newest tag to determine if it is even in the database
       tag_from_db = Tag.where :name => new_tag
-      unless tag_from_db.empty?
+      if new_tag.length == 0 || !tag_from_db.empty?
         # If the tag exists, attempt to find emotes that fit all the tags submitted
-        @emotes = Emote.tagged_with(tags)
+        emotes = Emote.tagged_with(tags)
+        case @sort
+        when 'newest'
+          @emotes = emotes.sort_by {|emote| emote.id }
+          @emotes.reverse!
+        when 'random'
+          @emotes = emotes.sort_by { rand }
+        when 'popular'
+          @emotes = emotes.sort_by {|emote| emote.popularity }
+          @emotes.reverse!
+        end
+        
         
         # Updated the return with wheter results where found and with the view
         if(@emotes.count >= 1)
@@ -159,7 +183,7 @@ class EmotesController < ApplicationController
         else
           json[:status] = 'no_results'
         end
-        json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes }, :layout => false
+        json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes, :sort => @sort }, :layout => false
       else
         # Otherwise the newest submitted tag doesn't exist in our database
         json[:status] = 'invalid_tag'
@@ -169,7 +193,7 @@ class EmotesController < ApplicationController
       @emotes = Emote.all
       @display_type = 'all'
       json[:status] = 'reset_results'
-      json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes }, :layout => false
+      json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes, :sort => @sort }, :layout => false
     end
     
     render :json => json
