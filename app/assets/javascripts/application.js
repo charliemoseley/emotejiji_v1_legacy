@@ -58,14 +58,17 @@ $(document).ready(function() {
   // ToDo: Clean this guy up
   // This is really dumb, but might be the only way to pull this off
   $('#sort-list-active li').live('click', function() {
+    console.log('clicked');
     $list      = $('#sort-list-active li');
     $active    = $('#sort-list-active li.active');
     $inactive1 = $('#sort-list-active li.inactive:first');
     $inactive2 = $('#sort-list-active li.inactive:last');
       
-    
+    console.log("value: " + $inactive1.css('right'));
+    console.log("value: " + parseInt($inactive1.css('right')));
+    check_value = parseInt($inactive1.css('right'));
     // Check to see if the element has been position
-    if(isNaN(parseInt($inactive1.css('right')))) {
+    if(isNaN(check_value) || (check_value < 0)) {
       // Prep the off screen locations of two inactive li
       $inactive1.css('right', -$inactive1.outerWidth());
       $inactive2.css('right', -$inactive1.outerWidth() + -$inactive2.outerWidth());

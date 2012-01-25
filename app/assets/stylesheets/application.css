@@ -315,6 +315,7 @@ currently-displaying {
 #sort-list-active li.inactive {
   position: absolute;
   z-index: 0;
+  right: -1px; /* Firefox CSS rendering fix */
 }
 
 #sort-list-active li.active {  z-index: 10; }
