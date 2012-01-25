@@ -298,12 +298,15 @@ currently-displaying {
   position: relative;
 }
 
-#sort-list-active {
+#sort-list {
   float: right;
   text-align: right;
+  position: absolute;
+  top: 5px;
+  right: 0px;
 }
 
-#sort-list-active li {
+#sort-list li {
   float: left;
   list-style: none;
   background: #E8E8E8;
@@ -312,10 +315,10 @@ currently-displaying {
   position: relative;
 }
 
-#sort-list-active li.inactive {
+#sort-list li.inactive {
   position: absolute;
   z-index: 0;
   right: -1px; /* Firefox CSS rendering fix */
 }
 
-#sort-list-active li.active {  z-index: 10; }
+#sort-list li.active {  z-index: 10; }

@@ -57,12 +57,12 @@ $(document).ready(function() {
   
   // ToDo: Clean this guy up
   // This is really dumb, but might be the only way to pull this off
-  $('#sort-list-active li').live('click', function() {
+  $('#sort-list li').live('click', function() {
     console.log('clicked');
-    $list      = $('#sort-list-active li');
-    $active    = $('#sort-list-active li.active');
-    $inactive1 = $('#sort-list-active li.inactive:first');
-    $inactive2 = $('#sort-list-active li.inactive:last');
+    $list      = $('#sort-list li');
+    $active    = $('#sort-list li.active');
+    $inactive1 = $('#sort-list li.inactive:first');
+    $inactive2 = $('#sort-list li.inactive:last');
       
     console.log("value: " + $inactive1.css('right'));
     console.log("value: " + parseInt($inactive1.css('right')));
@@ -108,8 +108,8 @@ $(document).ready(function() {
         // To give the illusion that the element on the far right is sliding
         // undeneath is own padding, we temporarily create an absolutely positioned
         // div to cover the text
-        $('#sort-list-active').append('<li style="position: absolute; right: 0;"></li>');
-        $cover = $('#sort-list-active li').last();
+        $('#sort-list').append('<li style="position: absolute; right: 0;"></li>');
+        $cover = $('#sort-list li').last();
         $cover.css('width', $right.css('padding')).css('height', $right.css('height')).css('background-color', $active.css('background-color')).css('z-index',  parseInt($unknown.css('z-index')) + 1);
         
         // To garuantee that the middle li gracefully slides over the cover, we
