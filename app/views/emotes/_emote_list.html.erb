@@ -8,11 +8,11 @@
   
   <ul id="sort-list">
     <% unless @sort == 'disable' %>
-    <li id="sort-newest" class="<%= @sort == 'newest' ? 'active' : 'inactive' %>">newest</li>
-    <li id="sort-random" class="<%= @sort == 'random' ? 'active' : 'inactive' %>">random</li>
-    <li id="sort-popular" class="<%= @sort == 'popular' ? 'active' : 'inactive' %>">popular</li>
+      <li id="sort-newest" class="<%= @sort == 'newest' ? 'active' : 'inactive' %>">newest</li>
+      <li id="sort-random" class="<%= @sort == 'random' ? 'active' : 'inactive' %>">random</li>
+      <li id="sort-popular" class="<%= @sort == 'popular' ? 'active' : 'inactive' %>">popular</li>
     <% else %>
-    <li><a class="inactive">newest</a></li>
+      <li><a class="inactive">newest</a></li>
     <% end %>
   </ul>
 </nav>

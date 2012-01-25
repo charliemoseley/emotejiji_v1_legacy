@@ -47,12 +47,21 @@ class EmotesController < ApplicationController
   
   def update
     @emote = Emote.find(params[:id])
-    @emote.tag_list = params[:emote][:tag_list]
+    
+    @emote.tag_list.add(params[:emote][:tag_list])
     # Takes the tag that was submitted by the user and attributes that to them
     current_user.tag(@emote, :with => @emote.tag_list.first, :on => :tags)
     
     if @emote.save
-       redirect_to root_path, :notice => "#{@emote.text} successfully updated"
+      respond_to do |format|
+        format.html do
+          if request.xhr?
+            render :json => @emote.tag_list
+          else
+            redirect_to root_path, :notice => "#{@emote.text} succesfully created"
+          end
+        end
+      end
     else
        redirect_to root_path, :notice => "#{@emote.text} failed update"
     end

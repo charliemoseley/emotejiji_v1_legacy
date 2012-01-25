@@ -137,7 +137,7 @@ input.rounded {
   background-image: none;
 }
 
-#emoticon-display input[type=submit].add {
+#emoticon-display input[type=submit].btn-add-tag {
   min-width: 54px;
   height: 31px;
   margin: 11px 0px 0px 6px;

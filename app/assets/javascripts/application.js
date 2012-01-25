@@ -21,9 +21,24 @@ $(document).ready(function() {
   $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)); });
   $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
   setup_links();
+  setup_forms();
   
   $('#search').keyup(function(event) {  if(event.keyCode == 13) { tag_search($(this).val()); } });
   $('#btn-search').click(function()  { tag_search($('#search').val()); });
+  
+  // Q? Wow, hackity hack.  Is there any way to bind this to the rails ajax:beforeSend so that
+  // it handles accidently submissions of the default value?
+  $('#add_tags').keyup(function(event) {  
+    if(event.keyCode == 13) {
+      if($(this).val() == 'Add a New Tag to this Emoticon') $(this).val('');
+      $('.edit_emote').submit(); 
+    } 
+  });
+  $('.btn-add-tag').click(function()  { 
+    if($('#add_tags').val() == 'Add a New Tag to this Emoticon') $('#add_tags').val('');
+    $('.edit_emote').submit();
+    $('#add_tags').focus();
+  });
   
   // ToDo: Abstract this out with the normal search function
   $('#search-tags li').live('click', function() {
@@ -215,45 +230,50 @@ tag_search = function(tag, sort) {
 }
 
 setup_links = function() {
-  // ToDo: Clean this up a little, probably also encapsulate it better
-  $('#link-recent').bind('ajax:beforeSend', function(){
-    $('#loading').show();
-  });
-  $('#link-recent').bind('ajax:success', function(event, data, status, xhr) {
-    $('#content').html(data);
-    clear_search_tags();
-  });
-  $('#link-recent').bind('ajax:complete', function(event, data, status, xhr) {
-    $('#loading').hide();
-  });
+  default_remote_link($('#link-favorites'));
+  default_remote_link($('#link-recent'));
+  default_remote_link($('#link-home'));
   
-  $('#link-favorites').bind('ajax:beforeSend', function(){
-    $('#loading').show();
-  });
-  $('#link-favorites').bind('ajax:success', function(event, data, status, xhr) {
-    $('#content').html(data);
-    clear_search_tags();
-  });
-  $('#link-favorites').bind('ajax:complete', function(event, data, status, xhr) {
-    $('#loading').hide();
-  });
-  
-  $('#link-home')
-    .bind('ajax:beforeSend', function() {
-      $('#loading').show();
-      console.log($('#link-home').data('params'));
-    })
-    .bind('ajax:success', function(event, data, status, xhr) {
-      $('#content').html(data);
-      clear_search_tags();
-    })
-    .bind('ajax:complete', function(event, data, status, xhr) {
-      $('#loading').hide();
-    });
-  
+  /* // Incase I ever need to bind on the autocomplete, this is how to do it [below]
   $('#add_tags').bind('railsAutocomplete.select', function(event, data) {
     console.log('Data:' + data.item.name);
   });
+  */
+}
+
+setup_forms = function() {
+  $('.edit_emote')
+    .bind('ajax:beforeSend', function(event, xhr, settings) { 
+      $('.ui-autocomplete').hide(); 
+      $('#add_tags').val('');
+    })
+    .bind('ajax:success', function(event, data, status, xhr) {
+      var allTags, currentlyDisplayedTags, tagsToAdd;
+      
+      allTags = eval(data);
+      currentlyDisplayedTags = [];
+      tagsToAdd = [];
+      $('#tag-list li').each(function() { currentlyDisplayedTags.push($(this).text()); });
+      
+      for(var i = 0; i < allTags.length; i++) {
+        index = $.inArray(allTags[i], currentlyDisplayedTags);
+        if(index == -1) tagsToAdd.push(allTags[i]);
+      }
+      
+      for(var i = 0; i < tagsToAdd.length; i++) {
+        $('#tag-list').append("<li><a>" + tagsToAdd[i] + "</a></li>");
+      }
+    });
+}
+
+default_remote_link = function($target) {
+  var $l = $('#loading');
+  $target.bind('ajax:beforeSend', function(event, xhr, settings) { $l.show(); })
+         .bind('ajax:success',    function(event, data, status, xhr) 
+            { $('#content').html(data); })
+         .bind('ajax:complete',   function(event, xhr, status) { $l.hide(); })
+         .bind('ajax:error',      function(event, xhr, status, error)
+            { /* ToDo: Create an error message sometime here */ });
 }
 
 emoticon_clicked = function($container) {
@@ -284,7 +304,7 @@ refresh_tag_list = function(tag_list) {
   $container = $('#tag-list');
   $container.empty();
   $.each(tag_list, function(index, value) {
-    $container.append('<li><a>' + value + "</a></li>");
+    $container.append('<li><a>' + value + '</a></li>');
   });
 }
 
