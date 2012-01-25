@@ -208,6 +208,15 @@ input.rounded {
   margin: auto;
   width: 640px;
   clear: both;
+  position: relative;
+  overflow: hidden;
+}
+
+#loading {
+  position: absolute;
+  left: 115px;
+  top: 5px;
+  display: none;
 }
 
 /*
@@ -266,12 +275,15 @@ footer {
 }
 
 #results-counter {
-  padding: 5px 10px;
+  padding: 6px 10px 7px 10px;
   color: #666;
-
   background: #CCC;
   font-size: 12px;
   line-height: 12px;
+  display: block;
+  float: left;
+  position: relative;
+  top: -5px;
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -293,16 +305,17 @@ currently-displaying {
   -moz-border-radius: 3px;
 }
 
-#emoticon-list-navigation {
-  overflow: hidden;
-  position: relative;
+#current-display {
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 
 #sort-list {
   float: right;
   text-align: right;
   position: absolute;
-  top: 5px;
+  top: 6px;
   right: 0px;
 }
 
