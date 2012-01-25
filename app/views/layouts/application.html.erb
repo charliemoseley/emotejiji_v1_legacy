@@ -51,7 +51,6 @@
         <li><%= link_to "favorites", favorites_path, :remote => determine_remote_status, :id => 'link-favorites' %></li>
         <li><%= link_to "recent", recent_path, :remote => determine_remote_status, :id => 'link-recent' %></li>
       <% else %>
-        <li><%= link_to "home", root_path, :remote => determine_remote_status, :id => 'link-home' %></li>
         <li><%= link_to "login", "/auth/twitter" %></li>
         <li><a class="inactive" href="#">profile</a></li>
         <li><a class="inactive" href="#">add emote</a></li>
