@@ -45,7 +45,7 @@
       <li><%= link_to "about", about_path %></li>
       <% if is_logged_in? %>
         <li><%= link_to "sign out", signout_path %></li>
-        <li><a class="inactive" href="#">profile</a></li>
+        <li><%= link_to "profile", profile_path, :remote => determine_remote_status, :id => 'link-profile' %></li>
         <li><%= link_to "add emote", new_emote_path %></li>
         <li><%= link_to "all", root_path, :remote => determine_remote_status, :id => 'link-home' %></li>
         <li><%= link_to "favorites", favorites_path, :remote => determine_remote_status, :id => 'link-favorites' %></li>

@@ -277,6 +277,7 @@ setup_links = function() {
   default_remote_link($('#link-favorites'));
   default_remote_link($('#link-recent'));
   default_remote_link($('#link-home'));
+  default_remote_link($('#link-profile'));
   
   /* // Incase I ever need to bind on the autocomplete, this is how to do it [below]
   $('#add_tags').bind('railsAutocomplete.select', function(event, data) {

@@ -68,6 +68,19 @@ class EmotesController < ApplicationController
     end
   end
   
+  def profile
+    # Q? Most elegant way to handle this?
+    respond_to do |format|
+      format.html do
+        if request.xhr?
+         render :profile, :layout => false
+        else
+          render :profile
+        end
+      end
+    end
+  end
+  
   def recent
     @emote = Emote.first
     @display_type = 'recent'

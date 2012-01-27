@@ -5,6 +5,7 @@ Emotejiji::Application.routes.draw do
   
   match '/about' => 'pages#about', :as => :about
   
+  match '/profile' => 'emotes#profile', :as => :profile
   match '/recent' => "emotes#recent", :as => :recent
   match '/emotes/record_recent' => 'emotes#record_recent'
   match '/favorites' => "emotes#favorites", :as => :favorites
