@@ -81,6 +81,11 @@ $(document).ready(function() {
     animate_sort_list($(this));
     
   });
+  
+  // Checks to see if theres any notifications displayed and hides them after a sec
+  if($('#notifications').exists()) {
+    $('#notifications').delay(1750).slideUp();
+  }
 });
 
 change_sort = function($selected) {

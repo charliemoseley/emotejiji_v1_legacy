@@ -61,17 +61,15 @@
     </ul>
   </nav>
   
-  <% flash.each do |key, value| %>
-    <div class="flash <%= key %>"><%= value %></div>
-  <% end %>
-  
-  <div class="main-content">
-    <%= yield %>
-  </div>
+  <%= yield %>
   
   <footer>
     a project by <%= link_to 'robopengu.in', 'http://robopengu.in' %> | emotejiji 2010 - 2011
   </footer>
+  
+  <% flash.each do |key, value| %>
+    <div id="notifications" class="flash <%= key %>"><%= value %></div>
+  <% end %>
 
   <!-- JavaScript at the bottom for fast page loading -->
   <%= javascript_include_tag "application" %>
