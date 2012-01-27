@@ -69,7 +69,7 @@ class EmotesController < ApplicationController
   end
   
   def profile
-    # Q? Most elegant way to handle this?
+    # ToDo: Currently doesnt render properly when directly loaded from the URL
     respond_to do |format|
       format.html do
         if request.xhr?

@@ -25,15 +25,7 @@
       <div class="tag-background">
         <%= f.autocomplete_field :tag_list, autocomplete_tag_name_emotes_path, :value => "ex: happy", :id => 'new_emote_tags_input', :class => 'rounded' %>
         <span>tags added will show up here</span>
-        <ul id="new-emote-tag-list" class="tags hover clearfix">
-          <!--
-          <li><a>face</a></li>
-          <li><a>cat</a></li>
-          <li><a>dog</a></li>
-          <li><a>super fabulous tag of doom</a></li>
-          <li><a>cow</a></li>
-          -->
-        </ul>
+        <ul id="new-emote-tag-list" class="tags hover clearfix"></ul>
       </div>
       <%= f.submit :value => 'Create Emoticon', :class => 'button' %>
     </div>

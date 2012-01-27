@@ -1,1 +1,13 @@
-My Profile!
+<div id="temporary-profile">
+  <table>
+    <tbody>
+      <tr>
+        <td><%= image_tag current_user.image %></td>
+        <td class="info">
+          User: <%= current_user.nickname %><br />
+          Provider: <%= current_user.provider %><br />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

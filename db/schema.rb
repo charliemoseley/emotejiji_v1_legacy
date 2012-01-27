@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120119165536) do
+ActiveRecord::Schema.define(:version => 20120127205941) do
 
   create_table "emotes", :force => true do |t|
     t.string   "text"
@@ -69,6 +69,13 @@ ActiveRecord::Schema.define(:version => 20120119165536) do
     t.string   "oauth_secret"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "nickname"
+    t.string   "image"
+    t.string   "url"
+    t.string   "gender"
+    t.string   "timezone"
+    t.string   "website"
+    t.string   "location"
   end
 
 end

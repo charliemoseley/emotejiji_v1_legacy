@@ -39,7 +39,7 @@ a.no-link { cursor: default; }
 ul { list-style: none; margin: 0; padding: 0; }
 label { cursor: default; }
 
-div.main-content { min-height: 220px; }
+div.min-height { min-height: 220px; }
 
 /***** Form Styles *****/
 input.rounded {
@@ -453,3 +453,26 @@ currently-displaying {
 }
 
 #sort-list li.active {  z-index: 10; }
+
+/*******************************************************************
+ * Profile Styles
+ *******************************************************************/
+#temporary-profile {
+  margin: 30px auto 0 auto;
+  width: 250px;
+  background: whiteSmoke;
+  padding: 7px 10px; 
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+
+#temporary-profile img {
+    border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+
+#temporary-profile .info {
+  vertical-align: middle; padding-left: 8px;
+}
