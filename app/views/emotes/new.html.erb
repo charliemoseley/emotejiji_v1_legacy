@@ -13,11 +13,11 @@
     <div class="col-left clearfix">
       <div class="field">
         <%= f.label :text, 'emoticon text' %><br />
-        <%= f.text_field :text, :class => 'rounded', :value => 'ex:  Σ(゜д゜;)', :id => 'add-emoticon-text' %>
+        <%= f.text_field :text, :class => 'rounded', :value => 'ex:  Σ(゜д゜;)', :id => 'new-emoticon-text' %>
       </div>
       <div class="field">
         <%= f.label :note, 'a tagline to explain the emoticon (optional)' %><br />
-        <%= f.text_field :note, :class => 'rounded', :value => 'ex: a strange face', :id => 'add-emoticon-tagline' %>
+        <%= f.text_field :note, :class => 'rounded', :value => 'ex: a strange face', :id => 'new-emoticon-tagline' %>
       </div>
     </div>
     <div class="col-right clearfix" id="new_emote_tags" >
@@ -25,7 +25,7 @@
       <div class="tag-background">
         <%= f.autocomplete_field :tag_list, autocomplete_tag_name_emotes_path, :value => "ex: happy", :id => 'new_emote_tags_input', :class => 'rounded' %>
         <span>tags added will show up here</span>
-        <ul class="tags hover clearfix">
+        <ul id="new-emote-tag-list" class="tags hover clearfix">
           <!--
           <li><a>face</a></li>
           <li><a>cat</a></li>
