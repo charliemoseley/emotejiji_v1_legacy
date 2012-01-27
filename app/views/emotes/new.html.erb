@@ -1,31 +1,42 @@
-<section id="add-emoticon-section">
+<section id="new-emote" class="clearfix">
   <%= form_for(@emote) do |f| %>
     <% if @emote.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(@emote.errors.count, "error") %> prohibited this user from being saved:</h2>
-  
         <ul>
-        <% @emote.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end %>
+          <% @emote.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
         </ul>
       </div>
     <% end %>
-  
-    <div class="field" style="margin-bottom: 20px;">
-      <%= f.label :text, 'emoticon text', :style => 'color: #999;' %><br />
-      <%= f.text_field :text, :class => 'rounded', :value => 'example ::  Σ(゜д゜;)', :id => 'add-emoticon-text', :style => 'margin-top: 5px;' %>
+    <div class="col-left clearfix">
+      <div class="field">
+        <%= f.label :text, 'emoticon text' %><br />
+        <%= f.text_field :text, :class => 'rounded', :value => 'ex:  Σ(゜д゜;)', :id => 'add-emoticon-text' %>
+      </div>
+      <div class="field">
+        <%= f.label :note, 'a tagline to explain the emoticon (optional)' %><br />
+        <%= f.text_field :note, :class => 'rounded', :value => 'ex: a strange face', :id => 'add-emoticon-tagline' %>
+      </div>
     </div>
-    <div class="field" style="margin-bottom: 40px;">
-      <%= f.label :note, 'a tagline to explain the emoticon (optional)', :style => 'color: #999;' %><br />
-      <%= f.text_field :note, :class => 'rounded', :value => 'example :: a strange face', :id => 'add-emoticon-tagline', :style => 'margin-top: 5px;'  %>
-    </div>
-    <div class="field" style="margin-bottom: 60px;">
-      <%= f.label :tags, 'tags', :style => 'color: #999;' %><br />
-      <%= f.autocomplete_field :tag_list, autocomplete_tag_name_emotes_path, :value => "tags", :id => 'add_tags', :class => 'rounded', :id => 'add-emoticon-tags' %>
-    </div>
-    <div class="actions">
-      <%= f.submit %>
+    <div class="col-right clearfix" id="new_emote_tags" >
+      <%= f.label :tags, 'tags' %><br />
+      <div class="tag-background">
+        <%= f.autocomplete_field :tag_list, autocomplete_tag_name_emotes_path, :value => "ex: happy", :id => 'new_emote_tags_input', :class => 'rounded' %>
+        <span>tags added will show up here</span>
+        <ul class="tags hover clearfix">
+          <!--
+          <li><a>face</a></li>
+          <li><a>cat</a></li>
+          <li><a>dog</a></li>
+          <li><a>super fabulous tag of doom</a></li>
+          <li><a>cow</a></li>
+          -->
+        </ul>
+      </div>
+      <%= f.submit :value => 'Create Emoticon', :class => 'button' %>
     </div>
   <% end %>
+  </div>
 </section>

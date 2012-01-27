@@ -7,6 +7,10 @@
  *= require jquery-ui.css
  *= require_tree . 
 */
+
+/*******************************************************************
+ * Site Wide Generic Styles
+ *******************************************************************/
 @import url(http://fonts.googleapis.com/css?family=Lato&text=emotejiji);
 
 /* new clearfix */
@@ -27,12 +31,79 @@ body {
   background: #E8E8E8;
 }
 
-a {
-  text-decoration: none;
-  color: #999;
-}
+a { text-decoration: none; color: #999; cursor: pointer; }
 a:visited { color: #999; }
+a:hover { color: #999; }
+a.no-link { cursor: default; }
 
+ul { list-style: none; margin: 0; padding: 0; }
+
+/***** Form Styles *****/
+input.rounded {
+  height: 29px;
+  padding: 0px 8px;
+  font-size: 12px;
+  color: #999;
+  border: solid 1px #CECFD1;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+
+input.button {
+  min-height: 31px;
+  padding-right: 16px;
+  padding-left: 16px;
+  color: #999;
+  font-weight: bold;
+  text-align: center;
+  background-color: whiteSmoke;
+  cursor: pointer;
+  vertical-align: middle;
+  border: 1px solid #CECFD1;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -webkit-user-select: none;
+  -moz-border-radius: 3px;
+}
+
+/***** Tag list Styles *****/
+ul.tags { margin-top: 5px; margin-bottom: 5px; }
+ul.tags li { margin-left: 5px; }
+ul.tags a { background: #FFFCF2; }
+ul.tags li,
+ul.tags a {
+  float:left;
+  height:17px;
+  line-height: 17px;
+  position:relative;
+  font-size:10px;
+  margin-bottom: 7px;
+  padding: 0 10px 0 9px;
+  text-decoration: none;
+}
+ul.tags a:before {
+  content: "";
+  float: left;
+  position: absolute;
+  top: 0px;
+  left: -9px;
+  width: 0;
+  height: 0;
+  border-color: transparent #FFFCF2 transparent transparent;
+  border-style: solid;
+  border-width: 9px 9px 9px 0;
+}
+ul.tags.hover a:hover { background: #FFBAC0;}
+ul.tags.hover a:hover:before { 
+  border-color: transparent #FFBAC0 transparent transparent; 
+}
+
+
+
+/*******************************************************************
+ * Site Wide Template Styles
+ *******************************************************************/
 header {
   position: relative;
   height: 35px;
@@ -82,16 +153,57 @@ nav a:hover { color: #5C5C5C; text-decoration: underline; }
 nav a.inactive { color: #CCC; cursor: default; }
 nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
 
-input.rounded {
-  height: 29px;
-  padding: 0px 8px;
-  font-size: 12px;
-  color: #999;
+/*******************************************************************
+ * New Emoticon
+ *******************************************************************/
+#new-emote { margin-top: 30px; margin-bottom: 30px; }
+#new-emote label { color: #999; }
+#new-emote input[type=text] { text-align: center; width: 100%; }
+
+/* Left Column Styles */
+#new-emote .col-left { width: 50%; padding-right: 15%; float: left; }
+#new-emote .col-left .field { margin-bottom: 20px; }
+#new-emote .col-left label { margin-left: 10px; }
+#new-emote .col-left input[type=text] { margin-top: 5px; }
+
+/* Right Column Styles */
+#new-emote .col-right { text-align: right; float: left; width: 35%; }
+#new-emote .col-right label { margin-right: 10px; }
+
+#new_emote_tags_input {
+  width: 100%;  
+  margin: 0; padding: 0; 
+  position: absolute; left: -1px; top: -1px;
+}
+#new-emote .tag-background {
+  padding-top: 34px;
+  width: 100%;
+  background: #EEE;
+  text-align: center;
+  min-height: 66px;
+  margin-top: 5px;
   border: solid 1px #CECFD1;
   border-radius: 3px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
+  position: relative;
 }
+#new-emote .tag-background span {
+  color: #CCC;
+  position: relative;
+  top: 24px;
+}
+#new-emote input[type='submit'] {
+  margin-top: 15px;
+  width: 100%;
+  background-color: #EB8014;
+  color: #FFF;
+  border: none;
+}
+
+/*******************************************************************
+ * Emoticon Search
+ *******************************************************************/
 
 /* http://cssglobe.com/post/9435/pure-css3-post-tags */
 #search-tag { width: 630px; margin: 3px auto 0 auto; text-align: center; }
@@ -113,11 +225,6 @@ input.rounded {
   left: -3px;
   color: #999;
   background: url(/assets/icon-search.png) center no-repeat whiteSmoke;
-  /*background-image: -webkit-gradient(linear,left top,left bottom,from(whiteSmoke),to(#F1F1F1));
-  background-image: -webkit-linear-gradient(top,whiteSmoke,#F1F1F1);
-  background-color: whiteSmoke;
-  background-image: linear-gradient(top,whiteSmoke,#F1F1F1);
-  background-image: -o-linear-gradient(top,whiteSmoke,#F1F1F1);*/
   border: 1px solid #CECFD1;
   border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -146,7 +253,7 @@ input.rounded {
 }
 
 #search-tag ul,
-#emoticon-display ul { 
+#emoticon-display ul {
   list-style: none; 
   width: 366px; 
   margin: 5px auto 0 auto; 
@@ -219,15 +326,6 @@ input.rounded {
   display: none;
 }
 
-/*
-#emoticon-list,
-#add-emoticon-section {
-  margin: auto;
-  width: 640px;
-  clear: both;
-}*/
-
-
 section, footer {
   margin: auto;
   width: 640px;
@@ -240,9 +338,7 @@ footer {
   text-align: right;
 }
 
-#add-emoticon-section { text-align: center; margin-top: 30px; }
-#add-emoticon-section input { text-align: center; }
-#add-emoticon-tagline { width: 300px; }
+
 
 
 #emoticon-list ul {
