@@ -7,7 +7,7 @@
   </div>
   
   <ul id="sort-list">
-    <% unless @sort == 'disable' %>
+    <% unless @sort == 'disable' ||  @emotes.count == 0 %>
       <li id="sort-newest" class="<%= @sort == 'newest' ? 'active' : 'inactive' %>">newest</li>
       <li id="sort-random" class="<%= @sort == 'random' ? 'active' : 'inactive' %>">random</li>
       <li id="sort-popular" class="<%= @sort == 'popular' ? 'active' : 'inactive' %>">popular</li>
@@ -18,13 +18,28 @@
 </nav>
 
 <section id="emoticon-list" class="clearfix">
-  <ul>
-    <% @emotes.each do |emote| %>
-      <li id="emote-<%= emote.id %>">
-        <article class="width-<%= emote.width %>"><%= emote.text %></article>
-        <aside><%= emote.note %></aside>
-        <input type="hidden" value="<%= emote.tag_list_js %>" />
-      </li>
-    <% end %>
-  </ul>
+  <% unless @emotes.count == 0 %>
+    <ul>
+      <% @emotes.each do |emote| %>
+        <li id="emote-<%= emote.id %>">
+          <article class="width-<%= emote.width %>"><%= emote.text %></article>
+          <aside><%= emote.note %></aside>
+          <input type="hidden" value="<%= emote.tag_list_js %>" />
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <div class="no-emotes" style="text-align: center; margin-top: 40px; font-size: 16px; ">
+      Σ(゜д゜;)<br />
+      We couldn't find any emotes!<br />
+      <% if @display_type == 'search' %>
+        Maybe try searching some different combination of tags?
+      <% elsif @display_type == 'favorites' %>
+        Maybe try adding some favorite emoticons?
+      <% elsif @display_type == 'recent' %>
+        Looks like you haven't clicked any emoticons yet!
+      <% end %>
+    </div>
+  <% end %>
 </section>
+
