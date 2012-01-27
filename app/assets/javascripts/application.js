@@ -23,6 +23,7 @@ $(document).ready(function() {
   $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
   setup_links();
   setup_forms();
+  setup_new_emote_form();
   
   $('#search').keyup(function(event) {  if(event.keyCode == 13) { tag_search($(this).val()); } });
   $('#btn-search').click(function()  { tag_search($('#search').val()); });
@@ -279,6 +280,68 @@ setup_links = function() {
   */
 }
 
+setup_new_emote_form = function() {
+  /***** New Emote Form Handler *****/
+  var $newEmoteText = $('#new-emoticon-text');
+  var newEmoteTextDefaultValue = $newEmoteText.val();
+  var $newEmoteTagline =  $('#new-emoticon-tagline');
+  var newEmoteTaglineDefaultValue = $newEmoteTagline.val();
+  var $newEmoteAutoComplete = $('#new_emote_tags_input');
+  var newEmoteAutoCompleteDefaultValue = $newEmoteAutoComplete.val();
+  var $newEmoteTagList = $('#new-emote-tag-list');
+  
+  // A custom enter handler for this form due to the auto complete input field
+  $('#new_emote').bind('keypress', function(event) {
+    if(event.keyCode == 13 && event.srcElement.id == $newEmoteAutoComplete.attr('id')) {
+      if($newEmoteAutoComplete.val() != newEmoteAutoCompleteDefaultValue && $newEmoteAutoComplete.val() != '') {
+        console.log(event.keyCode);
+        // Close out the auto complete form if it didnt go away by itself
+        $('.ui-autocomplete').hide();
+        new_emote_add_tag($newEmoteAutoComplete, $newEmoteTagList);
+      }
+      return false;
+    } else {
+      return true;
+    }
+  });
+  // Handles the selection of a tag when Enter is pressed on the autocomplete list
+  $newEmoteAutoComplete.autocomplete({
+    select: function(event, ui) {
+      new_emote_add_tag($newEmoteAutoComplete, $newEmoteTagList);
+    }
+  });
+  
+  $('#new_emote').submit(function(event) {
+    // This is to prevent jQuery from rampantly running this bind over and
+    // over again while it's waiting for the form submit to happen
+    if(event.isTrigger) return true;
+    
+    // Build a tag list into the autocomplete form right before submission.
+    var tagListString = '';
+    $newEmoteTagList.find('a').each(function() {
+      var tempString = $(this).text();
+      tagListString += tempString.replace(',', '') + ', ';
+    });
+    $newEmoteAutoComplete.val(tagListString);
+    
+    // Check if the default value or blank is still set and alert the user
+    if($newEmoteText.val() == newEmoteTextDefaultValue || $newEmoteText.val() == '') {
+      // ToDo: Uh… alert boxes are ghetto.  Please turn this into a real error xD.
+      alert('You need to put a value into the emoticon text box.');
+      event.preventDefault();
+      return;
+    }
+    
+    // Check if the default value is set for the tagline and clear it out if it is
+    if($newEmoteTagline.val() == newEmoteTaglineDefaultValue) {
+      $newEmoteTagline.val('');
+    }
+    
+    // Submit form
+    $(this).submit();
+  });
+}
+
 setup_forms = function() {
   $('.edit_emote')
     .bind('ajax:beforeSend', function(event, xhr, settings) { 
@@ -302,52 +365,6 @@ setup_forms = function() {
         $('#tag-list').append("<li><a>" + tagsToAdd[i] + "</a></li>");
       }
     });
-  
-  /***** New Emote Form Handler *****/
-  var $newEmoteText = $('#new-emoticon-text');
-  var newEmoteTextDefaultValue = $newEmoteText.val();
-  var $newEmoteTagline =  $('#new-emoticon-tagline');
-  var newEmoteTaglineDefaultValue = $newEmoteTagline.val();
-  var $newEmoteAutoComplete = $('#new_emote_tags_input');
-  var newEmoteAutoCompleteDefaultValue = $newEmoteAutoComplete.val();
-  
-  // A custom enter handler for this form due to the auto complete input field
-  $('#new_emote').bind('keypress', function(event) {
-    if(event.keyCode == 13 && event.srcElement.id == $newEmoteAutoComplete.attr('id')) {
-      if($newEmoteAutoComplete.val() != newEmoteAutoCompleteDefaultValue && $newEmoteAutoComplete.val() != '') {
-        // Close out the auto complete form if it didnt go away by itself
-        $('.ui-autocomplete').hide();
-        new_emote_add_tag($newEmoteAutoComplete, $('#new-emote-tag-list'));
-      }
-      return false;
-    } else {
-      return true;
-    }
-  });
-  $newEmoteAutoComplete.autocomplete({
-    close: function(event, ui) {
-      new_emote_add_tag($newEmoteAutoComplete, $('#new-emote-tag-list'));
-      $(this).val('');
-    }
-  });
-  
-  $('#new_emote').submit(function(event) {
-    // Check if the default value or blank is still set and alert the user
-    if($newEmoteText.val() == newEmoteTextDefaultValue || $newEmoteText.val() == '') {
-      // ToDo: Uh… alert boxes are ghetto.  Please turn this into a real error xD.
-      alert('You need to put a value into the emoticon text box.');
-      event.preventDefault();
-      return;
-    }
-    
-    // Check if the default value is set for the tagline and clear it out if it is
-    if($newEmoteTagline.val() == newEmoteTaglineDefaultValue) {
-      $newEmoteTagline.val('');
-    }
-    
-    $(this).submit();
-  });
-  
 }
 
 default_remote_link = function($target) {
