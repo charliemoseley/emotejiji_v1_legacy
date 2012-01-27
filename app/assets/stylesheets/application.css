@@ -37,6 +37,9 @@ a:hover { color: #999; }
 a.no-link { cursor: default; }
 
 ul { list-style: none; margin: 0; padding: 0; }
+label { cursor: default; }
+
+div.main-content { min-height: 220px; }
 
 /***** Form Styles *****/
 input.rounded {
@@ -156,7 +159,7 @@ nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
 /*******************************************************************
  * New Emoticon
  *******************************************************************/
-#new-emote { margin-top: 30px; margin-bottom: 30px; }
+#new-emote { margin-top: 50px; }
 #new-emote label { color: #999; }
 #new-emote input[type=text] { text-align: center; width: 100%; }
 
@@ -194,7 +197,7 @@ nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
   top: 24px;
 }
 #new-emote input[type='submit'] {
-  margin-top: 15px;
+  margin-top: 20px;
   width: 100%;
   background-color: #EB8014;
   color: #FFF;
