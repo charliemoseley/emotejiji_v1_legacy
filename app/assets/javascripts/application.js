@@ -316,6 +316,7 @@ setup_new_emote_form = function() {
     }
   });
   
+  // Run a series of validation checks on the form before submitting it.
   $('#new_emote').submit(function(event) {
     // This is to prevent jQuery from rampantly running this bind over and
     // over again while it's waiting for the form submit to happen
@@ -344,6 +345,11 @@ setup_new_emote_form = function() {
     
     // Submit form
     $(this).submit();
+  });
+  
+  // Remove tags if they are clicked.
+  $($('#new-emote-tag-list li')).live('click', function() {
+    $(this).remove();
   });
 }
 
