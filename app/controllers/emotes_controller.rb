@@ -37,6 +37,7 @@ class EmotesController < ApplicationController
   def create
     @emote = Emote.new(params[:emote])
     @emote.owner_id = current_user.id
+    current_user.tag(@emote, :with => @emote.tag_list, :on => :tags)
     
     if @emote.save
       redirect_to root_path, :notice => "#{@emote.text} successfully created"
