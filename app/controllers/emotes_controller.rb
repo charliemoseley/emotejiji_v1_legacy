@@ -48,10 +48,15 @@ class EmotesController < ApplicationController
   
   def update
     @emote = Emote.find(params[:id])
-    
     @emote.tag_list.add(params[:emote][:tag_list])
-    # Takes the tag that was submitted by the user and attributes that to them
-    current_user.tag(@emote, :with => @emote.tag_list.first, :on => :tags)
+    
+    # Q?: Is this what I really hae to do to achieve ownership tags with act-as-taggable-on?
+    owner_tags = @emote.owner_tags_on(current_user, :tags).map {|t| t.name }
+    unless owner_tags.include? params[:emote][:tag_list]
+      temp_string = owner_tags.join(', ')
+      temp_string = temp_string + ', ' + params[:emote][:tag_list]
+      current_user.tag(@emote, :with => temp_string, :on => :tags)
+    end
     
     if @emote.save
       respond_to do |format|
@@ -188,6 +193,10 @@ class EmotesController < ApplicationController
       if new_tag.length == 0 || !tag_from_db.empty?
         # If the tag exists, attempt to find emotes that fit all the tags submitted
         emotes = Emote.tagged_with(tags)
+        
+        # Q?: This doesnt seem right.  We dont want our SQL to ever grab duplicates?
+        emotes.uniq!
+        
         case @sort
         when 'newest'
           @emotes = emotes.sort_by {|emote| emote.id }
@@ -198,7 +207,6 @@ class EmotesController < ApplicationController
           @emotes = emotes.sort_by {|emote| emote.popularity }
           @emotes.reverse!
         end
-        
         
         # Updated the return with wheter results where found and with the view
         if(@emotes.count >= 1)

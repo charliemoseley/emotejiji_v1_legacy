@@ -50,8 +50,9 @@ $(document).ready(function() {
     $('#search-tags li').each(function() {
       tags.unshift( $(this).text() );
     });
+    sort = $('#sort-list .active').text();
     
-    $.post('/emotes/search', { tags: tags }, function(data) {
+    $.post('/emotes/search', { tags: tags, sort: sort }, function(data) {
       switch(data.status) {
         case 'valid_results':
         case 'no_results':
@@ -358,10 +359,11 @@ setup_forms = function() {
   $('.edit_emote')
     .bind('ajax:beforeSend', function(event, xhr, settings) { 
       $('.ui-autocomplete').hide();
-      $('#add_tags').val('');
+
     })
     .bind('ajax:success', function(event, data, status, xhr) {
       var allTags, currentlyDisplayedTags, tagsToAdd;
+      $('#add_tags').val('');
       
       allTags = eval(data);
       currentlyDisplayedTags = [];
