@@ -39,16 +39,19 @@ class EmotesController < ApplicationController
     @emote.owner_id = current_user.id
     current_user.tag(@emote, :with => @emote.tag_list, :on => :tags)
     
+    # ToDo: Make the database enforce uniquness + Pretty up the error page on new emotes
     if @emote.save
       redirect_to root_path, :notice => "#{@emote.text} successfully created"
     else
-      format.html { render :action => "new", :notice => "Something went wrong creating the emote #{@emote.text}"}
+      render "new", :notice => "Something went wrong creating the emote #{@emote.text}"
     end
   end
   
   def update
     @emote = Emote.find(params[:id])
     @emote.tag_list.add(params[:emote][:tag_list])
+    # Update the popularity value by 2
+    @emote.popularity = @emote.popularity + 1
     
     # Q?: Is this what I really hae to do to achieve ownership tags with act-as-taggable-on?
     owner_tags = @emote.owner_tags_on(current_user, :tags).map {|t| t.name }
@@ -57,6 +60,8 @@ class EmotesController < ApplicationController
       temp_string = temp_string + ', ' + params[:emote][:tag_list]
       current_user.tag(@emote, :with => temp_string, :on => :tags)
     end
+    
+    
     
     if @emote.save
       respond_to do |format|
@@ -153,6 +158,13 @@ class EmotesController < ApplicationController
       recent_emote.updated_at = Time.now
       recent_emote.save
     end
+    
+    # Update the popularity value by 1
+    emote = Emote.find(params[:id])
+    emote.popularity = emote.popularity + 1
+    emote.total_clicks = emote.total_clicks + 1
+    emote.save
+    
     render :text => ''
   end
   
@@ -162,6 +174,10 @@ class EmotesController < ApplicationController
     unless current_user.nil?
       favorite_emote = FavoriteEmote.where :user_id => current_user.id, :emote_id => params[:id]
       emote = Emote.find(params[:id])
+      
+      # Update the popularity value by 4
+      emote.popularity = emote.popularity + 5
+      emote.save
       
       if favorite_emote.empty?
         favorite_emote = FavoriteEmote.new
