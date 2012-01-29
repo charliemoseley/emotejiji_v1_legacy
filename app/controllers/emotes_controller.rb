@@ -37,6 +37,7 @@ class EmotesController < ApplicationController
   def create
     @emote = Emote.new(params[:emote])
     @emote.owner_id = current_user.id
+    @emote.text.strip!
     current_user.tag(@emote, :with => @emote.tag_list, :on => :tags)
     
     # ToDo: Make the database enforce uniquness + Pretty up the error page on new emotes

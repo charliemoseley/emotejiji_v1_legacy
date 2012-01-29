@@ -12,8 +12,8 @@ class Emote < ActiveRecord::Base
   
   acts_as_taggable_on :tags
   
-  validates :text, :uniqueness => true
-  validates :text, :presence => true
+  #validates :text, :uniqueness => true
+  #validates :text, :presence => true
   
   # Guesstimates the width of an emote unless specifically provided
   def width
