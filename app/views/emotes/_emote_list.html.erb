@@ -20,19 +20,13 @@
 <section id="emoticon-list" class="clearfix">
   <% unless @emotes.count == 0 %>
     <ul>
-      <% @emotes.each do |emote| %>
-            <% 
-              special_style = ''
-              if (1..38).include? emote.id
-                special_style = 'style="font-size: 40px;"'
-              end
-            %>
-        <li id="emote-<%= emote.id %>">
-          <article class="width-<%= emote.width %>" <%== special_style %>><%= emote.text %></article>
-          <aside><%= emote.note %></aside>
-          <input type="hidden" value="<%= emote.tag_list_js %>" />
-        </li>
-      <% end %>
+      <%
+        sorter = EmoteListSorter.new @emotes
+        @emotes = sorter.sort
+        @emotes.each do |emote| 
+      %>
+        <%= render :partial => "emote_grid", :locals => { :emote => emote } %>
+      <% end%>
     </ul>
   <% else %>
     <div class="no-emotes" style="text-align: center; margin-top: 40px; font-size: 16px; ">
