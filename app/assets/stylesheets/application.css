@@ -383,10 +383,9 @@ footer {
   font-size: 20px;
 }
 
-#emoticon-list article.width-1 {
-  width: 150px;
-}
-
+#emoticon-list article.width-1 { width: 150px; }
+#emoticon-list article.width-2 { width: 310px; }
+#emoticon-list article.width-3 { width: 470px; }
 
 #emoticon-list aside {
   display: none;
