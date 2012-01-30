@@ -87,11 +87,6 @@ $(document).ready(function() {
   if($('#notifications').exists()) {
     $('#notifications').delay(1750).slideUp();
   }
-  
-  $('#btn-copy-to-clipboard').zclip({
-    path: 'ZeroClipboard.swf',
-    copy: $('#selected-emoticon').text()
-  });
 });
 
 change_sort = function($selected) {
@@ -415,8 +410,18 @@ emoticon_clicked = function($container) {
   update_recent_emotes(id);
   
   if($('#emoticon-display').is(':hidden')) {
-    $('#emoticon-display').slideDown();
+    $('#emoticon-display').slideDown(function() { refreshZeroClipboard(); });
+  } else {
+    refreshZeroClipboard();
   }
+}
+
+refreshZeroClipboard = function() {
+  $('#btn-copy-to-clipboard').zclip({
+    path: 'ZeroClipboard.swf',
+    copy: function() { return $('#selected-emoticon').text() },
+    afterCopy: function() { return; }
+  });
 }
 
 new_emote_add_tag = function ($input, $tagList) {
