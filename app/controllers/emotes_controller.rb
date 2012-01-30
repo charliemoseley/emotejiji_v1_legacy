@@ -7,17 +7,9 @@ class EmotesController < ApplicationController
     # updating an emote.  Any more elegant solution?
     @emote = Emote.first
     @display_type = 'all'
-    
-    @sort = params[:sort].nil? ? 'newest' : params[:sort]
-    case @sort
-    when 'newest'
-      @emotes = Emote.order('id DESC').all
-    when 'popular'
-      @emotes = Emote.order('popularity DESC').all
-    when 'random'
-      emotes = Emote.all
-      @emotes = emotes.sort_by { rand }
-    end
+
+    @sort = params[:sort].nil? ? :newest : params[:sort].to_sym
+    @emotes = EmoteList.sort_now Emote.all, :sort_type => @sort
     
     respond_to do |format|
       format.html do
@@ -63,8 +55,6 @@ class EmotesController < ApplicationController
       current_user.tag(@emote, :with => temp_string, :on => :tags)
     end
     
-    
-    
     if @emote.save
       respond_to do |format|
         format.html do
@@ -96,16 +86,17 @@ class EmotesController < ApplicationController
   def recent
     @emote = Emote.first
     @display_type = 'recent'
-    @sort = 'disable'
+    @sort = :disable
     
     # Q? Couldn't really figure out a good way to do do this with current_user.emotes while getting the right search
     # order and disabling query caching.
     RecentEmote.uncached do
       recent_emotes = RecentEmote.where(:user_id => current_user.id).limit(30)
       
-      @emotes = []
+      temp_emotes = []
       recent_emotes.each do |re|
-        @emotes << Emote.find(re.emote_id)
+        temp_emotes << Emote.find(re.emote_id)
+        @emotes = EmoteList.sort_now temp_emotes, :sort_type => @sort
       end
     end
     
@@ -124,14 +115,15 @@ class EmotesController < ApplicationController
   def favorites
     @emote = Emote.first
     @display_type = 'favorites'
-    @sort = 'disable'
+    @sort = :disable
     
     FavoriteEmote.uncached do
       favorite_emotes = FavoriteEmote.where(:user_id => current_user.id).limit(15)
       
-      @emotes = []
+      temp_emotes = []
       favorite_emotes.each do |fe|
-        @emotes << Emote.find(fe.emote_id)
+        temp_emotes << Emote.find(fe.emote_id)
+        @emotes = EmoteList.sort_now temp_emotes, :sort_type => @sort
       end
     end
     
@@ -198,53 +190,32 @@ class EmotesController < ApplicationController
     @display_type = 'search'
     json = { 'status' => '', 'view' => ''}
     
-    @sort    = params[:sort].nil?     ? 'newest' :  params[:sort]
-    tag_list = params[:tag_list].nil? ? []       : params[:tag_list] 
-    tag      = params[:tag].nil?      ? ''       : params[:tag]
-    
-    logger.info('tag_list:'+tag_list.to_s)
+    @sort    = params[:sort].nil?     ? :newest : params[:sort].to_sym
+    tag      = params[:tag].nil?      ? ''      : params[:tag]
+    tag_list = params[:tag_list].nil? ? []      : params[:tag_list] 
     tag_list << tag.downcase unless tag.empty?
     
     # Check if we are searching on anything at all
     if !tag_list.empty?
-      
-      logger.info(tag_list.to_s)
-      logger.info('string:'+tag)
       # If we are, see if we were submitted a new tag to search on
       # and check to see if that tag exists in the database
       unless tag.empty?
         if Tag.where(:name => tag).empty?
           json[:status] = 'invalid_tag'
-          logger.info(json.to_s)
           render :json => json
           return
         end
       end
       
       # Since tags are good, lets go fetch emotes with those tags
-      emotes = Emote.tagged_with(tag_list)
-      # Q?: This doesnt seem right.  We dont want our SQL to ever grab duplicates?
-      emotes.uniq!
-      logger.info(emotes.to_s)
-      
-      # Process the order to display the emotes via the sort method
-      case @sort
-      when 'newest'
-        @emotes = emotes.sort_by {|emote| emote.id }
-        @emotes.reverse!
-      when 'random'
-        @emotes = emotes.sort_by { rand }
-      when 'popular'
-        @emotes = emotes.sort_by {|emote| emote.popularity }
-        @emotes.reverse!
-      end
+      @emotes = EmoteList.sort_now Emote.tagged_with(tag_list), :sort_type => @sort
       
       # Ship back the results
       json[:status] = @emotes.count >= 1 ? 'valid_results' : 'no_results'
       json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes, :sort => @sort }, :layout => false
     else
       # Otherwise we just return the full list again
-      @emotes = Emote.all
+      @emotes = EmoteList.sort_now Emote.all, :sort_type => @sort
       @display_type = 'all'
       json[:status] = 'reset_results'
       json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes, :sort => @sort }, :layout => false
@@ -256,7 +227,7 @@ class EmotesController < ApplicationController
   
   private
   
-    def is_signed_in?
-      redirect_if_not_logged_in
-    end
+  def is_signed_in?
+    redirect_if_not_logged_in
+  end
 end

@@ -7,10 +7,10 @@
   </div>
   
   <ul id="sort-list">
-    <% unless @sort == 'disable' ||  @emotes.count == 0 %>
-      <li id="sort-newest" class="<%= @sort == 'newest' ? 'active' : 'inactive' %>">newest</li>
-      <li id="sort-random" class="<%= @sort == 'random' ? 'active' : 'inactive' %>">random</li>
-      <li id="sort-popular" class="<%= @sort == 'popular' ? 'active' : 'inactive' %>">popular</li>
+    <% unless @sort == :disable ||  @emotes.count == 0 %>
+      <li id="sort-newest" class="<%= sort_status :newest %>">newest</li>
+      <li id="sort-random" class="<%= sort_status :random %>">random</li>
+      <li id="sort-popular" class="<%= sort_status :popular %>">popular</li>
     <% else %>
       <li><a class="inactive">newest</a></li>
     <% end %>
@@ -21,8 +21,8 @@
   <% unless @emotes.count == 0 %>
     <ul>
       <%
-        sorter = EmoteListSorter.new @emotes
-        @emotes = sorter.sort
+        #sorter = EmoteListSorter.new @emotes
+        #@emotes = sorter.sort
         @emotes.each do |emote| 
       %>
         <%= render :partial => "emote_grid", :locals => { :emote => emote } %>

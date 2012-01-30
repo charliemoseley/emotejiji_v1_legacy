@@ -35,15 +35,14 @@ $(document).ready(function() {
   setup_forms();
   setup_new_emote_form();
   
-  $('#search').keyup(function(event) {  if(event.keyCode == 13) { console.log('enter'); tag_search($(this).val()); } });
+  $('#search').keyup(function(event) {  if(event.keyCode == 13) { tagSearch($(this).val()); } });
   $('#search').autocomplete('option', 'minLength', 1);
   $('#search').bind('autocompleteselect', function(event, ui) {
-    console.log(ui.item.value);
-    tag_search(ui.item.value);
+    tagSearch(ui.item.value);
     event.preventDefault();
   });
   
-  $('#btn-search').click(function()  { tag_search($('#search').val()); });
+  $('#btn-search').click(function()  { tagSearch($('#search').val()); });
   
   // Q? Wow, hackity hack.  Is there any way to bind this to the rails ajax:beforeSend so that
   // it handles accidently submissions of the default value?
@@ -62,7 +61,7 @@ $(document).ready(function() {
   // ToDo: Abstract this out with the normal search function
   $('#search-tags li').live('click', function() {
     $(this).remove();
-    tag_search('', 'newest')
+    tagSearch('');
   });
   
   $("input").textReplacement({
@@ -102,7 +101,7 @@ change_sort = function($selected) {
       $('#link-home').click();
       break;
     case 'search':
-      tag_search('', selected_sort);
+      tagSearch('', selected_sort);
       break;
   }
 }
@@ -243,13 +242,12 @@ buildTagList = function($tagContainer) {
 }
 
 // ToDo: Clean up this and really tighten up the selectors (heck, abstract it out better too)
-tag_search = function(tag, sort) {
-  if(sort == null) sort = "newest";
+tagSearch = function(tag, sort) {
+  if(sort == null) sort = currentSort();
   var tagList;
   
   // Build up the tag list and see if we even search
   tagList = buildTagList($('#search-tags'));
-  console.log(tagList);
   if(isDuplicateTag(tag, tagList)) return false;
   //if(tag == '' && tagList.length == 0) return false;
   
@@ -258,7 +256,6 @@ tag_search = function(tag, sort) {
   
   error = false;
   $.post('/emotes/search', { tag: tag, tag_list: tagList, sort: sort }, function(data) {
-    console.log(data.status);
     switch(data.status) {
       case 'invalid_tag':
         $search.attr('disabled', 'disabled');
@@ -477,7 +474,7 @@ refresh_tag_list = function(tag_list) {
 }
 
 update_recent_emotes = function(id) {
-  $.post('/emotes/record_recent', { id: id }, function() { console.log('recent-remote'); });
+  $.post('/emotes/record_recent', { id: id } });
 }
 
 current_emoticon_id = function() {
@@ -485,14 +482,11 @@ current_emoticon_id = function() {
 }
 
 add_to_favorites = function(id) {
-  $.post('/emotes/record_favorite', { id: id }, function() { console.log('favorite-emote'); });
-  console.log('Favorite Emote ID:' + id);
+  $.post('/emotes/record_favorite', { id: id } });
 }
 
-clear_search_tags = function() {
-  $('#search-tags li').remove();
-}
 
+currentSort = function() { return $('#sort-list .active').text(); }
 isObjectType = function(variable, type) {
   // Handle the shortcut words
   switch (type) {

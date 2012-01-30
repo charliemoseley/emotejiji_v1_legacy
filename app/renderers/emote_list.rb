@@ -1,12 +1,14 @@
 # This class takes a list of emoticons and makes sure they fill a grid of
 # x length nicely while still attempting to best retain the order the
 # emoticons are supposed to be rendered in.
-class EmoteListSorter
-  attr_accessor :emote_list, :list_length
+class EmoteList
+  attr_accessor :emotes, :sort_type, :list_length
   
-  def initialize(emote_list, list_length = 4)
-    @emote_list  = emote_list
-    @list_length = list_length
+  def initialize(emotes, options = {})
+    options.reverse_merge! :list_length => 4, :sort_type => :newest
+    @emotes      = emotes.uniq
+    @sort_type   = options[:sort_type].to_sym
+    @list_length = options[:list_length]
     
     @position = 0
     @overflow = Array.new
@@ -14,18 +16,34 @@ class EmoteListSorter
   end
   
   def sort
-    render_list
-    @return
+    @emotes = order
+    @emotes = render_list
   end
   
-  def pass_through
-    @emote_list
+  def self.sort_now(emotes, options = {})
+    emoteList = EmoteList.new emotes, options
+    return emoteList.sort
   end
-  
+    
   private
   
+  def order
+    case @sort_type
+    when :newest || :disabled
+      # Due to the default scoping of the emote's model, the emote_list will
+      # always already be sorted this way
+      @emotes
+    when :random
+      @emotes.sort_by { rand }
+    when :popular
+      @emotes = emotes.sort_by {|emote| emote.popularity }
+      @emotes.reverse!
+    end
+  end
+  
+  
   def render_list
-    @emote_list.each do |emote|
+    @emotes.each do |emote|
       # First check if the overflow array has any emotes
       unless @overflow.length == 0
         # If so loop over them
@@ -63,5 +81,6 @@ class EmoteListSorter
     @overflow.each do |emote|
       @return.push emote
     end
+    @return
   end
 end
