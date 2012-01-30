@@ -1,7 +1,9 @@
-<nav id="emoticon-list-navigation">
+<nav id="emoticon-list-navigation" class="container">
   <div class="results-info">
-    <span id="results-counter"><!-- &#8734; --><%= @emotes.count %></span>
+    showing
     <span id="current-display"><%= @display_type %></span>
+    &nbsp;::&nbsp;
+    <span id="results-counter"><!-- &#8734; --><%= @emotes.count %></span>
   </div>
   
   <ul id="sort-list">
@@ -13,6 +15,7 @@
       <li><a class="inactive">newest</a></li>
     <% end %>
   </ul>
+  <div class="cover"></div>
 </nav>
 
 <section id="emoticon-list" class="clearfix">

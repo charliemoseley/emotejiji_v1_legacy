@@ -1,9 +1,9 @@
-<section id="search-tag" class="clearfix" style="height: 60px;">
-  <%= autocomplete_field_tag 'tag', '', autocomplete_tag_name_emotes_path, :size => 75, 
-     :id => 'search', :value => "Search Emoticons With Tags Here", :autocomplete => "off", :class => 'rounded' %>
-  <input id="btn-search" type="button" value=""/>
+<section id="search-tag" class="clearfix container">
+  <%= autocomplete_field_tag 'tag', '', autocomplete_tag_name_emotes_path,
+     :id => 'search', :value => "search with tags", :autocomplete => "off", :class => 'square' %>
+  <!--<input id="btn-search" type="button" value=""/>-->
   
-  <ul id="search-tags"></ul>
+  <ul id="search-tags" class="tags clearfix"><li><a>fun</a></li><li><a>animal</a></li><li><a>stuff</a></li></ul>
 </section>
 
 <section id="emoticon-display" style="height: 180px; display: none;">
@@ -26,7 +26,7 @@
   <ul id="tag-list"></ul>
 </section>
 
-<div class="container">
+<div class="container container-no-pad ">
   <%= image_tag "ajax-loading.gif", :id => "loading", :style => "display: none;" %>
   <section id="content">
     <%= render 'emote_list' %>
