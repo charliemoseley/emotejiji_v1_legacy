@@ -16,18 +16,6 @@
 
 // Q? When porting over to coffeescript, I'd like to have it so javascript that doesnt need to render when
 // a user is not logged in is not rendered… but that might be issue with caching? Not sure.
-
-jQuery.fn.exists = function() { return this.length > 0; }
-jQuery.fn.focusNextInputField = function() {
-    return this.each(function() {
-        var fields = $(this).parents('form:eq(0),body').find('button,input,textarea,select');
-        var index = fields.index( this );
-        if ( index > -1 && ( index + 1 ) < fields.length ) {
-            fields.eq( index + 1 ).focus();
-        }
-        return false;
-    });
-};
 $(document).ready(function() {  
   $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)); });
   $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
