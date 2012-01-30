@@ -196,24 +196,26 @@ class EmotesController < ApplicationController
   
   def tag_search
     @display_type = 'search'
-    @sort = params[:sort]
-    
-    tag_list = []
-    tag_list = params[:tag_list] unless params[:tag_list].nil?
-    tag = params[:tag]
     json = { 'status' => '', 'view' => ''}
     
-    tag.downcase! rescue nil
-    tag_list << tag unless tag.nil?
+    @sort    = params[:sort].nil?     ? 'newest' :  params[:sort]
+    tag_list = params[:tag_list].nil? ? []       : params[:tag_list] 
+    tag      = params[:tag].nil?      ? ''       : params[:tag]
+    
+    logger.info('tag_list:'+tag_list.to_s)
+    tag_list << tag.downcase unless tag.empty?
     
     # Check if we are searching on anything at all
-    if tag_list.length != 0
+    if !tag_list.empty?
       
+      logger.info(tag_list.to_s)
+      logger.info('string:'+tag)
       # If we are, see if we were submitted a new tag to search on
       # and check to see if that tag exists in the database
-      unless tag.nil?
+      unless tag.empty?
         if Tag.where(:name => tag).empty?
           json[:status] = 'invalid_tag'
+          logger.info(json.to_s)
           render :json => json
           return
         end
@@ -223,6 +225,7 @@ class EmotesController < ApplicationController
       emotes = Emote.tagged_with(tag_list)
       # Q?: This doesnt seem right.  We dont want our SQL to ever grab duplicates?
       emotes.uniq!
+      logger.info(emotes.to_s)
       
       # Process the order to display the emotes via the sort method
       case @sort

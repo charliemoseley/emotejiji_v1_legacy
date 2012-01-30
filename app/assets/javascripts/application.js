@@ -62,25 +62,7 @@ $(document).ready(function() {
   // ToDo: Abstract this out with the normal search function
   $('#search-tags li').live('click', function() {
     $(this).remove();
-    // Build up a list of existing tags
-    tags = [];
-    $('#search-tags li').each(function() {
-      tags.unshift( $(this).text() );
-    });
-    sort = $('#sort-list .active').text();
-    
-    $.post('/emotes/search', { tags: tags, sort: sort }, function(data) {
-      switch(data.status) {
-        case 'valid_results':
-        case 'no_results':
-        case 'reset_results':
-          $('#content').html(data.view);
-        break;
-        case 'invalid_tag':
-          console.log("Tag doesn't exist!");
-        break;
-      }
-    });
+    tag_search('', 'newest')
   });
   
   $("input").textReplacement({
@@ -267,7 +249,9 @@ tag_search = function(tag, sort) {
   
   // Build up the tag list and see if we even search
   tagList = buildTagList($('#search-tags'));
+  console.log(tagList);
   if(isDuplicateTag(tag, tagList)) return false;
+  //if(tag == '' && tagList.length == 0) return false;
   
   $('#loading').show();
   $search = $('#search');
@@ -290,7 +274,6 @@ tag_search = function(tag, sort) {
       case 'valid_results':
       case 'no_results':
       case 'reset_results':
-      case 'no_tag':
         tagList.push(tag);
         $('#content').html(data.view);
         if(tag.length != 0) display_tags($('#search-tags'), tagList);
