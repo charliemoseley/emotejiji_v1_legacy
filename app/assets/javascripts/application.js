@@ -16,7 +16,8 @@
 
 // Q? When porting over to coffeescript, I'd like to have it so javascript that doesnt need to render when
 // a user is not logged in is not rendered… but that might be issue with caching? Not sure.
-$(document).ready(function() {  
+$(document).ready(function() {
+  $loading = $('#loading');
   $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)); });
   $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
   setupRemoteLinks();
@@ -189,11 +190,10 @@ setupRemoteLinks = function() {
 }
 
 defaultRemoteLink = function($target) {
-  var $l = $('#loading');
-  $target.bind('ajax:beforeSend', function(event, xhr, settings) { $l.show(); })
+  $target.bind('ajax:beforeSend', function(event, xhr, settings) { $loading.show(); })
          .bind('ajax:success',    function(event, data, status, xhr) 
             { clearTagList($('#search-tags')); $('#content').html(data); })
-         .bind('ajax:complete',   function(event, xhr, status) { $l.hide(); })
+         .bind('ajax:complete',   function(event, xhr, status) { $loading.hide(); })
          .bind('ajax:error',      function(event, xhr, status, error)
             { /* ToDo: Create an error message sometime here */ });
 }
@@ -248,7 +248,7 @@ tagSearch = function(tag, sort) {
   if(isDuplicateTag(tag, tagList)) return false;
   //if(tag == '' && tagList.length == 0) return false;
   
-  $('#loading').show();
+  $loading.show();
   $search = $('#search');
   
   error = false;
@@ -273,7 +273,7 @@ tagSearch = function(tag, sort) {
         if(tag.length != 0) displayTags($('#search-tags'), tagList);
       break;
     }
-    $('#loading').hide();
+    $loading.hide();
     // Sometimes autocomplete doesnt disappear if you type in the whole word and hit
     // enter.  By hiding it, we garuntee that it goes away.
     $('.ui-autocomplete').hide();
@@ -316,6 +316,7 @@ change_sort = function($selected) {
     return true;
   }
   
+  $loading.show();
   selected_sort = $selected.text();
   current_display = $('#current-display').text();
   

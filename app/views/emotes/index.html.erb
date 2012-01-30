@@ -26,6 +26,9 @@
   <ul id="tag-list"></ul>
 </section>
 
-<section id="content">
-  <%= render 'emote_list' %>
-</section>
+<div class="container">
+  <%= image_tag "ajax-loading.gif", :id => "loading", :style => "display: none;" %>
+  <section id="content">
+    <%= render 'emote_list' %>
+  </section>
+</div>

@@ -345,13 +345,14 @@ nav a.inactive:hover { color: #CCC; cursor: default; text-decoration: none; }
   position: absolute;
   left: 115px;
   top: 5px;
-  display: none;
+  /*display: none;*/
 }
 
-section, footer {
+section, footer, div.container{
   margin: auto;
   width: 640px;
   clear: both;
+  position: relative;
 }
 
 footer {
@@ -360,6 +361,9 @@ footer {
   text-align: right;
 }
 
+#loading-container {
+  position: relative;
+}
 
 
 
