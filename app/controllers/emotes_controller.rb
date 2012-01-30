@@ -9,7 +9,7 @@ class EmotesController < ApplicationController
     @display_type = 'all'
 
     @sort = params[:sort].nil? ? :newest : params[:sort].to_sym
-    @emotes = EmoteList.sort_now Emote.all, :sort_type => @sort
+    @emotes = EmoteList.sort_now Emote.all(:include => [:tags]), :sort_type => @sort
     
     respond_to do |format|
       format.html do
