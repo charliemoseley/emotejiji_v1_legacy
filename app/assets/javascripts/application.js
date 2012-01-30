@@ -19,32 +19,10 @@
 $(document).ready(function() {  
   $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)); });
   $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
-  setup_links();
-  setup_forms();
-  setup_new_emote_form();
-  
-  $('#search').keyup(function(event) {  if(event.keyCode == 13) { tagSearch($(this).val()); } });
-  $('#search').autocomplete('option', 'minLength', 1);
-  $('#search').bind('autocompleteselect', function(event, ui) {
-    tagSearch(ui.item.value);
-    event.preventDefault();
-  });
-  
-  $('#btn-search').click(function()  { tagSearch($('#search').val()); });
-  
-  // Q? Wow, hackity hack.  Is there any way to bind this to the rails ajax:beforeSend so that
-  // it handles accidently submissions of the default value?
-  $('#add_tags').keyup(function(event) {  
-    if(event.keyCode == 13) {
-      if($(this).val() == 'Add a New Tag to this Emoticon') $(this).val('');
-      $('.edit_emote').submit(); 
-    } 
-  });
-  $('.btn-add-tag').click(function()  { 
-    if($('#add_tags').val() == 'Add a New Tag to this Emoticon') $('#add_tags').val('');
-    $('.edit_emote').submit();
-    $('#add_tags').focus();
-  });
+  setupRemoteLinks();
+  setupEmoteTagAddForm();
+  setupNewEmoteForm();
+  setupSearchTag();
   
   // ToDo: Abstract this out with the normal search function
   $('#search-tags li').live('click', function() {
@@ -59,7 +37,6 @@ $(document).ready(function() {
   
   
   // ToDo: Clean this guy up
-  // This is really dumb, but might be the only way to pull this off
   $('#sort-list li').live('click', function() {
     // ToDo: Function order is important here as change_sort needs to fire off
     // before animateSortList.  Probably worth updating change_sort so
@@ -78,14 +55,7 @@ $(document).ready(function() {
 /***************************************************************
  * Initial Setup and Binders
  ***************************************************************/
-setup_links = function() {
-  defaultRemoteLink($('#link-favorites'));
-  defaultRemoteLink($('#link-recent'));
-  defaultRemoteLink($('#link-home'));
-  defaultRemoteLink($('#link-profile'));
-}
-
-setup_new_emote_form = function() {
+setupNewEmoteForm = function() {
   /***** New Emote Form Handler *****/
   var $newEmoteText = $('#new-emoticon-text');
   var newEmoteTextDefaultValue = $newEmoteText.val();
@@ -103,15 +73,16 @@ setup_new_emote_form = function() {
       // If it has been, determine the form element where enter was hit
       // Current we're checking for the autocomplete tag field and that it's not blank
       if(event.srcElement.id == $newEmoteAutoComplete.attr('id') && $newEmoteAutoComplete.val() != '') {
+        console.log(1);
         // Since we already know the input isnt empty, we check now if that value isnt the default one
         if($newEmoteAutoComplete.val() != newEmoteAutoCompleteDefaultValue) {
-          // Close out the auto complete form if it didnt go away by itself
-          $('.ui-autocomplete').hide();
-          new_emote_add_tag($newEmoteAutoComplete, $newEmoteTagList);
+          newEmoteAddTag(sanitize($newEmoteAutoComplete.val()), $newEmoteTagList);
         }
+        console.log(3);
         return false;
       // If the input that enter was hit was submit, then process the form
       } else if(event.srcElement.id == $newEmoteSubmit.attr('id')) {
+        console.log(3);
         // Q? I cant seem to use the submit function here because though
         // the alert box check triggers, the form still submits… maybe because
         // of submit() running some custom event that is cancelled out by the
@@ -121,17 +92,16 @@ setup_new_emote_form = function() {
         $newEmoteSubmit.click();
       // Otherwise progress to the next input
       } else {
+        console.log(5);
         $('#'+event.srcElement.id).focusNextInputField();
         return false;
       }
     }
   });
   // Handles the selection of a tag when Enter is pressed on the autocomplete list
-  $newEmoteAutoComplete.autocomplete({
-    select: function(event, ui) {
-      new_emote_add_tag($newEmoteAutoComplete, $newEmoteTagList);
-    }
-  });
+  $newEmoteAutoComplete
+    .bind('autocompleteselect', function(event, ui) { newEmoteAddTag(ui.item.value, $newEmoteTagList); })
+    .bind('autocompleteclose', function(event, ui) { $('#new_emote_tags_input').val(''); });
   
   // Run a series of validation checks on the form before submitting it.
   $('#new_emote').submit(function(event) {
@@ -170,37 +140,59 @@ setup_new_emote_form = function() {
   });
 }
 
-setup_forms = function() {
-  $('.edit_emote')
-    .bind('ajax:beforeSend', function(event, xhr, settings) { 
-      $('.ui-autocomplete').hide();
+newEmoteAddTag = function (tag, $tagList) {
+  if(isObjectType(tag, 'object')) tag = sanitize(tag.val());
+  $('#new-emote-tag-help').hide();
+  $('#new_emote_tags_input').val('');
+  displayTags($('#new-emote-tag-list'), tag);
+}
 
+setupEmoteTagAddForm = function() {
+  // Rails AJAX form binder
+  $('.edit_emote')
+    .bind('ajax:beforeSend', function(event, xhr, settings) {
+      $('.ui-autocomplete').hide();
+      if($('#add_tags').val() == 'Add a New Tag to this Emoticon') {
+        $('#add_tags').focus();
+        return false;
+      }
     })
     .bind('ajax:success', function(event, data, status, xhr) {
-      var allTags, currentlyDisplayedTags, tagsToAdd;
-      $('#add_tags').val('');
+      displayTags($('#tag-list'), eval(data), true);
       
-      allTags = eval(data);
-      currentlyDisplayedTags = [];
-      tagsToAdd = [];
-      $('#tag-list li').each(function() { currentlyDisplayedTags.push($(this).text()); });
-      
-      for(var i = 0; i < allTags.length; i++) {
-        index = $.inArray(allTags[i], currentlyDisplayedTags);
-        if(index == -1) tagsToAdd.push(allTags[i]);
-      }
-      
-      for(var i = 0; i < tagsToAdd.length; i++) {
-        $('#tag-list').append("<li><a>" + tagsToAdd[i] + "</a></li>");
-      }
+      $('#add_tags').val('').focus();
+      $('.ui-autocomplete').hide();
     });
+  
+  $('#add_tags').bind('autocompleteselect', function(event, ui) {
+    $(this).val(ui.item.value);
+    $('.edit_emote').submit();
+  });
+  
+  // Handles the button press
+  $('.btn-add-tag').click(function()  { $('.edit_emote').submit(); });
+}
+
+setupSearchTag = function() {
+  // Search Field
+  $('#search')
+    .bind('keypress', function(event) {  if(event.keyCode == 13) { tagSearch($(this).val()); } })
+    .bind('autocompleteselect', function(event, ui) { tagSearch(ui.item.value); });
+  $('#btn-search').click(function()  { tagSearch($('#search').val()); });
+}
+
+setupRemoteLinks = function() {
+  defaultRemoteLink($('#link-favorites'));
+  defaultRemoteLink($('#link-recent'));
+  defaultRemoteLink($('#link-home'));
+  defaultRemoteLink($('#link-profile'));
 }
 
 defaultRemoteLink = function($target) {
   var $l = $('#loading');
   $target.bind('ajax:beforeSend', function(event, xhr, settings) { $l.show(); })
          .bind('ajax:success',    function(event, data, status, xhr) 
-            { $('#content').html(data); })
+            { clearTagList($('#search-tags')); $('#content').html(data); })
          .bind('ajax:complete',   function(event, xhr, status) { $l.hide(); })
          .bind('ajax:error',      function(event, xhr, status, error)
             { /* ToDo: Create an error message sometime here */ });
@@ -231,7 +223,7 @@ displayTags = function($tagContainer, tagList, noLink) {
     
     // Run an empty and duplication check on the tag and add it to the array
     // if it passes.
-    if($.trim(tagList) != '') {
+    if(sanitize(tagList) != '') {
       if($.inArray(tagList, tempArr) == -1) tempArr.push(tagList);
     }
     tagList = tempArr;
@@ -314,6 +306,8 @@ isDuplicateTag = function(tag, tagList) {
   return true;
 }
 
+clearTagList = function($tagContainer) { $tagContainer.empty(); }
+
 /***************************************************************
  * Other Functions
  ***************************************************************/
@@ -351,7 +345,7 @@ emoticon_clicked = function($container) {
   $('#selected-id').val(id);
   $('#selected-emoticon').text(emoticon);
   $('#selected-note').text(note);
-  displayTags($('#tag-list'), tag_list);
+  displayTags($('#tag-list'), tag_list, true);
   update_recent_emotes(id);
   
   if($('#emoticon-display').is(':hidden')) {
@@ -369,14 +363,7 @@ refreshZeroClipboard = function() {
   });
 }
 
-new_emote_add_tag = function ($input, $tagList) {
-  tag = $.trim($input.val().toLowerCase());
-  $input.val('');
-  
-  $input.parent().children('span').hide();
-  displayTags($tagList, tag);
-  
-}
+
 
 update_recent_emotes = function(id) {
   $.post('/emotes/record_recent', { id: id });
@@ -390,7 +377,7 @@ add_to_favorites = function(id) {
   $.post('/emotes/record_favorite', { id: id });
 }
 
-
+sanitize = function(string) { return $.trim(string.toLowerCase()); }
 currentSort = function() { return $('#sort-list .active').text(); }
 isObjectType = function(variable, type) {
   // Handle the shortcut words
@@ -401,6 +388,9 @@ isObjectType = function(variable, type) {
     case 'number':
     case 'integer':
       type = '[object Number]';
+      break;
+    case 'string':
+      type = '[object String]';
       break;
     case 'object':
       type = '[object Object]';
