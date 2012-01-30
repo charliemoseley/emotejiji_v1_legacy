@@ -18,6 +18,16 @@
 // a user is not logged in is not rendered… but that might be issue with caching? Not sure.
 
 jQuery.fn.exists = function() { return this.length > 0; }
+jQuery.fn.focusNextInputField = function() {
+    return this.each(function() {
+        var fields = $(this).parents('form:eq(0),body').find('button,input,textarea,select');
+        var index = fields.index( this );
+        if ( index > -1 && ( index + 1 ) < fields.length ) {
+            fields.eq( index + 1 ).focus();
+        }
+        return false;
+    });
+};
 $(document).ready(function() {
   $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)); });
   $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
@@ -25,7 +35,14 @@ $(document).ready(function() {
   setup_forms();
   setup_new_emote_form();
   
-  $('#search').keyup(function(event) {  if(event.keyCode == 13) { tag_search($(this).val()); } });
+  $('#search').keyup(function(event) {  if(event.keyCode == 13) { console.log('enter'); tag_search($(this).val()); } });
+  $('#search').autocomplete('option', 'minLength', 1);
+  $('#search').bind('autocompleteselect', function(event, ui) {
+    console.log(ui.item.value);
+    tag_search(ui.item.value);
+    event.preventDefault();
+  });
+  
   $('#btn-search').click(function()  { tag_search($('#search').val()); });
   
   // Q? Wow, hackity hack.  Is there any way to bind this to the rails ajax:beforeSend so that
@@ -296,19 +313,36 @@ setup_new_emote_form = function() {
   var $newEmoteAutoComplete = $('#new_emote_tags_input');
   var newEmoteAutoCompleteDefaultValue = $newEmoteAutoComplete.val();
   var $newEmoteTagList = $('#new-emote-tag-list');
+  var $newEmoteSubmit = $('#new-emote-submit');
   
   // A custom enter handler for this form due to the auto complete input field
   $('#new_emote').bind('keypress', function(event) {
-    if(event.keyCode == 13 && event.srcElement.id == $newEmoteAutoComplete.attr('id')) {
-      if($newEmoteAutoComplete.val() != newEmoteAutoCompleteDefaultValue && $newEmoteAutoComplete.val() != '') {
-        console.log(event.keyCode);
-        // Close out the auto complete form if it didnt go away by itself
-        $('.ui-autocomplete').hide();
-        new_emote_add_tag($newEmoteAutoComplete, $newEmoteTagList);
+    // First check if enter has been hit
+    if(event.keyCode == 13) {
+      // If it has been, determine the form element where enter was hit
+      // Current we're checking for the autocomplete tag field and that it's not blank
+      if(event.srcElement.id == $newEmoteAutoComplete.attr('id') && $newEmoteAutoComplete.val() != '') {
+        // Since we already know the input isnt empty, we check now if that value isnt the default one
+        if($newEmoteAutoComplete.val() != newEmoteAutoCompleteDefaultValue) {
+          // Close out the auto complete form if it didnt go away by itself
+          $('.ui-autocomplete').hide();
+          new_emote_add_tag($newEmoteAutoComplete, $newEmoteTagList);
+        }
+        return false;
+      // If the input that enter was hit was submit, then process the form
+      } else if(event.srcElement.id == $newEmoteSubmit.attr('id')) {
+        // Q? I cant seem to use the submit function here because though
+        // the alert box check triggers, the form still submits… maybe because
+        // of submit() running some custom event that is cancelled out by the
+        // one on $('#new_emote').bind(event, function() { event.preventDefault() } ?
+        // A good stack overflow question.
+        // $(this).submit();
+        $newEmoteSubmit.click();
+      // Otherwise progress to the next input
+      } else {
+        $('#'+event.srcElement.id).focusNextInputField();
+        return false;
       }
-      return false;
-    } else {
-      return true;
     }
   });
   // Handles the selection of a tag when Enter is pressed on the autocomplete list
@@ -337,7 +371,7 @@ setup_new_emote_form = function() {
       // ToDo: Uh… alert boxes are ghetto.  Please turn this into a real error xD.
       alert('You need to put a value into the emoticon text box.');
       event.preventDefault();
-      return;
+      return false;
     }
     
     // Check if the default value is set for the tagline and clear it out if it is
