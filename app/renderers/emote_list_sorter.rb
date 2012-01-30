@@ -34,7 +34,7 @@ class EmoteListSorter
           unless @position + oemote.width >  @list_length
             # If so, add it to the grid, remove it from the overflow
             @return.push oemote
-            @overflow.delete_at(index)
+            @overflow.delete_at index
             
             # Update the position and do a position check
             @position = @position + oemote.width
@@ -57,6 +57,11 @@ class EmoteListSorter
       else
         @overflow.push emote
       end
+    end
+    
+    # Whatever is left over, just push at the end
+    @overflow.each do |emote|
+      @return.push emote
     end
   end
 end

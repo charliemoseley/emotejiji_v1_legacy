@@ -196,47 +196,49 @@ class EmotesController < ApplicationController
   
   def tag_search
     @display_type = 'search'
-    
-    tags = params[:tags]
     @sort = params[:sort]
+    
+    tag_list = []
+    tag_list = params[:tag_list] unless params[:tag_list].nil?
+    tag = params[:tag]
     json = { 'status' => '', 'view' => ''}
     
-    # Check first if we even have any tags being submitted
-    unless tags.nil?
-      # If we do have tags, we handle all the searching
-      new_tag = tags.first.downcase
+    tag.downcase! rescue nil
+    tag_list << tag unless tag.nil?
+    
+    # Check if we are searching on anything at all
+    if tag_list.length != 0
       
-      # Run a query against the newest tag to determine if it is even in the database
-      tag_from_db = Tag.where :name => new_tag
-      if new_tag.length == 0 || !tag_from_db.empty?
-        # If the tag exists, attempt to find emotes that fit all the tags submitted
-        emotes = Emote.tagged_with(tags)
-        
-        # Q?: This doesnt seem right.  We dont want our SQL to ever grab duplicates?
-        emotes.uniq!
-        
-        case @sort
-        when 'newest'
-          @emotes = emotes.sort_by {|emote| emote.id }
-          @emotes.reverse!
-        when 'random'
-          @emotes = emotes.sort_by { rand }
-        when 'popular'
-          @emotes = emotes.sort_by {|emote| emote.popularity }
-          @emotes.reverse!
+      # If we are, see if we were submitted a new tag to search on
+      # and check to see if that tag exists in the database
+      unless tag.nil?
+        if Tag.where(:name => tag).empty?
+          json[:status] = 'invalid_tag'
+          render :json => json
+          return
         end
-        
-        # Updated the return with wheter results where found and with the view
-        if(@emotes.count >= 1)
-          json[:status] = 'valid_results'
-        else
-          json[:status] = 'no_results'
-        end
-        json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes, :sort => @sort }, :layout => false
-      else
-        # Otherwise the newest submitted tag doesn't exist in our database
-        json[:status] = 'invalid_tag'
       end
+      
+      # Since tags are good, lets go fetch emotes with those tags
+      emotes = Emote.tagged_with(tag_list)
+      # Q?: This doesnt seem right.  We dont want our SQL to ever grab duplicates?
+      emotes.uniq!
+      
+      # Process the order to display the emotes via the sort method
+      case @sort
+      when 'newest'
+        @emotes = emotes.sort_by {|emote| emote.id }
+        @emotes.reverse!
+      when 'random'
+        @emotes = emotes.sort_by { rand }
+      when 'popular'
+        @emotes = emotes.sort_by {|emote| emote.popularity }
+        @emotes.reverse!
+      end
+      
+      # Ship back the results
+      json[:status] = @emotes.count >= 1 ? 'valid_results' : 'no_results'
+      json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes, :sort => @sort }, :layout => false
     else
       # Otherwise we just return the full list again
       @emotes = Emote.all
@@ -245,6 +247,7 @@ class EmotesController < ApplicationController
       json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes, :sort => @sort }, :layout => false
     end
     
+    # Finally render the view back out
     render :json => json
   end
   

@@ -12,6 +12,8 @@ class Emote < ActiveRecord::Base
   
   acts_as_taggable_on :tags
   
+  default_scope order('created_at DESC')
+  
   #validates :text, :uniqueness => true
   #validates :text, :presence => true
   

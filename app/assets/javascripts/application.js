@@ -28,7 +28,7 @@ jQuery.fn.focusNextInputField = function() {
         return false;
     });
 };
-$(document).ready(function() {
+$(document).ready(function() {  
   $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)); });
   $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
   setup_links();
@@ -238,32 +238,44 @@ display_tags = function($tagContainer, tagList, noLink) {
   });
 }
 
+
+/**
+ *  @description A simple function that determines whether a given tag is in a tag list
+ */
+isDuplicateTag = function(tag, tagList) {
+  if(!isObjectType(tagList, 'array')) tagList = buildTagList(tagList);
+  if( $.inArray(tag, tagList) == -1 ) return false;
+  return true;
+}
+
+/**
+ *  @description A simple function to build a taglist from a jQuery object
+ */
+buildTagList = function($tagContainer) {
+  var tagList = [];
+  
+  $tagContainer.find('a').each(function() {
+    tagList.push($(this).text());
+  });
+  return tagList;
+}
+
 // ToDo: Clean up this and really tighten up the selectors (heck, abstract it out better too)
 tag_search = function(tag, sort) {
   if(sort == null) sort = "newest";
+  var tagList;
   
-  $search = $('#search')
+  // Build up the tag list and see if we even search
+  tagList = buildTagList($('#search-tags'));
+  if(isDuplicateTag(tag, tagList)) return false;
+  
   $('#loading').show();
-  
-  // Build up a list of existing tags
-  tags = [];
-  $('#search-tags li').each(function() {
-    tags.unshift( $(this).text() );
-  });
-  // Get the tag value from the search bar
-  tags.unshift(tag);
+  $search = $('#search');
   
   error = false;
-  add_tag_to_tag_list = false;
-  $.post('/emotes/search', { tags: tags, sort: sort }, function(data) {
+  $.post('/emotes/search', { tag: tag, tag_list: tagList, sort: sort }, function(data) {
+    console.log(data.status);
     switch(data.status) {
-      case 'valid_results':
-      case 'no_results':
-      case 'reset_results':
-      case 'no_tag':
-        $('#content').html(data.view);
-        if(tag.length != 0) add_tag_to_tag_list = true;
-      break;
       case 'invalid_tag':
         $search.attr('disabled', 'disabled');
         $search.attr('style', 'background-color: red; color: #FFFFFF;');
@@ -275,9 +287,14 @@ tag_search = function(tag, sort) {
         });
         error = true;
       break;
-    }
-    if(add_tag_to_tag_list == true) {
-      $('#search-tags').prepend('<li><a href="#">' + tag + '</a></li>');
+      case 'valid_results':
+      case 'no_results':
+      case 'reset_results':
+      case 'no_tag':
+        tagList.push(tag);
+        $('#content').html(data.view);
+        if(tag.length != 0) display_tags($('#search-tags'), tagList);
+      break;
     }
     $('#loading').hide();
     // Sometimes autocomplete doesnt disappear if you type in the whole word and hit
@@ -491,4 +508,23 @@ add_to_favorites = function(id) {
 
 clear_search_tags = function() {
   $('#search-tags li').remove();
+}
+
+isObjectType = function(variable, type) {
+  // Handle the shortcut words
+  switch (type) {
+    case 'array':
+      type = '[object Array]';
+      break;
+    case 'number':
+    case 'integer':
+      type = '[object Number]';
+      break;
+    case 'object':
+      type = '[object Object]';
+      break;
+  }
+  
+  if(Object.prototype.toString.call(variable) === type) return true;
+  return false;
 }
