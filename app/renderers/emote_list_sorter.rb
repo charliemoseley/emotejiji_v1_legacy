@@ -1,3 +1,6 @@
+# This class takes a list of emoticons and makes sure they fill a grid of
+# x length nicely while still attempting to best retain the order the
+# emoticons are supposed to be rendered in.
 class EmoteListSorter
   attr_accessor :emote_list, :list_length
   
