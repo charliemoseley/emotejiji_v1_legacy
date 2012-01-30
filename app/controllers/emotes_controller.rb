@@ -38,6 +38,7 @@ class EmotesController < ApplicationController
     @emote = Emote.new(params[:emote])
     @emote.owner_id = current_user.id
     @emote.text.strip!
+    @emote.tag_list
     current_user.tag(@emote, :with => @emote.tag_list, :on => :tags)
     
     # ToDo: Make the database enforce uniquness + Pretty up the error page on new emotes
@@ -50,7 +51,7 @@ class EmotesController < ApplicationController
   
   def update
     @emote = Emote.find(params[:id])
-    @emote.tag_list.add(params[:emote][:tag_list])
+    @emote.tag_list.add(params[:emote][:tag_list].downcase)
     # Update the popularity value by 2
     @emote.popularity = @emote.popularity + 1
     
