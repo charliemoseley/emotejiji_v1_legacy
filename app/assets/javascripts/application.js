@@ -474,7 +474,7 @@ refresh_tag_list = function(tag_list) {
 }
 
 update_recent_emotes = function(id) {
-  $.post('/emotes/record_recent', { id: id } });
+  $.post('/emotes/record_recent', { id: id });
 }
 
 current_emoticon_id = function() {
@@ -482,7 +482,7 @@ current_emoticon_id = function() {
 }
 
 add_to_favorites = function(id) {
-  $.post('/emotes/record_favorite', { id: id } });
+  $.post('/emotes/record_favorite', { id: id });
 }
 
 
