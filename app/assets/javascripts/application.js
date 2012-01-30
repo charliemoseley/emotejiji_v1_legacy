@@ -184,7 +184,7 @@ display_tags = function($tagContainer, tagList, noLink) {
   
   // Check if tagList was passed in a string and build an
   // array for it if it was.
-  if(typeof(tagList) === 'string') {
+  if(isObjectType(tagList, 'string')) {
     $tagContainer.find('a').each(function() {
       tempArr.push($(this).text());
     });
@@ -196,7 +196,6 @@ display_tags = function($tagContainer, tagList, noLink) {
     }
     tagList = tempArr;
   }
-  
   $tagContainer.empty();
   $.each(tagList, function(index, value) {
     if(noLink) { 
@@ -425,7 +424,7 @@ emoticon_clicked = function($container) {
   $('#selected-id').val(id);
   $('#selected-emoticon').text(emoticon);
   $('#selected-note').text(note);
-  refresh_tag_list(tag_list);
+  display_tags($('#tag-list'), tag_list);
   update_recent_emotes(id);
   
   if($('#emoticon-display').is(':hidden')) {
@@ -450,15 +449,6 @@ new_emote_add_tag = function ($input, $tagList) {
   $input.parent().children('span').hide();
   display_tags($tagList, tag);
   
-}
-
-refresh_tag_list = function(tag_list) {
-  var $container;
-  $container = $('#tag-list');
-  $container.empty();
-  $.each(tag_list, function(index, value) {
-    $container.append('<li><a>' + value + '</a></li>');
-  });
 }
 
 update_recent_emotes = function(id) {
