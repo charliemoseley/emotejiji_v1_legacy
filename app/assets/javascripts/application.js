@@ -87,6 +87,11 @@ $(document).ready(function() {
   if($('#notifications').exists()) {
     $('#notifications').delay(1750).slideUp();
   }
+  
+  $('#btn-copy-to-clipboard').zclip({
+    path: 'ZeroClipboard.swf',
+    copy: $('#selected-emoticon').text()
+  });
 });
 
 change_sort = function($selected) {
