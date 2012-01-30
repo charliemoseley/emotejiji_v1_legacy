@@ -34,7 +34,8 @@ body {
 a { text-decoration: none; color: #5C5C5C; cursor: pointer; }
 a:visited { color: #5C5C5C; }
 a:hover { color: #0099FF; text-decoration: none; }
-a.no-link { color: #CCCCCC; cursor: default; }
+a.no-link { color: #5C5C5C; cursor: default !important; }
+a.inactive { color: #CCC; cursor: default; }
 
 ul { list-style: none; margin: 0; padding: 0; }
 label { cursor: default; }
@@ -115,6 +116,15 @@ nav.global ul li a {
   line-height: 35px;
   padding: 0 5px; }
 
+/*******************************************************************
+ * Header Styles
+ *******************************************************************/
+ 
+footer {
+  color: #CCC;
+  text-align: right;
+}
+
 /**********
  * General Form Styles
  ***********/
@@ -123,7 +133,8 @@ input[type=text].square {
   padding: 0px 8px;
   border: none;
   background: #F6F6F6;
-  color: #CCCCCC; 
+  color: #CCCCCC;
+  text-align: center;
 }
 
 ul.tags { 
@@ -152,8 +163,20 @@ ul.tags a:before {
   border-width: 9px 9px 9px 0;
 }
 ul.tags a:hover { color: #FFFFFF; background: #990000;}
-ul.tags a:hover:before { 
-  border-color: transparent #990000 transparent transparent; 
+ul.tags a:hover:before { border-color: transparent #990000 transparent transparent; }
+ul.tags a.no-link:hover { color: #FFFFFF; background: #66C2FF;}
+ul.tags a.no-link:hover:before { border-color: transparent #66C2FF transparent transparent; }
+
+input.button {
+  background: #F6F6F6;
+  border: none;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  color: #5C5C5C;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  text-align: center;
 }
 
 /**********
@@ -161,7 +184,8 @@ ul.tags a:hover:before {
  ***********/
 #search-tag { 
   margin-top: 10px; 
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
+  height: 49px;
   text-align: center;
 }
 #search-tag input {
@@ -169,8 +193,6 @@ ul.tags a:hover:before {
   text-align: center;
   margin-bottom: 1px;
 }
-
-
 
 /**********
  * Emoticon List Styles
@@ -246,4 +268,73 @@ ul.tags a:hover:before {
 .results-info {
   color: #CCCCCC;
   margin-left: 10px;
+}
+
+/**********
+ * Emoticon Display Styles
+ ***********/
+#emoticon-display {
+  display: none;
+  margin-top: 25px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+#selected-note {
+  margin: 0;
+  color: #CCC;
+  font-family: Times;
+  font-style: italic;
+}
+
+h1#selected-emoticon {
+  margin: 2px 0 15px 0;
+  height: 51px; 
+  line-height: 51px;
+  font-size: 40px;
+}
+
+#add_tags {
+  position: relative;
+  left: -3px;
+  margin-top: 5px;
+  width: 294px;
+}
+
+#emoticon-display input {
+  margin-right: 5px;
+}
+#emoticon-display input.button {
+  width: 150px;
+}
+
+
+/**********
+ * Misc Display Styles
+ ***********/
+#loading {
+  display: none;
+  position: absolute;
+  left: -6px;
+  top: 0;
+}
+
+#temporary-profile {
+  margin: 30px auto 0 auto;
+  width: 250px;
+  background: whiteSmoke;
+  padding: 7px 10px; 
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+
+#temporary-profile img {
+    border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+}
+
+#temporary-profile .info {
+  vertical-align: middle; padding-left: 8px;
 }

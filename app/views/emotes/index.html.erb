@@ -3,31 +3,32 @@
      :id => 'search', :value => "search with tags", :autocomplete => "off", :class => 'square' %>
   <!--<input id="btn-search" type="button" value=""/>-->
   
-  <ul id="search-tags" class="tags clearfix"><li><a>fun</a></li><li><a>animal</a></li><li><a>stuff</a></li></ul>
+  <ul id="search-tags" class="tags clearfix"></ul>
 </section>
 
-<section id="emoticon-display" style="height: 180px; display: none;">
-  <p id="selected-note"></p>
-  <h1 id="selected-emoticon" style="height: 51px; line-height: 51px;"></h1>
-  <input id="btn-copy-to-clipboard" type="button" value="Copy to Clipboard" />
+<section id="emoticon-display" class="container" style="height: 180px;">
+  <p id="selected-note">a friend reassuring another over something dumb</p>
+  <h1 id="selected-emoticon">(*≧︶≦))(￣▽￣* )ゞ</h1>
+  <input id="btn-copy-to-clipboard" type="button" value="Copy to Clipboard" class="button left" />
   <!-- <input type="button" value="Tweet" /> -->
-  <input id="btn-add-to-favorites" type="button" value="Add to Favorites" />
+  <input id="btn-add-to-favorites" type="button" value="Add to Favorites" class="button"  />
   
   <br />
   
   <% if is_logged_in? %>
     <%= form_for(@emote, :remote => true) do |f| %>
       <%= f.hidden_field :id, :value => "0", :id => "selected-id" %>
-      <%= f.autocomplete_field :tag_list, autocomplete_tag_name_emotes_path, :value => "Add a New Tag to this Emoticon", :id => 'add_tags', :class => 'rounded' %>
-      <%= f.submit :value => "", :class => 'btn-add-tag' %>
+      <%= f.autocomplete_field :tag_list, autocomplete_tag_name_emotes_path, :value => "add tags to this emoticon", :id => 'add_tags', :class => 'square' %>
+      <!-- <%= f.submit :value => "", :class => 'btn-add-tag' %> -->
     <% end %>
   <% end %>
   
-  <ul id="tag-list"></ul>
+  <ul id="tag-list" class="tags clearfix">
+  </ul>
 </section>
 
 <div class="container container-no-pad ">
-  <%= image_tag "ajax-loading.gif", :id => "loading", :style => "display: none;" %>
+  <%= image_tag "ajax-loading.gif", :id => "loading" %>
   <section id="content">
     <%= render 'emote_list' %>
   </section>
