@@ -282,7 +282,7 @@ input#search {
   right: -1px; /* Firefox CSS rendering fix */
 }
 
-#sort-list li.active {  z-index: 10; }
+#sort-list li.active {  z-index: 3; }
 
 #emoticon-list-navigation div.cover { 
   position: absolute;
@@ -291,7 +291,7 @@ input#search {
   width: 5px;
   height: 15px;
   background: #FFFFFF;
-  z-index: 15;
+  z-index: 3;
 }
 
 /**********

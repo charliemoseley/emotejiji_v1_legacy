@@ -229,5 +229,5 @@ class EmotesController < ApplicationController
   
   def is_signed_in?
     redirect_if_not_logged_in
-  end
+  end  
 end
