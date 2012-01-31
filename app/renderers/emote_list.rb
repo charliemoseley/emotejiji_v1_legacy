@@ -29,16 +29,18 @@ class EmoteList
   
   def order
     case @sort_type
-    when :newest || :disabled
-      # Due to the default scoping of the emote's model, the emote_list will
-      # always already be sorted this way
-      @emotes
     when :random
       @emotes.sort_by { rand }
     when :popular
       @emotes = emotes.sort_by {|emote| emote.popularity }
       @emotes.reverse!
+    when :newest
+      # Due to the default scoping of the emote's model, the emote_list will
+      # always already be sorted this way
+      @emotes
     end
+    # Return emotes again just in case a case slips through not addressed above
+    @emotes
   end
   
   

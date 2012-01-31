@@ -52,16 +52,16 @@
             <li><a class="inactive" href="#">profile</a></li>
           <% end %>
           <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+          <li><%= link_to "all", root_path, :remote => determine_remote_status, :id => 'link-home' %></li>
           <% if is_logged_in? %>
-            <li><%= link_to "add", new_emote_path %></li>
-            <li><%= link_to "recent", recent_path, :remote => determine_remote_status, :id => 'link-recent' %></li>
             <li><%= link_to "favorites", favorites_path, :remote => determine_remote_status, :id => 'link-favorites' %></li>
+            <li><%= link_to "recent", recent_path, :remote => determine_remote_status, :id => 'link-recent' %></li>
+            <li><%= link_to "add", new_emote_path %></li>
           <% else %>
-            <li><a class="inactive" href="#">add</a></li>
-            <li><a class="inactive" href="#">recent</a></li>
             <li><a class="inactive" href="#">favorites</a></li>
+            <li><a class="inactive" href="#">recent</a></li>
+            <li><a class="inactive" href="#">add</a></li>
           <% end %>
-           <li><%= link_to "all", root_path, :remote => determine_remote_status, :id => 'link-home' %></li>
         </ul>
       </nav>
     </div>

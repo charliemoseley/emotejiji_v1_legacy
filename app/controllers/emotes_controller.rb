@@ -93,14 +93,12 @@ class EmotesController < ApplicationController
     RecentEmote.uncached do
       recent_emotes = RecentEmote.where(:user_id => current_user.id).limit(30)
       
-      temp_emotes = []
+      @emotes = []
       recent_emotes.each do |re|
-        temp_emotes << Emote.find(re.emote_id)
-        @emotes = EmoteList.sort_now temp_emotes, :sort_type => @sort
+        @emotes  << Emote.find(re.emote_id, :include => [:tags])
       end
     end
-    logger.info '***********************'
-    logger.info @emotes.to_s
+    @emotes = EmoteList.sort_now @emotes, :sort_type => @sort
     
     # Q? Most elegant way to handle this?
     respond_to do |format|
@@ -122,12 +120,12 @@ class EmotesController < ApplicationController
     FavoriteEmote.uncached do
       favorite_emotes = FavoriteEmote.where(:user_id => current_user.id).limit(15)
       
-      temp_emotes = []
+      @emotes = []
       favorite_emotes.each do |fe|
-        temp_emotes << Emote.find(fe.emote_id)
-        @emotes = EmoteList.sort_now temp_emotes, :sort_type => @sort
+        @emotes  << Emote.find(fe.emote_id, :include => [:tags])
       end
     end
+    @emotes = EmoteList.sort_now @emotes, :sort_type => @sort
     
     respond_to do |format|
       format.html do
