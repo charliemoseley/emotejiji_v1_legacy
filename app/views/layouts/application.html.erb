@@ -34,13 +34,14 @@
 </head>
 
 <body>
-  <header>
-    <div class="container clearfix">
-      <div id="logo">
+  <div id="header-hud" class="hud">
+    <header class="container relative">
+      <a id="logo">
         <h2>emotejiji</h2>
         <h3>Σ(゜д゜;)</h3>
         <h4>beta</h4>
-      </div>
+      </a>
+      
       <nav class="global">
         <ul>
           <li><%= link_to "about", about_path %></li>
@@ -64,12 +65,11 @@
           <% end %>
         </ul>
       </nav>
-    </div>
-  </header>
-  
-  <div class="min-height">
-    <%= yield %>
+    </header>
+    <div class="header-bg"></div>
   </div>
+  
+  <%= yield %>
   
   <footer class="container">
     a project by <%= link_to 'robopengu.in', 'http://robopengu.in' %> | emotejiji 2010 - 2011
@@ -78,7 +78,7 @@
   <% flash.each do |key, value| %>
     <div id="notifications" class="flash <%= key %>"><%= value %></div>
   <% end %>
-
+  
   <!-- JavaScript at the bottom for fast page loading -->
   <%= javascript_include_tag "application" %>
   <!-- end scripts -->

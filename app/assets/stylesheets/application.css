@@ -26,6 +26,7 @@
 *:first-child+html .clearfix { zoom: 1; } /* IE7 */
 
 body { 
+  padding-top: 104px;
   font: 12px "Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
   color: #5C5C5C;
   background: #FFFFFF;
@@ -41,30 +42,51 @@ ul { list-style: none; margin: 0; padding: 0; }
 label { cursor: default; }
 
 .container {
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
   width: 630px;
-  padding: 0 5px;
   clear: both;
-  position: relative;
 }
-.container-no-pad { width: 640px; padding: 0 !important; }
+.container-no-pad { width: 640px !important; }
+.relative { position: relative; }
+
+.hud {
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+#header-hud { top: 0px; }
+#list-info-actions-hud { top: 35px; background: #FFF; }
 
 /*******************************************************************
  * Header Styles
  *******************************************************************/
+#header-hud .container { z-index: 20; }
+
 header {
-  width: 100%;
-  background: #F0F0F0;
-  border-top: 3px solid #4BC5C5;
+  margin-top: 3px;
   height: 35px;
 }
 
+.header-bg {
+  height: 35px;
+  width: 100%;
+  background: #F0F0F0;
+  border-top: 3px solid #4BC5C5;
+  position: absolute;
+  top: 0;
+}
+
 #logo {
+  height: 35px;
+  display: block;
   position: absolute;
   top: -3px; left: 0;
   width: 190px;
   border-top: 3px solid #FF9900;
 }
+
+#logo:hover { color: #5C5C5C; }
 
 #logo h2, #logo h3, #logo h4 {
  font-weight: normal;
@@ -188,6 +210,7 @@ input.button {
   margin-bottom: 10px;
   height: 49px;
   text-align: center;
+  top: 35px;
 }
 input#search {
   width: 300px;

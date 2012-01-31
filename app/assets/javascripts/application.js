@@ -352,7 +352,8 @@ emoticon_clicked = function($container) {
   update_recent_emotes(id);
   
   if($('#emoticon-display').is(':hidden')) {
-    $('#emoticon-display').slideDown(function() { refreshZeroClipboard(); });
+    $('body').animate({ paddingTop: 340 }, 500, 'swing', function() { console.log('body slide'); });
+    $('#emoticon-display').slideDown(500, 'swing', function() { refreshZeroClipboard(); });
   } else {
     refreshZeroClipboard();
   }
