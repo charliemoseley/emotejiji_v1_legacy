@@ -189,11 +189,15 @@ input.button {
   height: 49px;
   text-align: center;
 }
-#search-tag input {
+input#search {
   width: 300px;
   text-align: center;
   margin-bottom: 1px;
+  background-image: url('/assets/icon-search-small.png');
+  background-repeat: no-repeat;
+  background-position: 7px 6px;
 }
+
 
 /**********
  * Emoticon List Styles
@@ -300,6 +304,9 @@ h1#selected-emoticon {
   left: -3px;
   margin-top: 5px;
   width: 294px;
+  background-image: url('/assets/icon-add-tag.png');
+  background-repeat: no-repeat;
+  background-position: 8px 6px;
 }
 
 #emoticon-display input {
@@ -308,6 +315,9 @@ h1#selected-emoticon {
 #emoticon-display input.button {
   width: 150px;
 }
+
+#tag-list a { background-color: #DA9F5D; }
+#tag-list a:before { border-color: transparent #DA9F5D transparent transparent; }
 
 /*******************************************************************
  * New Emoticon
