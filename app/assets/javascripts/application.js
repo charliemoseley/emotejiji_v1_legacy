@@ -245,6 +245,7 @@ tagSearch = function(tag, sort) {
   if(sort == null) sort = currentSort();
   var tagList;
   
+  tag = sanitize(tag);
   // Build up the tag list and see if we even search
   tagList = buildTagList($('#search-tags'));
   if(isDuplicateTag(tag, tagList)) return false;
