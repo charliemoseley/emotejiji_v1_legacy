@@ -39,6 +39,8 @@ $(document).ready(function() {
   
   // ToDo: Clean this guy up
   $('#sort-list li').live('click', function() {
+    console.log('trigger');
+    if($(this).children('a').hasClass('no-link')) { console.log('false'); return; }
     // ToDo: Function order is important here as change_sort needs to fire off
     // before animateSortList.  Probably worth updating change_sort so
     // it fires off animateSortList after its complete.

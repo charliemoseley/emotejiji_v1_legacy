@@ -30,9 +30,9 @@ class EmoteList
   def order
     case @sort_type
     when :random
-      @emotes.sort_by { rand }
+      @emotes.sort_by! { rand }
     when :popular
-      @emotes = emotes.sort_by! {|emote| emote.popularity }
+      @emotes.sort_by! {|emote| emote.popularity }
       @emotes.reverse!
     when :newest
       # Due to the default scoping of the emote's model, the emote_list will
