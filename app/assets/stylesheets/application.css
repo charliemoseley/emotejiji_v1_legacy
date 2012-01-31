@@ -121,6 +121,7 @@ nav.global ul li a {
  *******************************************************************/
  
 footer {
+  margin-top: 30px !important;
   color: #CCC;
   text-align: right;
 }
@@ -306,6 +307,54 @@ h1#selected-emoticon {
 }
 #emoticon-display input.button {
   width: 150px;
+}
+
+/*******************************************************************
+ * New Emoticon
+ *******************************************************************/
+#new-emote { margin-top: 50px; }
+#new-emote label { color: #999; }
+#new-emote input[type=text] { text-align: center; width: 100%; }
+
+/* Left Column Styles */
+#new-emote .col-left { width: 50%; padding-right: 15%; float: left; }
+#new-emote .col-left .field { margin-bottom: 20px; }
+#new-emote .col-left label { margin-left: 10px; }
+#new-emote .col-left input[type=text] { margin-top: 5px; }
+
+/* Right Column Styles */
+#new-emote .col-right { text-align: right; float: left; width: 35%; }
+#new-emote .col-right label { margin-right: 10px; }
+
+#new_emote_tags_input {
+  width: 100%;  
+  margin: 0; padding: 0; 
+  position: absolute; left: -1px; top: -1px;
+}
+#new-emote .tag-background {
+  padding-top: 34px;
+  width: 100%;
+  background: #EEE;
+  text-align: center;
+  min-height: 66px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+}
+#new-emote .tag-background span {
+  color: #CCC;
+  position: relative;
+  top: 24px;
+}
+#new-emote input[type='submit'] {
+  margin-top: 20px;
+  width: 100%;
+  background-color: #EB8014;
+  color: #FFF;
+  border: none;
 }
 
 
