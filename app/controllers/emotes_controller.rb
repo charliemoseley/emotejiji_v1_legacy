@@ -99,6 +99,8 @@ class EmotesController < ApplicationController
         @emotes = EmoteList.sort_now temp_emotes, :sort_type => @sort
       end
     end
+    logger.info '***********************'
+    logger.info @emotes.to_s
     
     # Q? Most elegant way to handle this?
     respond_to do |format|
