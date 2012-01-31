@@ -34,7 +34,9 @@ class Emote < ActiveRecord::Base
   
   # Formats the emotes tag list as a javascript array to be eval()'d
   def tag_list_js
-    formatted = self.tags.map { |tag| "'" + tag.name + "'" }.join(",")
+    # Take the tag list and put in unique so we dont calculate in the extra tags
+    # from others tagging said emote.
+    formatted = self.tags.uniq.map { |tag| "'" + tag.name + "'" }.join(",")
     "[#{formatted}]"
   end
 end
