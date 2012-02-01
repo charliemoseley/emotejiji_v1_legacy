@@ -1,4 +1,5 @@
 module EmotesHelper
+  include ActsAsTaggableOn::TagsHelper
   
   # Used to determine the sort selector's class
   def sort_status(field)

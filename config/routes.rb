@@ -1,17 +1,20 @@
 Emotejiji::Application.routes.draw do
   # Omniauth routes
-  match "/auth/:provider/callback" => "sessions#create"
-  match "/signout" => "sessions#destroy", :as => :signout
+  match '/auth/:provider/callback' => 'sessions#create'
+  match '/signout' => 'sessions#destroy', :as => :signout
   
+  # Pages Controller
   match '/about' => 'pages#about', :as => :about
   
-  match '/profile' => 'emotes#profile', :as => :profile
-  match '/recent' => "emotes#recent", :as => :recent
-  match '/emotes/record_recent' => 'emotes#record_recent'
-  match '/favorites' => "emotes#favorites", :as => :favorites
-  match '/emotes/record_favorite'  => 'emotes#record_favorite'
+  # Emotes Controller
+  match '/profile'       => 'emotes#profile',   :as => :profile
+  match '/tag-list'      => 'emotes#tag_list',  :as => :tag_list
+  match '/recent'        => 'emotes#recent',    :as => :recent
+  match '/favorites'     => 'emotes#favorites', :as => :favorites
   
-  match '/emotes/search' => "emotes#tag_search"
+  match '/emotes/record_recent'    => 'emotes#record_recent'
+  match '/emotes/record_favorite'  => 'emotes#record_favorite'
+  match '/emotes/search'           => 'emotes#tag_search'
   
   # Autocomplete routes
   resources :emotes do
@@ -66,11 +69,11 @@ Emotejiji::Application.routes.draw do
   #     resources :products
   #   end
 
-  # You can have the root of your site routed with "root"
+  # You can have the root of your site routed with 'root'
   # just remember to delete public/index.html.
   root :to => 'emotes#index'
 
-  # See how all your routes lay out with "rake routes"
+  # See how all your routes lay out with 'rake routes'
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.

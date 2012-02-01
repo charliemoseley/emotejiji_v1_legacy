@@ -83,6 +83,21 @@ class EmotesController < ApplicationController
     end
   end
   
+  def tag_list
+    # ToDo: Currently doesnt render properly when directly loaded from the URL
+    @tags = Emote.tag_counts_on(:tags)
+    
+    respond_to do |format|
+      format.html do
+        if request.xhr?
+         render :tag_list, :layout => false
+        else
+          render :tag_list
+        end
+      end
+    end
+  end
+  
   def recent
     @emote = Emote.first
     @display_type = 'recent'

@@ -39,8 +39,7 @@ $(document).ready(function() {
   
   // ToDo: Clean this guy up
   $('#sort-list li').live('click', function() {
-    console.log('trigger');
-    if($(this).children('a').hasClass('no-link')) { console.log('false'); return; }
+    if($(this).children('a').hasClass('no-link')) { return; }
     // ToDo: Function order is important here as change_sort needs to fire off
     // before animateSortList.  Probably worth updating change_sort so
     // it fires off animateSortList after its complete.
@@ -53,6 +52,11 @@ $(document).ready(function() {
   if($('#notifications').exists()) {
     $('#notifications').delay(1750).slideUp();
   }
+  
+  $('#content').on('click', '#tag-cloud a', function(event) {
+    console.log($(this).text());
+    tagSearch($(this).text());
+  });
 });
 
 /***************************************************************
@@ -76,16 +80,13 @@ setupNewEmoteForm = function() {
       // If it has been, determine the form element where enter was hit
       // Current we're checking for the autocomplete tag field and that it's not blank
       if(event.srcElement.id == $newEmoteAutoComplete.attr('id') && $newEmoteAutoComplete.val() != '') {
-        console.log(1);
         // Since we already know the input isnt empty, we check now if that value isnt the default one
         if($newEmoteAutoComplete.val() != newEmoteAutoCompleteDefaultValue) {
           newEmoteAddTag(sanitize($newEmoteAutoComplete.val()), $newEmoteTagList);
         }
-        console.log(3);
         return false;
       // If the input that enter was hit was submit, then process the form
       } else if(event.srcElement.id == $newEmoteSubmit.attr('id')) {
-        console.log(3);
         // Q? I cant seem to use the submit function here because though
         // the alert box check triggers, the form still submits… maybe because
         // of submit() running some custom event that is cancelled out by the
@@ -95,7 +96,6 @@ setupNewEmoteForm = function() {
         $newEmoteSubmit.click();
       // Otherwise progress to the next input
       } else {
-        console.log(5);
         $('#'+event.srcElement.id).focusNextInputField();
         return false;
       }
@@ -189,12 +189,18 @@ setupRemoteLinks = function() {
   defaultRemoteLink($('#link-recent'));
   defaultRemoteLink($('#link-home'));
   defaultRemoteLink($('#link-profile'));
+  defaultRemoteLink($('#link-tag-list'), function(data) { console.log('custom callback');  $('#content').html(data); });
 }
 
-defaultRemoteLink = function($target) {
+defaultRemoteLink = function($target, customCallback) {
   $target.bind('ajax:beforeSend', function(event, xhr, settings) { $loading.show(); })
-         .bind('ajax:success',    function(event, data, status, xhr) 
-            { clearTagList($('#search-tags')); $('#content').html(data); })
+         .bind('ajax:success',    function(event, data, status, xhr) { 
+            if(customCallback == null) {
+              clearTagList($('#search-tags')); $('#content').html(data);
+            } else {
+              customCallback(data)
+            }
+          })
          .bind('ajax:complete',   function(event, xhr, status) { $loading.hide(); })
          .bind('ajax:error',      function(event, xhr, status, error)
             { /* ToDo: Create an error message sometime here */ });
@@ -353,7 +359,7 @@ emoticon_clicked = function($container) {
   update_recent_emotes(id);
   
   if($('#emoticon-display').is(':hidden')) {
-    $('body').animate({ paddingTop: 320 }, 500, 'swing', function() { console.log('body slide'); });
+    $('body').animate({ paddingTop: 320 }, 500, 'swing');
     $('#emoticon-display').slideDown(500, 'swing', function() { refreshZeroClipboard(); });
   } else {
     refreshZeroClipboard();
@@ -367,8 +373,6 @@ refreshZeroClipboard = function() {
     afterCopy: function() { return; }
   });
 }
-
-
 
 update_recent_emotes = function(id) {
   $.post('/emotes/record_recent', { id: id });
