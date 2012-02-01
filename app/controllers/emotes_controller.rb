@@ -44,7 +44,7 @@ class EmotesController < ApplicationController
   def update
     @emote = Emote.find(params[:id])
     @emote.tag_list.add(params[:emote][:tag_list].downcase)
-    # Update the popularity value by 2
+    # Update the popularity value by 1
     @emote.popularity = @emote.popularity + 1
     
     # Q?: Is this what I really hae to do to achieve ownership tags with act-as-taggable-on?
@@ -170,7 +170,7 @@ class EmotesController < ApplicationController
       emote = Emote.find(params[:id])
       
       # Update the popularity value by 4
-      emote.popularity = emote.popularity + 5
+      emote.popularity = emote.popularity + 4
       emote.save
       
       if favorite_emote.empty?
@@ -191,9 +191,9 @@ class EmotesController < ApplicationController
     json = { 'status' => '', 'view' => ''}
     
     @sort    = params[:sort].nil?     ? :newest : params[:sort].to_sym
-    tag      = params[:tag].nil?      ? ''      : params[:tag]
+    tag      = params[:tag].nil?      ? ''      : params[:tag].downcase.strip
     tag_list = params[:tag_list].nil? ? []      : params[:tag_list] 
-    tag_list << tag.downcase unless tag.empty?
+    tag_list << tag unless tag.empty?
     
     # Check if we are searching on anything at all
     if !tag_list.empty?
