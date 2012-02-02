@@ -86,6 +86,15 @@ $(document).ready(function() {
     $TagCloud.hide();
     $('#btn-toggle-tag-cloud').css('backgroundPositionY', '0px');
   });
+  
+  // Update the text color of forms when they are clicked so it's easier to read
+  $('input[type=text]')
+    .focusin(function(event) { $(this).css('color', '#5C5C5C'); })
+    .focusout(function(event) {
+      if($(this).val() == '') {
+        $(this).css('color', '#CCC');
+      }
+    });
 });
 
 /***************************************************************
