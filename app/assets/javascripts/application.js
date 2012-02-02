@@ -64,6 +64,12 @@ $(document).ready(function() {
   
   
   $('#btn-toggle-tag-cloud').click(function() {
+    if($TagCloud.is(':hidden')) {
+      $(this).css('backgroundPositionY', '-16px');
+    } else {
+      $(this).css('backgroundPositionY', '0px');
+    }
+    
     offset = $('body').scrollTop();
     if($('#emoticon-display').is(':visible')) {
       offset -= (parseInt($('#emoticon-display').css('height').replace(/[^0-9]/g, '')) + 37);
@@ -75,6 +81,7 @@ $(document).ready(function() {
   $TagCloud.children('a').click(function() {
     tagSearch($(this).text());
     $TagCloud.hide();
+    $('#btn-toggle-tag-cloud').css('backgroundPositionY', '0px');
   });
 });
 

@@ -449,6 +449,16 @@ h1#selected-emoticon {
 
 #tag-cloud p { display: none; }
 
+#btn-toggle-tag-cloud { 
+  width: 23px;
+  height: 16px;
+  display: block;
+  background-image: url('/assets/icon-tag-assist.png');
+  background-position-x: 0;
+  background-position-y: 0;
+  background-repeat: no-repeat;
+}
+
 /**********
  * Misc Display Styles
  ***********/

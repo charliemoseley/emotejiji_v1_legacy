@@ -1,8 +1,10 @@
 <div id="list-info-actions-hud" class="hud">
+  
   <section id="search-tag" class="container">
+    <a id="btn-toggle-tag-cloud" style="position: absolute; right: 190px; top: 13px;"></a>
     <%= autocomplete_field_tag 'tag', '', autocomplete_tag_name_emotes_path,
        :id => 'search', :value => "search with tags", :autocomplete => "off", :class => 'square' %>
-    <a id="btn-toggle-tag-cloud" style="font-size: 14px; margin-left:10px;">?</a>
+
     <!--<input id="btn-search" type="button" value=""/>-->
     <ul id="search-tags" class="tags clearfix"></ul>
   </section>
