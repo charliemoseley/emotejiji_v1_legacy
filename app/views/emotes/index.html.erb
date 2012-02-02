@@ -12,8 +12,14 @@
   <section id="emoticon-display" class="container relative" style="height: 180px;">
     <p id="selected-note"></p>
     <h1 id="selected-emoticon"></h1>
-    <input id="btn-copy-to-clipboard" type="button" value="Copy to Clipboard" class="button left" />
-    <input id="btn-add-to-favorites" type="button" value="Add to Favorites" class="button"  />
+    <span class="button">
+      <input id="btn-copy-to-clipboard" type="button" value="Copy to Clipboard" class="button left" />
+      <%= image_tag "icon-check.png", :alt => ' '%>
+    </span>
+    <span class="button" style="position: relative;">
+      <input id="btn-add-to-favorites" type="button" value="Add to Favorites" class="button"  />
+      <%= image_tag "icon-check.png", :alt => ' ' %>
+    </span>
     
     <br />
     

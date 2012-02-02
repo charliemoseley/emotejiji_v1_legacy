@@ -364,6 +364,9 @@ h1#selected-emoticon {
   width: 150px;
 }
 
+span.button { position: relative; }
+span.button img { position: absolute; right: 15px; top: -1px; display: none;}
+
 #tag-list a { background-color: #EBB667; }
 #tag-list a:before { border-color: transparent #EBB667 transparent transparent; }
 

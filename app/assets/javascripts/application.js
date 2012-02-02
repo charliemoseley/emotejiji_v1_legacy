@@ -28,7 +28,10 @@ $(document).ready(function() {
   
   $loading = $('#loading');
   $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)); });
-  $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
+  $('#btn-add-to-favorites').live('click', function() {
+    add_to_favorites(current_emoticon_id());
+    $(this).parent().children('img').show().delay(400).fadeOut('slow');
+  });
   setupRemoteLinks();
   setupEmoteTagAddForm();
   setupNewEmoteForm();
@@ -347,7 +350,6 @@ clearTagList = function($tagContainer) { $tagContainer.empty(); }
 updateTagCloud = function(valid_tags) {
   $tags = $TagCloud.children('a');
   $tags.addClass('active');
-  console.log(valid_tags);
   $tags.each(function() {
     if($.inArray($(this).text(), valid_tags) == -1) {
       $(this).removeClass('active');
@@ -411,11 +413,32 @@ emoticon_clicked = function($container) {
 }
 
 refreshZeroClipboard = function() {
+  // Remove the existing zero clipboards
+  $('.zclip').remove();
+  
+  // Create a new one
   $('#btn-copy-to-clipboard').zclip({
     path: 'ZeroClipboard.swf',
-    copy: function() { return $('#selected-emoticon').text() },
-    afterCopy: function() { return; }
+    copy: function() { return $('#selected-emoticon').text(); },
+    afterCopy: function() {
+      $(this).parent().children('img').show().delay(400).fadeOut('slow');
+    }
   });
+  
+  // Due to the position on my buttons, the jQuery plugin doesnt
+  // seem to handle the positioning correctly, so lets manually
+  // fix it
+  $container = $('.zclip');
+  leftOffset = parseInt($container.css('left').replace(/[^0-9]/g, '')) - 155;
+  topOffset = parseInt($container.css('top').replace(/[^0-9]/g, '')) - 6;
+  $container.css('left', leftOffset);
+  $container.css('top', topOffset);
+  $container.css('zIndex', 11);
+  
+  // The top and left dont seem to kick in unless you somehow
+  // update the state of the container.
+  $parent = $container.parent();
+  $parent.append($container.detach());
 }
 
 update_recent_emotes = function(id) {
