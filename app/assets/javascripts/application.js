@@ -354,7 +354,7 @@ isDuplicateTag = function(tag, tagList) {
   return true;
 }
 
-clearTagList = function($tagContainer) { $tagContainer.empty(); }
+clearTagList = function($tagContainer) { $tagContainer.empty(); $TagCloud.children('a').addClass('active'); }
 
 updateTagCloud = function(valid_tags) {
   $tags = $TagCloud.children('a');
