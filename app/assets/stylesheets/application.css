@@ -16,9 +16,11 @@
 
 /*********************
  * Z-Index Notes
- *
- *
- *
+ * header: 20
+ * tag-search: 15
+ * sort-list: 3
+ * sort-list-cover: 4
+ * tag-cloud 12
  *********************/
 
 
@@ -58,6 +60,7 @@ label { cursor: default; }
   margin-right: auto;
   width: 630px;
   clear: both;
+  position: relative;
 }
 .container-no-pad { width: 640px !important; }
 .relative { position: relative; }
@@ -65,10 +68,9 @@ label { cursor: default; }
 .hud {
   position: fixed;
   width: 100%;
-  z-index: 10;
 }
-#header-hud { top: 0px; }
-#list-info-actions-hud { top: 35px; background: #FFF; }
+#header-hud { top: 0px;  z-index: 20; }
+#list-info-actions-hud { top: 38px; background: #FFF; }
 
 /*******************************************************************
  * Header Styles
@@ -217,12 +219,13 @@ input.button {
 /**********
  * Tag Search Styles
  ***********/
-#search-tag { 
-  margin-top: 10px; 
-  margin-bottom: 10px;
+#search-tag {
+  padding: 7px 0 10px 0;
   height: 49px;
   text-align: center;
-  top: 35px;
+  z-index: 50;
+  background: #FFF;
+  width: 760px;
 }
 input#search {
   width: 300px;
@@ -319,9 +322,15 @@ input#search {
  ***********/
 #emoticon-display {
   display: none;
+  padding-top: 15px;
+  padding-bottom: 10px;
+  background: #FFF;
+  /*
   margin-top: 25px;
   margin-bottom: 10px;
+  */
   text-align: center;
+  z-index: 10;
 }
 
 #selected-note {
@@ -420,7 +429,7 @@ h1#selected-emoticon {
   position: absolute; 
   top: -0px; 
   left: -23px;
-  z-index: 5;
+  z-index: 12;
   display: none;
 }
 

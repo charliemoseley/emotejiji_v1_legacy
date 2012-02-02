@@ -64,6 +64,11 @@ $(document).ready(function() {
   
   
   $('#btn-toggle-tag-cloud').click(function() {
+    offset = $('body').scrollTop();
+    if($('#emoticon-display').is(':visible')) {
+      offset -= (parseInt($('#emoticon-display').css('height').replace(/[^0-9]/g, '')) + 37);
+    }
+    $TagCloud.css('top', offset);
     $TagCloud.toggle();
   });
   
