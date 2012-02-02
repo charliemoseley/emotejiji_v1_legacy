@@ -11,6 +11,18 @@
 /*******************************************************************
  * Site Wide Generic Styles
  *******************************************************************/
+
+
+
+/*********************
+ * Z-Index Notes
+ *
+ *
+ *
+ *********************/
+
+
+
 @import url(http://fonts.googleapis.com/css?family=Lato&text=emotejiji);
 
 /* new clearfix */
@@ -34,7 +46,7 @@ body {
 
 a { text-decoration: none; color: #5C5C5C; cursor: pointer; }
 a:visited { color: #5C5C5C; }
-a:hover { color: #0099FF; text-decoration: none; }
+a:hover { color: #66C2FF; text-decoration: none; }
 a.no-link { color: #5C5C5C; cursor: default !important; }
 a.inactive { color: #CCC; cursor: default; }
 
@@ -394,6 +406,39 @@ h1#selected-emoticon {
   border: none;
 }
 
+/**********
+ * Tag Cloud
+ ***********/
+#tag-cloud {
+  text-align: center; 
+  line-height: 28px; 
+  font-size: 13px; 
+  border: 5px solid #F0F0F0; 
+  padding: 13px 18px; 
+  border-radius: 10px; 
+  background: #FFF; 
+  position: absolute; 
+  top: -0px; 
+  left: -23px;
+  z-index: 5;
+  display: none;
+}
+
+#tag-cloud a { margin: 0 2px; padding: 1px 4px 2px 4px; display: none; }
+#tag-cloud a:hover { color: #FFF; background: #66C2FF; }
+#tag-cloud a.active { display: inline; }
+.css1 { font-size: 1.0em; }
+.css2 { font-size: 1.2em; }
+.css3 { font-size: 1.4em; }
+.css4 { font-size: 1.6em; }
+.css5 { font-size: 1.8em; }
+.css6 { font-size: 2.0em; }
+.css7 { font-size: 2.2em; }
+.css8 { font-size: 2.4em; }
+.css9 { font-size: 2.6em; }
+.css10 { font-size: 2.8em; }
+
+#tag-cloud p { display: none; }
 
 /**********
  * Misc Display Styles

@@ -2,10 +2,14 @@
   <section id="search-tag" class="container">
     <%= autocomplete_field_tag 'tag', '', autocomplete_tag_name_emotes_path,
        :id => 'search', :value => "search with tags", :autocomplete => "off", :class => 'square' %>
+    <a id="btn-toggle-tag-cloud" style="font-size: 14px; margin-left:10px;">?</a>
     <!--<input id="btn-search" type="button" value=""/>-->
     <ul id="search-tags" class="tags clearfix"></ul>
-    <%= @test %>
   </section>
+  
+  <div class="container relative">
+
+  </div>
   
   <section id="emoticon-display" class="container relative" style="height: 180px;">
     <p id="selected-note"></p>
@@ -27,9 +31,15 @@
   </section>
 </div>
 
-<div class="container container-no-pad ">
+<div class="container container-no-pad relative">
   <%= image_tag "ajax-loading.gif", :id => "loading" %>
   <section id="content">
     <%= render 'emote_list' %>
+  </section>
+  <section id="tag-cloud" class="container">
+    <% tag_cloud(@tags, %w(css1 css2 css3 css4 css5 css6 css7 css8 css9 css10)) do |tag, css_class| %>
+      <%= link_to tag.name, '#', :id => tag.name, :class => "#{css_class} active" %>
+    <% end %>
+    <p>oh no! it looks like theres no more tags to filter your search by!</p>
   </section>
 </div>

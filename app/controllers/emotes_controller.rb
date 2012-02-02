@@ -1,12 +1,14 @@
 class EmotesController < ApplicationController
   before_filter :is_signed_in?, :only => [:new, :update, :recent]
   autocomplete :tag, :name
+  helper_method :to_js_array
   
   def index
     # Q? This is a hack so I can use a form helper that automatically has the fields for 
     # updating an emote.  Any more elegant solution?
     @emote = Emote.first
     @display_type = 'all'
+    @tags = Emote.tag_counts_on(:tags)
 
     @sort = params[:sort].nil? ? :newest : params[:sort].to_sym
     @emotes = EmoteList.sort_now Emote.all(:include => [:tags]), :sort_type => @sort
@@ -78,21 +80,6 @@ class EmotesController < ApplicationController
          render :profile, :layout => false
         else
           render :profile
-        end
-      end
-    end
-  end
-  
-  def tag_list
-    # ToDo: Currently doesnt render properly when directly loaded from the URL
-    @tags = Emote.tag_counts_on(:tags)
-    
-    respond_to do |format|
-      format.html do
-        if request.xhr?
-         render :tag_list, :layout => false
-        else
-          render :tag_list
         end
       end
     end
@@ -203,7 +190,7 @@ class EmotesController < ApplicationController
   
   def tag_search
     @display_type = 'search'
-    json = { 'status' => '', 'view' => ''}
+    json = { :status => '', :view => '', :tag_descendants => '' }
     
     @sort    = params[:sort].nil?     ? :newest : params[:sort].to_sym
     tag      = params[:tag].nil?      ? ''      : params[:tag].downcase.strip
@@ -224,13 +211,17 @@ class EmotesController < ApplicationController
       
       # Since tags are good, lets go fetch emotes with those tags
       @emotes = EmoteList.sort_now Emote.tagged_with(tag_list), :sort_type => @sort
+      json[:tag_descendants] = to_js_array Emote.tag_descendants @emotes, tag_list
       
       # Ship back the results
       json[:status] = @emotes.count >= 1 ? 'valid_results' : 'no_results'
       json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes, :sort => @sort }, :layout => false
     else
       # Otherwise we just return the full list again
-      @emotes = EmoteList.sort_now Emote.all, :sort_type => @sort
+      @emotes = EmoteList.sort_now Emote.all(:include => [:tags]), :sort_type => @sort
+      tag_descendants = Emote.tag_descendants @emotes, tag_list
+      json[:tag_descendants] = to_js_array tag_descendants
+      
       @display_type = 'all'
       json[:status] = 'reset_results'
       json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes, :sort => @sort }, :layout => false
@@ -241,6 +232,15 @@ class EmotesController < ApplicationController
   end
   
   private
+  
+  # Formats the emotes tag list as a javascript array to be eval()'d
+  def to_js_array(array)
+    formatted = Array(array).map { |tag| "'" + tag + "'" }.join(",")
+    # Take the tag list and put in unique so we dont calculate in the extra tags
+    # from others tagging said emote.
+    #formatted = self.tags.uniq
+    "[#{formatted}]"
+  end
   
   def is_signed_in?
     redirect_if_not_logged_in

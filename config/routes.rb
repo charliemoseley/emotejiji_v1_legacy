@@ -8,7 +8,6 @@ Emotejiji::Application.routes.draw do
   
   # Emotes Controller
   match '/profile'       => 'emotes#profile',   :as => :profile
-  match '/tag-list'      => 'emotes#tag_list',  :as => :tag_list
   match '/recent'        => 'emotes#recent',    :as => :recent
   match '/favorites'     => 'emotes#favorites', :as => :favorites
   

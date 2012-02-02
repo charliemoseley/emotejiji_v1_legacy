@@ -14,9 +14,18 @@
 // Todo: No clue how to write my jQuery in CoffeeScript (though I do want to try to convert it over at some
 // point.  Till then, pure JS below.
 
+
 // Q? When porting over to coffeescript, I'd like to have it so javascript that doesnt need to render when
 // a user is not logged in is not rendered… but that might be issue with caching? Not sure.
+
+// Variables for jQuery objects used that we know are on the screen at page load
+// First letters are capitilized to easy recognize them
+var $TagCloud;
+
 $(document).ready(function() {
+  $TagCloud = $('#tag-cloud');
+  
+  
   $loading = $('#loading');
   $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)); });
   $('#btn-add-to-favorites').live('click', function() { add_to_favorites(current_emoticon_id()); });
@@ -53,9 +62,14 @@ $(document).ready(function() {
     $('#notifications').delay(1750).slideUp();
   }
   
-  $('#content').on('click', '#tag-cloud a', function(event) {
-    console.log($(this).text());
+  
+  $('#btn-toggle-tag-cloud').click(function() {
+    $TagCloud.toggle();
+  });
+  
+  $TagCloud.children('a').click(function() {
     tagSearch($(this).text());
+    $TagCloud.hide();
   });
 });
 
@@ -189,7 +203,7 @@ setupRemoteLinks = function() {
   defaultRemoteLink($('#link-recent'));
   defaultRemoteLink($('#link-home'));
   defaultRemoteLink($('#link-profile'));
-  defaultRemoteLink($('#link-tag-list'), function(data) { console.log('custom callback');  $('#content').html(data); });
+  defaultRemoteLink($('#link-tag-list'), function(data) { $('#content').html(data); });
 }
 
 defaultRemoteLink = function($target, customCallback) {
@@ -279,6 +293,7 @@ tagSearch = function(tag, sort) {
       case 'reset_results':
         tagList.push(tag);
         $('#content').html(data.view);
+        updateTagCloud(eval(data.tag_descendants));
         if(tag.length != 0) displayTags($('#search-tags'), tagList);
       break;
     }
@@ -316,6 +331,23 @@ isDuplicateTag = function(tag, tagList) {
 }
 
 clearTagList = function($tagContainer) { $tagContainer.empty(); }
+
+updateTagCloud = function(valid_tags) {
+  $tags = $TagCloud.children('a');
+  $tags.addClass('active');
+  console.log(valid_tags);
+  $tags.each(function() {
+    if($.inArray($(this).text(), valid_tags) == -1) {
+      $(this).removeClass('active');
+    }
+  });
+  
+  if($tags.filter('.active').size() == 0) {
+    $TagCloud.children('p').show();
+  } else {
+    $TagCloud.children('p').hide();
+  }
+}
 
 /***************************************************************
  * Other Functions

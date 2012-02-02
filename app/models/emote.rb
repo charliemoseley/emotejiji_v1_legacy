@@ -32,11 +32,35 @@ class Emote < ActiveRecord::Base
     end
   end
   
-  # Formats the emotes tag list as a javascript array to be eval()'d
-  def tag_list_js
-    # Take the tag list and put in unique so we dont calculate in the extra tags
-    # from others tagging said emote.
-    formatted = self.tags.uniq.map { |tag| "'" + tag.name + "'" }.join(",")
-    "[#{formatted}]"
+  ### Class Methods ###
+  def self.tag_descendants(emote_list, tag_list)
+    emote_list = Array(emote_list)
+    tag_list   = Array(tag_list)
+    possible_tags = []
+    
+    # If we don't have any tags submitted, there is no descendants, so return
+    # all tags.
+    if tag_list.empty? 
+      return Emote.all_tags
+    end
+    
+    # Take all the tags from the list of emotes and put them into a single array
+    emote_list.each do |emote|
+      # Q? Why does this not work?
+      #possible_tags << emote.tag_list.each { |tag| tag }
+      emote.tag_list.each { |tag| possible_tags << tag }
+    end
+    
+    # Remove the duplicates
+    possible_tags.uniq!
+    
+    tag_list.each do |tag|
+      possible_tags.delete_if { |t| t == tag }
+    end
+    possible_tags
+  end
+  
+  def self.all_tags
+    Emote.tag_counts_on(:tags).map! {|tag| tag.name }
   end
 end
