@@ -114,3 +114,7 @@ Desktop.ini
 .*.sw[a-z]
 *.un~
 Session.vim
+
+### Sublime 2 ###
+*.sublime-project
+*.sublime-workspace
