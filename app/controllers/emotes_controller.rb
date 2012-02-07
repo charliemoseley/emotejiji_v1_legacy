@@ -93,8 +93,10 @@ class EmotesController < ApplicationController
     
     # Q? Couldn't really figure out a good way to do do this with current_user.emotes while getting the right search
     # order and disabling query caching.
+    logger.info('****************')
+    logger.info current_user.recent_count
     RecentEmote.uncached do
-      recent_emotes = RecentEmote.where(:user_id => current_user.id).limit(30)
+      recent_emotes = RecentEmote.where(:user_id => current_user.id).limit(current_user.recent_count)
       
       @emotes = []
       recent_emotes.each do |re|
@@ -170,25 +172,28 @@ class EmotesController < ApplicationController
   # allowing you to unfavorite.
   def record_favorite
     unless current_user.nil?
-      logger.info('**********')
-      logger.info(params[:actionToDo])
       if params[:actionToDo] == 'add'
-        favorite_emote = FavoriteEmote.where :user_id => current_user.id, :emote_id => params[:id]
-        emote = Emote.find(params[:id])
+        if current_user.emotes.count <= current_user.favorites_count
         
-        # Update the popularity value by 4
-        emote.popularity = emote.popularity + 4
-        emote.save
-        
-        if favorite_emote.empty?
-          favorite_emote = FavoriteEmote.new
-          favorite_emote.user_id = current_user.id
-          favorite_emote.emote_id = params[:id]
-          favorite_emote.save
+          favorite_emote = FavoriteEmote.where :user_id => current_user.id, :emote_id => params[:id]
+          emote = Emote.find(params[:id])
           
-          render :text => "#{emote.text} successfully saved as a favorite."
+          # Update the popularity value by 4
+          emote.popularity = emote.popularity + 4
+          emote.save
+          
+          if favorite_emote.empty?
+            favorite_emote = FavoriteEmote.new
+            favorite_emote.user_id = current_user.id
+            favorite_emote.emote_id = params[:id]
+            favorite_emote.save
+            
+            render :text => "#{emote.text} successfully saved as a favorite."
+          else
+            render :text => "#{emote.text} is already saved as a favorite."
+          end
         else
-          render :text => "#{emote.text} is already saved as a favorite."
+          render :text => "You have reached your maximum allocation of favorites."
         end
       elsif params[:actionToDo] == 'remove'
         favorite_emote = FavoriteEmote.where :user_id => current_user.id, :emote_id => params[:id]

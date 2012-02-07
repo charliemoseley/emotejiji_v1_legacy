@@ -37,6 +37,7 @@ $(document).ready(function() {
 
     switch(action) {
       case 'add':
+        
         add_to_favorites(current_emoticon_id(), 'add');
         
         $button.val('Remove Favorite');
@@ -46,8 +47,10 @@ $(document).ready(function() {
         $(this).parent().children('img').show().delay(400).fadeOut('slow', function() {
           $button.attr('data-action', 'remove');
         });
+        console.log('add: ' + current_emoticon_id());
         break;
       case 'remove':
+        
         add_to_favorites(current_emoticon_id(), 'remove');
         $data.attr('data-favorites-count', favoritesCount - 1);
 
@@ -56,8 +59,10 @@ $(document).ready(function() {
         $(this).parent().children('img').show().delay(400).fadeOut('slow', function() {
           $button.attr('data-action', 'add');
         });
+        console.log('remove: ' + current_emoticon_id());
         break;
       case 'disabled':
+        console.log('disabled: ' + current_emoticon_id());
         return false;
         break;
     }
@@ -254,7 +259,7 @@ setupSearchTag = function() {
 
 setupRemoteLinks = function() {
   defaultRemoteLink($('#link-favorites'));
-  defaultRemoteLink($('#link-recent'));
+  defaultRemoteLink($('#link-recent'), function(data) { console.log("["+data+"]")});
   defaultRemoteLink($('#link-home'));
   defaultRemoteLink($('#link-profile'));
   defaultRemoteLink($('#link-tag-list'), function(data) { $('#content').html(data); });

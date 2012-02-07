@@ -50,6 +50,6 @@
 
 <div style="display: none;">
   <% if is_logged_in? %>
-    <span id="favorites-data" data-favorites-count="<%= current_user.emotes.count %>" data-favorites-limit="15"></span>
+    <span id="favorites-data" data-favorites-count="<%= current_user.emotes.count %>" data-favorites-limit="<%= current_user.favorites_count %>"></span>
   <% end %>
 </div>
