@@ -1,5 +1,13 @@
 class CreateUsers < ActiveRecord::Migration
   def change
-    rename_column :emotes, :created_by, :owner_id
+    create_table :users do |t|
+      t.string :provider
+      t.string :uid
+      t.string :name
+      t.string :oauth_token
+      t.string :oauth_secret
+
+      t.timestamps
+    end
   end
 end

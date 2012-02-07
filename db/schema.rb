@@ -19,8 +19,8 @@ ActiveRecord::Schema.define(:version => 20120128005720) do
     t.integer  "display_length"
     t.integer  "popularity",     :default => 0
     t.integer  "owner_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.integer  "total_clicks",   :default => 0
   end
 
@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(:version => 20120128005720) do
   create_table "favorite_emotes", :force => true do |t|
     t.integer  "emote_id"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "favorite_emotes", ["user_id"], :name => "index_favorite_emotes_on_user_id"
@@ -39,8 +39,8 @@ ActiveRecord::Schema.define(:version => 20120128005720) do
   create_table "recent_emotes", :force => true do |t|
     t.integer  "emote_id"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "recent_emotes", ["user_id"], :name => "index_recent_emotes_on_user_id"
@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(:version => 20120128005720) do
     t.string   "name"
     t.string   "oauth_token"
     t.string   "oauth_secret"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
     t.string   "nickname"
     t.string   "image"
     t.string   "url"
