@@ -1,5 +1,7 @@
 <li id="emote-<%= emote.id %>">
-  <article class="width-<%= emote.width %>" <%== custom_styles emote %>><a><%= emote.text %></a></article>
+  <article data-favorite="<%= emote.is_favorite?(current_user).to_s %>" class="width-<%= emote.width %>" <%== custom_styles emote %>>
+    <a><%= emote.text %></a>
+  </article>
   <aside><%= emote.note %></aside>
   <input type="hidden" value="<%= to_js_array emote.tag_list.uniq %>" />
 </li>

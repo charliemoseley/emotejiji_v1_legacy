@@ -25,12 +25,42 @@ var $TagCloud;
 $(document).ready(function() {
   $TagCloud = $('#tag-cloud');
   
-  
   $loading = $('#loading');
   $('#emoticon-list li').live('click', function() { emoticon_clicked($(this)); });
   $('#btn-add-to-favorites').live('click', function() {
-    add_to_favorites(current_emoticon_id());
-    $(this).parent().children('img').show().delay(400).fadeOut('slow');
+    // Makes an assumption that user isnt mucking around with the JS and not 
+    // attempting to save more then the max amount of favorites
+    action = $(this).attr('data-action');
+    $button = $(this);
+    $data = $('#favorites-data');
+    favoritesCount = parseInt($data.attr('data-favorites-count'));
+
+    switch(action) {
+      case 'add':
+        add_to_favorites(current_emoticon_id(), 'add');
+        
+        $button.val('Remove Favorite');
+        $data.attr('data-favorites-count', favoritesCount + 1);
+
+        if($('#current-display').text() == 'favorites') $('#link-favorites').click();
+        $(this).parent().children('img').show().delay(400).fadeOut('slow', function() {
+          $button.attr('data-action', 'remove');
+        });
+        break;
+      case 'remove':
+        add_to_favorites(current_emoticon_id(), 'remove');
+        $data.attr('data-favorites-count', favoritesCount - 1);
+
+        $button.val('Add to Favorites');
+        if($('#current-display').text() == 'favorites') $('#link-favorites').click();
+        $(this).parent().children('img').show().delay(400).fadeOut('slow', function() {
+          $button.attr('data-action', 'add');
+        });
+        break;
+      case 'disabled':
+        return false;
+        break;
+    }
   });
   setupRemoteLinks();
   setupEmoteTagAddForm();
@@ -403,6 +433,9 @@ emoticon_clicked = function($container) {
   emoticon = $container.children('article').text();
   note = $container.children('aside').text();
   tag_list = eval($container.children('input').val());
+  is_favorite = $container.children('article').attr('data-favorite');
+  numberOfFavorites = parseInt($('#favorites-data').attr('data-favorites-count'));
+  limitOfFavorites  = parseInt($('#favorites-data').attr('data-favorites-limit'));
   
   // Q? This is tightly bound to the model, any way we can better abstract this?
   $form.attr('action', '/emotes/' + id);
@@ -412,6 +445,26 @@ emoticon_clicked = function($container) {
   $('#selected-note').text(note);
   displayTags($('#tag-list'), tag_list, true);
   update_recent_emotes(id);
+
+  $favoritesButton = $('#btn-add-to-favorites');
+  $favoritesButton.removeAttr('disabled');
+  $favoritesButton.removeClass('disabled');
+  if(is_favorite == 'true') {
+    $favoritesButton.val('Remove Favorite');
+    $favoritesButton.attr('data-action', 'remove');
+  } else {
+    console.log('num:' + numberOfFavorites);
+    console.log('lim:' + limitOfFavorites);
+    if(numberOfFavorites < limitOfFavorites) {
+      $favoritesButton.val('Add to Favorites');
+      $favoritesButton.attr('data-action', 'add');
+    } else {
+      $favoritesButton.val('Max Favorites Reached');
+      $favoritesButton.attr('data-action', 'disable');
+      $favoritesButton.attr('disabled', 'disabled');
+      $favoritesButton.addClass('disabled');
+    }
+  }
   
   if($('#emoticon-display').is(':hidden')) {
     $('body').animate({ paddingTop: 320 }, 500, 'swing');
@@ -458,8 +511,10 @@ current_emoticon_id = function() {
   return $('#selected-id').val();
 }
 
-add_to_favorites = function(id) {
-  $.post('/emotes/record_favorite', { id: id });
+add_to_favorites = function(id, action) {
+  $.post('/emotes/record_favorite', { id: id, actionToDo: action}, function(data) {
+    console.log(data);
+  });
 }
 
 sanitize = function(string) { return $.trim(string.toLowerCase()); }

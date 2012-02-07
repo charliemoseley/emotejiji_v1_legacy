@@ -168,22 +168,41 @@ class EmotesController < ApplicationController
   # allowing you to unfavorite.
   def record_favorite
     unless current_user.nil?
-      favorite_emote = FavoriteEmote.where :user_id => current_user.id, :emote_id => params[:id]
-      emote = Emote.find(params[:id])
-      
-      # Update the popularity value by 4
-      emote.popularity = emote.popularity + 4
-      emote.save
-      
-      if favorite_emote.empty?
-        favorite_emote = FavoriteEmote.new
-        favorite_emote.user_id = current_user.id
-        favorite_emote.emote_id = params[:id]
-        favorite_emote.save
+      logger.info('**********')
+      logger.info(params[:actionToDo])
+      if params[:actionToDo] == 'add'
+        favorite_emote = FavoriteEmote.where :user_id => current_user.id, :emote_id => params[:id]
+        emote = Emote.find(params[:id])
         
-        render :text => "#{emote.text} successfully saved as a favorite."
-      else
-        render :text => "#{emote.text} is already saved as a favorite."
+        # Update the popularity value by 4
+        emote.popularity = emote.popularity + 4
+        emote.save
+        
+        if favorite_emote.empty?
+          favorite_emote = FavoriteEmote.new
+          favorite_emote.user_id = current_user.id
+          favorite_emote.emote_id = params[:id]
+          favorite_emote.save
+          
+          render :text => "#{emote.text} successfully saved as a favorite."
+        else
+          render :text => "#{emote.text} is already saved as a favorite."
+        end
+      elsif params[:actionToDo] == 'remove'
+        favorite_emote = FavoriteEmote.where :user_id => current_user.id, :emote_id => params[:id]
+        emote = Emote.find(params[:id])
+
+        emote.popularity = emote.popularity - 2
+        emote.save
+        
+        logger.info('[' + favorite_emote.to_s + ']')
+        unless favorite_emote.empty?
+          favorite_emote.first.destroy
+
+          render :text => "#{emote.text} favorite successfully deleted."
+        else
+          render :text => "No favorite for #{emote.text} found."
+        end
       end
     end
   end

@@ -215,6 +215,10 @@ input.button {
   padding-bottom: 6px;
   text-align: center;
 }
+input.disabled {
+  cursor: default !important;
+  color: #CCC !important;
+}
 
 /**********
  * Tag Search Styles

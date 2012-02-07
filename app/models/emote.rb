@@ -7,8 +7,8 @@ class Emote < ActiveRecord::Base
   # Q?: I want to setup easy functions so I can go current_user.recents and current_user.favorites
   # to get the appropriate emotes, but not sure how to do that with polymorphic + has_many :through
   # and  maintain the proper order and caching I want
-  has_many :recent_emotes
-  has_many :users, :through => :recent_emotes
+  has_many :favorite_emotes
+  has_many :users, :through => :favorite_emotes
   
   acts_as_taggable_on :tags
   
@@ -31,7 +31,12 @@ class Emote < ActiveRecord::Base
       end
     end
   end
-  
+
+  def is_favorite? (user)
+    count = self.users.where id: user.id
+    return count.empty? ? false : true
+  end
+
   ### Class Methods ###
   def self.tag_descendants(emote_list, tag_list)
     emote_list = Array(emote_list)

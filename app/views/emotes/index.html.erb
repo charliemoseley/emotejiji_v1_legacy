@@ -17,7 +17,7 @@
       <%= image_tag "icon-check.png", :alt => ' '%>
     </span>
     <span class="button" style="position: relative;">
-      <input id="btn-add-to-favorites" type="button" value="Add to Favorites" class="button"  />
+      <input id="btn-add-to-favorites" type="button" value="Add to Favorites" class="button" data-action="add"  />
       <%= image_tag "icon-check.png", :alt => ' ' %>
     </span>
     
@@ -46,4 +46,10 @@
     <% end %>
     <p>oh no! it looks like theres no more tags to filter your search by!</p>
   </section>
+</div>
+
+<div style="display: none;">
+  <% if is_logged_in? %>
+    <span id="favorites-data" data-favorites-count="<%= current_user.emotes.count %>" data-favorites-limit="15"></span>
+  <% end %>
 </div>
