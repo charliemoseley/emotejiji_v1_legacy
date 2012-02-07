@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
     case current_uri
       when '/about'
       when '/emotes/new'
+      when '/profile'
         false
       else
         true

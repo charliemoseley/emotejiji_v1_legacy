@@ -89,6 +89,7 @@ class EmotesController < ApplicationController
     @emote = Emote.first
     @display_type = 'recent'
     @sort = :disable
+    @tags = Emote.tag_counts_on(:tags)
     
     # Q? Couldn't really figure out a good way to do do this with current_user.emotes while getting the right search
     # order and disabling query caching.
@@ -118,6 +119,7 @@ class EmotesController < ApplicationController
     @emote = Emote.first
     @display_type = 'favorites'
     @sort = :disable
+    @tags = Emote.tag_counts_on(:tags)
     
     FavoriteEmote.uncached do
       favorite_emotes = FavoriteEmote.where(:user_id => current_user.id).limit(15)
