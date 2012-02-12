@@ -6,12 +6,14 @@ class EmotesController < ApplicationController
   def index
     # Q? This is a hack so I can use a form helper that automatically has the fields for 
     # updating an emote.  Any more elegant solution?
+    
     @emote = Emote.first
     @display_type = 'all'
     @tags = Emote.tag_counts_on(:tags)
 
     @sort = params[:sort].nil? ? :newest : params[:sort].to_sym
-    @emotes = EmoteList.sort_now Emote.all(:include => [:tags]), :sort_type => @sort
+    
+    @emotes = EmoteList.sort_now Emote.all_cached, :sort_type => @sort
     
     respond_to do |format|
       format.html do
@@ -37,6 +39,7 @@ class EmotesController < ApplicationController
     
     # ToDo: Make the database enforce uniquness + Pretty up the error page on new emotes
     if @emote.save
+      Rails.cache.delete('Emotes.all')
       redirect_to root_path, :notice => "#{@emote.text} successfully created"
     else
       render "new", :notice => "Something went wrong creating the emote #{@emote.text}"
@@ -58,6 +61,7 @@ class EmotesController < ApplicationController
     end
     
     if @emote.save
+      Rails.cache.delete('Emotes.all')
       respond_to do |format|
         format.html do
           if request.xhr?
@@ -73,6 +77,7 @@ class EmotesController < ApplicationController
   end
   
   def profile
+    @emotes = Emote.all_cached
     # ToDo: Currently doesnt render properly when directly loaded from the URL
     respond_to do |format|
       format.html do
@@ -244,7 +249,7 @@ class EmotesController < ApplicationController
       json[:view] = render_to_string :partial => "emotes/emote_list", :locals => { :emotes => @emotes, :sort => @sort }, :layout => false
     else
       # Otherwise we just return the full list again
-      @emotes = EmoteList.sort_now Emote.all(:include => [:tags]), :sort_type => @sort
+      @emotes = EmoteList.sort_now Emote.all_cached, :sort_type => @sort
       tag_descendants = Emote.tag_descendants @emotes, tag_list
       json[:tag_descendants] = to_js_array tag_descendants
       
@@ -261,7 +266,14 @@ class EmotesController < ApplicationController
   
   # Formats the emotes tag list as a javascript array to be eval()'d
   def to_js_array(array)
-    formatted = Array(array).map { |tag| "'" + tag + "'" }.join(",")
+    unless array.nil? || array[0].nil?
+      logger.info array.class
+      if array[0].name.nil?
+        formatted = Array(array.to_a).map { |tag| "'" + tag + "'" }.join(",")
+      else
+        formatted = Array(array.to_a).map { |tag| "'" + tag.name + "'" }.join(",")
+      end
+    end
     # Take the tag list and put in unique so we dont calculate in the extra tags
     # from others tagging said emote.
     #formatted = self.tags.uniq

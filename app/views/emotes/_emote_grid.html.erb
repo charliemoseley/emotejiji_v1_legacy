@@ -3,5 +3,6 @@
     <a><%= emote.text %></a>
   </article>
   <aside><%= emote.note %></aside>
-  <input type="hidden" value="<%= to_js_array emote.tag_list.uniq %>" />
+
+  <input type="hidden" value="<%= to_js_array emote.tags.uniq %>" />
 </li>

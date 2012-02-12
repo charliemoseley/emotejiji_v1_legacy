@@ -33,6 +33,7 @@ class Emote < ActiveRecord::Base
   end
 
   def is_favorite? (user)
+    return false if user.nil?
     count = self.users.where id: user.id
     return count.empty? ? false : true
   end
@@ -67,5 +68,9 @@ class Emote < ActiveRecord::Base
   
   def self.all_tags
     Emote.tag_counts_on(:tags).map! {|tag| tag.name }
+  end
+
+  def self.all_cached
+    Rails.cache.fetch('Emotes.all') { Emote.all(:include => [:tags]) }
   end
 end
