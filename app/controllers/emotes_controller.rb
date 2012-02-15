@@ -98,8 +98,6 @@ class EmotesController < ApplicationController
     
     # Q? Couldn't really figure out a good way to do do this with current_user.emotes while getting the right search
     # order and disabling query caching.
-    logger.info('****************')
-    logger.info current_user.recent_count
     RecentEmote.uncached do
       recent_emotes = RecentEmote.where(:user_id => current_user.id).limit(current_user.recent_count)
       
@@ -268,7 +266,7 @@ class EmotesController < ApplicationController
   def to_js_array(array)
     unless array.nil? || array[0].nil?
       logger.info array.class
-      if array[0].name.nil?
+      if !array[0].respond_to? 'name'
         formatted = Array(array.to_a).map { |tag| "'" + tag + "'" }.join(",")
       else
         formatted = Array(array.to_a).map { |tag| "'" + tag.name + "'" }.join(",")
