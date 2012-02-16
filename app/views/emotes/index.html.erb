@@ -1,5 +1,6 @@
 <div id="list-info-actions-hud" class="hud">
   
+  
   <section id="search-tag" class="container">
     <a id="btn-toggle-tag-cloud" style="position: absolute; right: 190px; top: 13px;"></a>
     <%= autocomplete_field_tag 'tag', '', autocomplete_tag_name_emotes_path,
@@ -7,6 +8,12 @@
 
     <!--<input id="btn-search" type="button" value=""/>-->
     <ul id="search-tags" class="tags clearfix"></ul>
+
+    <!-- ToDo: This needs to be moved to a much more logical place -->
+    <div id="login-options">
+      <%= link_to image_tag('btn-twitter-login.png', id: 'login-twitter'), "/auth/twitter" %>
+      <%= link_to image_tag('btn-facebook-login.png', id: 'login-facebook'), "/auth/facebook" %>
+    </div>
   </section>
   
   <section id="emoticon-display" class="container relative" style="height: 180px;">

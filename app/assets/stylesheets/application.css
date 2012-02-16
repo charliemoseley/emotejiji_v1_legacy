@@ -152,6 +152,30 @@ nav.global ul li a {
   line-height: 35px;
   padding: 0 5px; }
 
+#login-options {
+  position: absolute;
+  left: 355px;
+  top: 0;
+  background-color: #F0F0F0;
+  z-index: 150;
+  padding: 0;
+  width: 187px;
+  height: 78px;
+  display: none;
+}
+
+#login-twitter {
+  display: block;
+  position: absolute;
+  top: -7px;
+}
+
+#login-facebook {
+  display: block;
+  position: absolute;
+  top: 28px;
+}
+
 /*******************************************************************
  * Header Styles
  *******************************************************************/

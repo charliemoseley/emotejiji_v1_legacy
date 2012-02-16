@@ -130,6 +130,17 @@ $(document).ready(function() {
         $(this).css('color', '#CCC');
       }
     });
+
+    // ToDo: Getting lazy now
+    $('#link-login').click(function (event) {
+      event.preventDefault();
+
+      if($('#login-options').is(':visible')) {
+        $('#login-options').slideUp(100);
+      } else {
+        $('#login-options').slideDown(100);
+      }
+    });
 });
 
 /***************************************************************

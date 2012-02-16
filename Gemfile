@@ -8,6 +8,7 @@ gem 'jquery-rails'
 
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'omniauth-facebook'
 gem 'acts-as-taggable-on'
 gem 'rails3-jquery-autocomplete'
 gem 'rails-boilerplate'
