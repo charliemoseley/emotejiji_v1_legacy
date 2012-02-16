@@ -486,7 +486,7 @@ refreshZeroClipboard = function() {
   // Create a new one
   $('#btn-copy-to-clipboard').zclip({
     path: 'ZeroClipboard.swf',
-    copy: function() { return $('#selected-emoticon').text(); },
+    copy: function() { return $.trim($('#selected-emoticon').text()); },
     afterCopy: function() {
       $(this).parent().children('img').show().delay(400).fadeOut('slow');
     }
