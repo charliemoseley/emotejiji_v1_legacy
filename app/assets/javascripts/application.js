@@ -37,27 +37,26 @@ $(document).ready(function() {
 
     switch(action) {
       case 'add':
-        
         add_to_favorites(current_emoticon_id(), 'add');
         
         $button.val('Remove Favorite');
+        $button.attr('data-action', 'remove');
         $data.attr('data-favorites-count', favoritesCount + 1);
+        $('#emote-' + current_emoticon_id() + ' article').attr('data-favorite', 'true');
 
         if($('#current-display').text() == 'favorites') $('#link-favorites').click();
-        $(this).parent().children('img').show().delay(400).fadeOut('slow', function() {
-          $button.attr('data-action', 'remove');
-        });
+        $(this).parent().children('img').show().delay(400).fadeOut('slow');
         break;
       case 'remove':
-        
         add_to_favorites(current_emoticon_id(), 'remove');
         $data.attr('data-favorites-count', favoritesCount - 1);
 
         $button.val('Add to Favorites');
+        $button.attr('data-action', 'add');
+        $('#emote-' + current_emoticon_id() + ' article').attr('data-favorite', 'false');
+
         if($('#current-display').text() == 'favorites') $('#link-favorites').click();
-        $(this).parent().children('img').show().delay(400).fadeOut('slow', function() {
-          $button.attr('data-action', 'add');
-        });
+        $(this).parent().children('img').show().delay(400).fadeOut('slow');
         break;
       case 'disabled':
         return false;
