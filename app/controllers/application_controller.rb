@@ -20,6 +20,7 @@ class ApplicationController < ActionController::Base
       when '/about'
       when '/emotes/new'
       when '/profile'
+      when '/login'
         false
       else
         true

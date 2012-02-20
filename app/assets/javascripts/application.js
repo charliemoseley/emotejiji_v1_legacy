@@ -134,11 +134,14 @@ $(document).ready(function() {
     // ToDo: Getting lazy now
     $('#link-login').click(function (event) {
       event.preventDefault();
-
-      if($('#login-options').is(':visible')) {
-        $('#login-options').slideUp(100);
+      if($('#login-options').exists()) {
+        if($('#login-options').is(':visible')) {
+          $('#login-options').slideUp(100);
+        } else {
+          $('#login-options').slideDown(100);
+        }
       } else {
-        $('#login-options').slideDown(100);
+        document.location = $(this).attr('href');
       }
     });
 });
