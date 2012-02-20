@@ -144,6 +144,7 @@ $(document).ready(function() {
 
     // ToDo: More laziness
     $('#logo').click(function(event) {
+      event.preventDefault();
       var pathname = window.location.pathname;
       redirectPaths = ['/about', '/emotes/new', '/profile', '/login'];
       if($.inArray(pathname, redirectPaths) == -1) {
