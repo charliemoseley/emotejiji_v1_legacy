@@ -270,7 +270,7 @@ setupSearchTag = function() {
 
 setupRemoteLinks = function() {
   defaultRemoteLink($('#link-favorites'));
-  defaultRemoteLink($('#link-recent'), function(data) { console.log("["+data+"]")});
+  defaultRemoteLink($('#link-recent'));
   defaultRemoteLink($('#link-home'));
   defaultRemoteLink($('#link-profile'));
   defaultRemoteLink($('#link-tag-list'), function(data) { $('#content').html(data); });
