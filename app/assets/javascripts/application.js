@@ -170,6 +170,7 @@ setupNewEmoteForm = function() {
         // Since we already know the input isnt empty, we check now if that value isnt the default one
         if($newEmoteAutoComplete.val() != newEmoteAutoCompleteDefaultValue) {
           newEmoteAddTag(sanitize($newEmoteAutoComplete.val()), $newEmoteTagList);
+          $('.ui-autocomplete').hide();
         }
         return false;
       // If the input that enter was hit was submit, then process the form
@@ -190,8 +191,24 @@ setupNewEmoteForm = function() {
   });
   // Handles the selection of a tag when Enter is pressed on the autocomplete list
   $newEmoteAutoComplete
-    .bind('autocompleteselect', function(event, ui) { newEmoteAddTag(ui.item.value, $newEmoteTagList); })
-    .bind('autocompleteclose', function(event, ui) { $('#new_emote_tags_input').val(''); });
+    .bind('autocompleteselect', function(event, ui) { 
+      newEmoteAddTag(ui.item.value, $newEmoteTagList);
+      $('#new_emote_tags_input').val('');
+    })
+    .bind('autocompleteclose', function(event, ui) {  
+      // This is required because for some reason $('#new_emote_tags_input').val('')
+      // doesnt seem to be working.
+      var tempArr = [];
+      $newEmoteTagList.find('a').each(function() {
+        tempArr.push(sanitize($(this).text()));
+      });
+      console.log($.inArray($('#new_emote_tags_input').val()));
+      console.log(tempArr);
+      console.log($.inArray($('#new_emote_tags_input').val(), tempArr));
+      if($.inArray($('#new_emote_tags_input').val(), tempArr) != -1) {
+        $('#new_emote_tags_input').val('');
+      }
+    });
   
   // Run a series of validation checks on the form before submitting it.
   $('#new_emote').submit(function(event) {
@@ -233,8 +250,8 @@ setupNewEmoteForm = function() {
 newEmoteAddTag = function (tag, $tagList) {
   if(isObjectType(tag, 'object')) tag = sanitize(tag.val());
   $('#new-emote-tag-help').hide();
-  $('#new_emote_tags_input').val('');
   displayTags($('#new-emote-tag-list'), tag);
+  $('#new_emote_tags_input').val('');
 }
 
 setupEmoteTagAddForm = function() {
