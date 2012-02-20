@@ -1,0 +1,8 @@
+<div class="container container-no-pad relative">
+  <h1>Users [<%= @users.count %>]</h1>
+  <ul>
+    <% @users.each do |user| %>
+      <li><%= user.name %> [<%= user.provider %>]</li>
+    <% end %>
+  </ul>
+</div>

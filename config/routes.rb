@@ -1,4 +1,6 @@
 Emotejiji::Application.routes.draw do
+  match "/admin" => 'admin#index'
+
   # Omniauth routes
   match '/auth/:provider/callback' => 'sessions#create'
   match '/signout' => 'sessions#destroy', :as => :signout

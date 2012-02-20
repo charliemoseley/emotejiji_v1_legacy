@@ -31,4 +31,10 @@ class ApplicationController < ActionController::Base
       redirect_to root_path, :notice => 'Please Log In'
     end
   end
+
+  def redirect_if_admin
+    if current_user.account_type != 'admin'
+      redirect_to root_path, :notice => 'Sorry, you need to be an admin to view this page'
+    end
+  end
 end
