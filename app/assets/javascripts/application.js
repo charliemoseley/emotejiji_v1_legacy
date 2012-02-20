@@ -47,7 +47,6 @@ $(document).ready(function() {
         $(this).parent().children('img').show().delay(400).fadeOut('slow', function() {
           $button.attr('data-action', 'remove');
         });
-        console.log('add: ' + current_emoticon_id());
         break;
       case 'remove':
         
@@ -59,10 +58,8 @@ $(document).ready(function() {
         $(this).parent().children('img').show().delay(400).fadeOut('slow', function() {
           $button.attr('data-action', 'add');
         });
-        console.log('remove: ' + current_emoticon_id());
         break;
       case 'disabled':
-        console.log('disabled: ' + current_emoticon_id());
         return false;
         break;
     }
@@ -202,9 +199,6 @@ setupNewEmoteForm = function() {
       $newEmoteTagList.find('a').each(function() {
         tempArr.push(sanitize($(this).text()));
       });
-      console.log($.inArray($('#new_emote_tags_input').val()));
-      console.log(tempArr);
-      console.log($.inArray($('#new_emote_tags_input').val(), tempArr));
       if($.inArray($('#new_emote_tags_input').val(), tempArr) != -1) {
         $('#new_emote_tags_input').val('');
       }
@@ -489,8 +483,6 @@ emoticon_clicked = function($container) {
     $favoritesButton.val('Remove Favorite');
     $favoritesButton.attr('data-action', 'remove');
   } else {
-    console.log('num:' + numberOfFavorites);
-    console.log('lim:' + limitOfFavorites);
     if(numberOfFavorites < limitOfFavorites) {
       $favoritesButton.val('Add to Favorites');
       $favoritesButton.attr('data-action', 'add');
@@ -549,7 +541,7 @@ current_emoticon_id = function() {
 
 add_to_favorites = function(id, action) {
   $.post('/emotes/record_favorite', { id: id, actionToDo: action}, function(data) {
-    console.log(data);
+    
   });
 }
 
