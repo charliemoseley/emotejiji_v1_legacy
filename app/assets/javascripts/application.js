@@ -141,6 +141,17 @@ $(document).ready(function() {
         document.location = $(this).attr('href');
       }
     });
+
+    // ToDo: More laziness
+    $('#logo').click(function(event) {
+      var pathname = window.location.pathname;
+      redirectPaths = ['/about', '/emotes/new', '/profile', '/login'];
+      if($.inArray(pathname, redirectPaths) == -1) {
+        $('#link-home').click();
+      } else {
+        window.location = "/";
+      }
+    });
 });
 
 /***************************************************************
