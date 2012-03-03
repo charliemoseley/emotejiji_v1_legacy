@@ -14,6 +14,7 @@ gem 'rails3-jquery-autocomplete'
 gem 'rails-boilerplate'
 gem 'newrelic_rpm'
 gem 'dalli'
+gem 'stripe'
 
 
 group :development do

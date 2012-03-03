@@ -92,6 +92,9 @@ gen/
 # Local configuration file (sdk path, etc)
 local.properties
 
+# Pow
+.powenv
+
 ##### Global gitignores #####
 ### OSX ###
 .DS_Store

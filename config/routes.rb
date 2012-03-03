@@ -17,6 +17,8 @@ Emotejiji::Application.routes.draw do
   match '/emotes/record_recent'    => 'emotes#record_recent'
   match '/emotes/record_favorite'  => 'emotes#record_favorite'
   match '/emotes/search'           => 'emotes#tag_search'
+
+  resources :subscribe
   
   # Autocomplete routes
   resources :emotes do

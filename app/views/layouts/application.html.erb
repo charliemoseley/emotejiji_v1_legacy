@@ -24,6 +24,7 @@
   <%= stylesheet_link_tag "application" %>
 
   <%= csrf_meta_tags %>
+  <%= tag :meta, :name => 'stripe-key', :content => STRIPE_PUBLIC_KEY %>
 
   <!-- More ideas for your <head> here: h5bp.com/d/head-Tips -->
 
@@ -83,6 +84,7 @@
   <% end %>
   
   <!-- JavaScript at the bottom for fast page loading -->
+  <%= javascript_include_tag "https://js.stripe.com/v1/" %>
   <%= javascript_include_tag "application" %>
   <!-- end scripts -->
 
