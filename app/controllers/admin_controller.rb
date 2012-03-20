@@ -7,7 +7,7 @@ class AdminController < ApplicationController
 
   private
   def is_admin?
-    redirect_if_not_logged_in
+    redirect_if_not_admin
   end  
 
 end
