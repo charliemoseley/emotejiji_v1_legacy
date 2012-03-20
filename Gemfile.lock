@@ -125,6 +125,8 @@ GEM
     rdoc (3.12)
       json (~> 1.4)
     redis (2.2.2)
+    redis-objects (0.5.2)
+      redis (>= 2.1.1)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     rspec (2.8.0)
@@ -189,6 +191,7 @@ DEPENDENCIES
   rails-boilerplate
   rails3-jquery-autocomplete
   redis
+  redis-objects
   rspec-rails (= 2.8.1)
   sass-rails (~> 3.2.3)
   sqlite3

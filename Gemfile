@@ -14,6 +14,7 @@ gem 'rails3-jquery-autocomplete'
 gem 'rails-boilerplate'
 gem 'newrelic_rpm'
 gem 'redis'
+gem 'redis-objects'
 gem 'dalli' # Heroku Memcached (Need to implement locally too)
 gem 'stripe'
 
