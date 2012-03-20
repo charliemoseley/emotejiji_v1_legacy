@@ -1,5 +1,13 @@
 class Emote < ActiveRecord::Base
+  include Redis::Objects
+  
   attr_accessible :text, :note, :tag_list
+
+  # Redis Objects
+  counter :clicks
+  counter :copies
+  counter :favorites
+  counter :popularity
   
   # Q?: Figure out how to set this properly ->
   # belongs_to :user, :foreign_key => "owner_id", :class_name => "Owner"
