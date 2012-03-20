@@ -4,8 +4,23 @@ class SessionsController < ApplicationController
 
   def create
     auth = request.env["omniauth.auth"]
-    user = User.find_by_provider_and_uid(auth["provider"], auth["uid"]) || User.create_with_omniauth(auth)
-    session[:user_id] = user.id
+    account = Account.find_by_provider_and_uid(auth["provider"], auth["uid"]) 
+    
+    if account.nil?
+      ActiveRecord::Base.transaction do
+        user = User.create
+        account = Account.create_with_omniauth auth, user
+        user.update_with_account account
+      end
+    else
+      # Conversion code
+      if account.user.nil?
+        account.transition_to_user_system User.create!
+      end      
+      account.update_with_omniauth auth
+    end
+    
+    session[:user_id] = account.user.id
     redirect_to root_url, :notice => "Signed in!"
   end
   

@@ -11,48 +11,71 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120207223728) do
+ActiveRecord::Schema.define(:version => 20120320123943) do
+
+  create_table "accounts", :force => true do |t|
+    t.string    "provider"
+    t.string    "uid"
+    t.string    "name"
+    t.string    "oauth_token"
+    t.string    "oauth_secret"
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
+    t.string    "nickname"
+    t.string    "image"
+    t.string    "url"
+    t.string    "gender"
+    t.string    "timezone"
+    t.string    "website"
+    t.string    "location"
+    t.string    "account_type",    :default => "normal"
+    t.integer   "favorites_count", :default => 15
+    t.integer   "recent_count",    :default => 30
+    t.integer   "user_id"
+    t.string    "email"
+    t.string    "password_digest"
+  end
 
   create_table "emotes", :force => true do |t|
-    t.string   "text"
-    t.string   "note"
-    t.integer  "display_length"
-    t.integer  "popularity",     :default => 0
-    t.integer  "owner_id"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
-    t.integer  "total_clicks",   :default => 0
+    t.string    "text"
+    t.string    "note"
+    t.integer   "display_length"
+    t.integer   "popularity",     :default => 0
+    t.integer   "owner_id"
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
+    t.integer   "total_clicks",   :default => 0
   end
 
   add_index "emotes", ["owner_id"], :name => "index_emotes_on_created_by"
   add_index "emotes", ["popularity"], :name => "index_emotes_on_popularity"
 
   create_table "favorite_emotes", :force => true do |t|
-    t.integer  "emote_id"
-    t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer   "emote_id"
+    t.integer   "user_id"
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
   end
 
   add_index "favorite_emotes", ["user_id"], :name => "index_favorite_emotes_on_user_id"
 
   create_table "recent_emotes", :force => true do |t|
-    t.integer  "emote_id"
-    t.integer  "user_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer   "emote_id"
+    t.integer   "user_id"
+    t.timestamp "created_at"
+    t.timestamp "updated_at"
   end
 
   add_index "recent_emotes", ["user_id"], :name => "index_recent_emotes_on_user_id"
 
   create_table "taggings", :force => true do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.string   "taggable_type"
-    t.integer  "tagger_id"
-    t.string   "tagger_type"
-    t.string   "context",       :limit => 128
-    t.datetime "created_at"
+    t.integer   "tag_id"
+    t.integer   "taggable_id"
+    t.string    "taggable_type"
+    t.integer   "tagger_id"
+    t.string    "tagger_type"
+    t.string    "context",       :limit => 128
+    t.timestamp "created_at"
   end
 
   add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
@@ -63,23 +86,12 @@ ActiveRecord::Schema.define(:version => 20120207223728) do
   end
 
   create_table "users", :force => true do |t|
-    t.string   "provider"
-    t.string   "uid"
     t.string   "name"
-    t.string   "oauth_token"
-    t.string   "oauth_secret"
-    t.datetime "created_at",                            :null => false
-    t.datetime "updated_at",                            :null => false
-    t.string   "nickname"
-    t.string   "image"
-    t.string   "url"
-    t.string   "gender"
-    t.string   "timezone"
-    t.string   "website"
-    t.string   "location"
     t.string   "account_type",    :default => "normal"
     t.integer  "favorites_count", :default => 15
     t.integer  "recent_count",    :default => 30
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
   end
 
 end
