@@ -2,13 +2,15 @@
 <div id="temporary-profile">
   <table>
     <tbody>
-      <tr>
-        <td><%= image_tag current_user.image %></td>
-        <td class="info">
-          User: <%= current_user.nickname %><br />
-          Provider: <%= current_user.provider %><br />
-        </td>
-      </tr>
+      <% current_user.accounts.each do |account| %>
+        <tr>
+          <td><%= image_tag account.image %></td>
+          <td class="info">
+            User: <%= account.nickname %><br />
+            Provider: <%= account.provider %><br />
+          </td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 </div>

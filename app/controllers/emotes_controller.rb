@@ -77,7 +77,6 @@ class EmotesController < ApplicationController
   end
   
   def profile
-    @emotes = Emote.all_cached
     # ToDo: Currently doesnt render properly when directly loaded from the URL
     respond_to do |format|
       format.html do
