@@ -1,8 +1,25 @@
 <div class="container container-no-pad relative">
   <h1>Users [<%= @users.count %>]</h1>
-  <ul>
-    <% @users.each do |user| %>
-      <li><%= user.name %> [<%= user.provider %>]</li>
-    <% end %>
-  </ul>
+  <table style="text-align: left;">
+    <thead>
+      <tr>
+        <th>ID:</th>
+        <th>Name:</th>
+        <th>Accounts:</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.name %></td>
+          <td>
+            <% user.accounts.each do |account| %>
+              <%= account.provider %><br />
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
