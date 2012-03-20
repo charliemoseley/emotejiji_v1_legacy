@@ -1,8 +1,10 @@
-<li id="emote-<%= emote.id %>">
-  <article data-favorite="<%= emote.is_favorite?(current_user).to_s %>" class="width-<%= emote.width %>" <%== custom_styles emote %>>
-    <a><%= emote.text %></a>
-  </article>
-  <aside><%= emote.note %></aside>
+<% cache [ 'emote-list-v1', emote ] do %>
+  <li id="emote-<%= emote.id %>">
+    <article class="width-<%= emote.width %>" <%== custom_styles emote %>>
+      <a><%= emote.text %></a>
+    </article>
+    <aside><%= emote.note %></aside>
 
-  <input type="hidden" value="<%= to_js_array emote.tags.uniq %>" />
-</li>
+    <input type="hidden" value="<%= to_js_array emote.tags.uniq %>" />
+  </li>
+<% end %>
