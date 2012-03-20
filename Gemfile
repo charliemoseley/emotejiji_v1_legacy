@@ -13,7 +13,8 @@ gem 'acts-as-taggable-on'
 gem 'rails3-jquery-autocomplete'
 gem 'rails-boilerplate'
 gem 'newrelic_rpm'
-gem 'dalli'
+gem 'redis'
+gem 'dalli' # Heroku Memcached (Need to implement locally too)
 gem 'stripe'
 
 
