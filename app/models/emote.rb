@@ -7,6 +7,7 @@ class Emote < ActiveRecord::Base
   counter :clicks
   counter :copies
   counter :favorites
+  counter :favorites_all_time
   counter :popularity
   
   # Q?: Figure out how to set this properly ->
