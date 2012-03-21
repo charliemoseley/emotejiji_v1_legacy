@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120320123943) do
+ActiveRecord::Schema.define(:version => 20120321053813) do
 
   create_table "accounts", :force => true do |t|
     t.string    "provider"
@@ -37,18 +37,18 @@ ActiveRecord::Schema.define(:version => 20120320123943) do
   end
 
   create_table "emotes", :force => true do |t|
-    t.string    "text"
-    t.string    "note"
-    t.integer   "display_length"
-    t.integer   "popularity",     :default => 0
-    t.integer   "owner_id"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.integer   "total_clicks",   :default => 0
+    t.string   "text"
+    t.string   "note"
+    t.integer  "display_length"
+    t.integer  "popularity_old", :default => 0
+    t.integer  "owner_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "total_clicks",   :default => 0
   end
 
   add_index "emotes", ["owner_id"], :name => "index_emotes_on_created_by"
-  add_index "emotes", ["popularity"], :name => "index_emotes_on_popularity"
+  add_index "emotes", ["popularity_old"], :name => "index_emotes_on_popularity"
 
   create_table "favorite_emotes", :force => true do |t|
     t.integer   "emote_id"
