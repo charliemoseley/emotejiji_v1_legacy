@@ -150,9 +150,12 @@ class EmotesController < ApplicationController
   end
   
   def record_recent
+    logger.info '1*************************'
     emote = Emote.find(params[:id])
 
+    logger.info '2*************************'
     unless current_user.nil?
+      logger.info '3*************************'
       recent_emote = RecentEmote.where :user_id => current_user.id, :emote_id => emote.id
        # Q? Most elegant way to handle this?
       if recent_emote.empty?
@@ -162,18 +165,15 @@ class EmotesController < ApplicationController
       else
         recent_emote = recent_emote[0]
       end
+      logger.info '4*************************'
       recent_emote.updated_at = Time.now
       recent_emote.save
     end
-    
-    # Update the popularity value by 1
-    
-    # emote.popularity = emote.popularity + 1
-    # emote.total_clicks = emote.total_clicks + 1
-    # emote.save
+
+    logger.info '5*************************'
     emote.clicks.increment
-    #emote.popularity.increment
     Emote.popularity.increment emote.id
+    logger.info '6*************************'
     
     render :text => ''
   end
