@@ -50,7 +50,8 @@ class EmotesController < ApplicationController
     @emote = Emote.find(params[:id])
     @emote.tag_list.add(params[:emote][:tag_list].downcase)
     # Update the popularity value by 1
-    @emote.popularity = @emote.popularity + 1
+    @emote.popularity.increment
+    #@emote.popularity = @emote.popularity + 1
     
     # Q?: Is this what I really hae to do to achieve ownership tags with act-as-taggable-on?
     owner_tags = @emote.owner_tags_on(current_user, :tags).map {|t| t.name }
@@ -147,13 +148,15 @@ class EmotesController < ApplicationController
   end
   
   def record_recent
+    emote = Emote.find(params[:id])
+
     unless current_user.nil?
-      recent_emote = RecentEmote.where :user_id => current_user.id, :emote_id => params[:id]
+      recent_emote = RecentEmote.where :user_id => current_user.id, :emote_id => emote.id
        # Q? Most elegant way to handle this?
       if recent_emote.empty?
         recent_emote = RecentEmote.new
         recent_emote.user_id = current_user.id
-        recent_emote.emote_id = params[:id]
+        recent_emote.emote_id = emote.id
       else
         recent_emote = recent_emote[0]
       end
@@ -162,10 +165,12 @@ class EmotesController < ApplicationController
     end
     
     # Update the popularity value by 1
-    emote = Emote.find(params[:id])
-    emote.popularity = emote.popularity + 1
-    emote.total_clicks = emote.total_clicks + 1
-    emote.save
+    
+    # emote.popularity = emote.popularity + 1
+    # emote.total_clicks = emote.total_clicks + 1
+    # emote.save
+    emote.clicks.increment
+    emote.popularity.increment
     
     render :text => ''
   end
@@ -181,8 +186,10 @@ class EmotesController < ApplicationController
           emote = Emote.find(params[:id])
           
           # Update the popularity value by 4
-          emote.popularity = emote.popularity + 4
-          emote.save
+          # emote.popularity = emote.popularity + 4
+          emote.popularity.incr 4
+          emote.favorites.increment
+          emote.favorites_all_time.increment
           
           if favorite_emote.empty?
             favorite_emote = FavoriteEmote.new
@@ -201,10 +208,10 @@ class EmotesController < ApplicationController
         favorite_emote = FavoriteEmote.where :user_id => current_user.id, :emote_id => params[:id]
         emote = Emote.find(params[:id])
 
-        emote.popularity = emote.popularity - 2
-        emote.save
+        emote.popularity.decr 4
+        emote.favorites.decrement
+        #emote.popularity = emote.popularity - 2
         
-        logger.info('[' + favorite_emote.to_s + ']')
         unless favorite_emote.empty?
           favorite_emote.first.destroy
 
