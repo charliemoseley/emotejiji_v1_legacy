@@ -35,6 +35,6 @@ Emotejiji::Application.configure do
   # with SQLite, MySQL, and PostgreSQL)
   config.active_record.auto_explain_threshold_in_seconds = 0.5
 
-  ENV["REDISTOGO_URL"] = 'redis://localhost:6379' 
+  REDIS_URI = 'redis://localhost:6379' 
 end
 
