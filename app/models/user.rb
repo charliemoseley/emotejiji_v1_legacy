@@ -11,4 +11,15 @@ class User < ActiveRecord::Base
     self.name = account.name
     self.save!
   end
+
+  def favorites
+    @emotes = []
+    FavoriteEmote.uncached do
+      favorite_emotes = FavoriteEmote.where(:user_id => self.id).limit(self.favorites_count)
+      favorite_emotes.each do |fe|
+        @emotes  << Emote.find(fe.emote_id, :include => [:tags])
+      end
+    end
+    @emotes
+  end
 end

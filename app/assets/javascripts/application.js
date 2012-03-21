@@ -152,6 +152,8 @@ $(document).ready(function() {
         window.location = "/";
       }
     });
+
+    initialFavoritesSetup(initial_favorites_list);
 });
 
 /***************************************************************
@@ -298,7 +300,7 @@ setupRemoteLinks = function() {
   defaultRemoteLink($('#link-recent'));
   defaultRemoteLink($('#link-home'));
   defaultRemoteLink($('#link-profile'));
-  defaultRemoteLink($('#link-tag-list'), function(data) { $('#content').html(data); });
+  defaultRemoteLink($('#link-tag-list'), function(data) { $('#content').html(data); initialFavoritesSetup(initial_favorites_list); });
 }
 
 defaultRemoteLink = function($target, customCallback) {
@@ -306,6 +308,7 @@ defaultRemoteLink = function($target, customCallback) {
          .bind('ajax:success',    function(event, data, status, xhr) { 
             if(customCallback == null) {
               clearTagList($('#search-tags')); $('#content').html(data);
+              initialFavoritesSetup(initial_favorites_list);
             } else {
               customCallback(data)
             }
@@ -388,6 +391,7 @@ tagSearch = function(tag, sort) {
       case 'reset_results':
         tagList.push(tag);
         $('#content').html(data.view);
+        initialFavoritesSetup(initial_favorites_list);
         updateTagCloud(eval(data.tag_descendants));
         if(tag.length != 0) displayTags($('#search-tags'), tagList);
       break;
@@ -554,6 +558,14 @@ add_to_favorites = function(id, action) {
   $.post('/emotes/record_favorite', { id: id, actionToDo: action}, function(data) {
     
   });
+}
+
+initialFavoritesSetup = function(favorites) {
+  if(favorites.length > 0) {
+    $.each(favorites, function(index, value) {
+      $('#emote-' + value).children('article').attr('data-favorite', 'true'); 
+    });
+  }
 }
 
 sanitize = function(string) { return $.trim(string.toLowerCase()); }

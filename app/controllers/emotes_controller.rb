@@ -126,14 +126,15 @@ class EmotesController < ApplicationController
     @sort = :disable
     @tags = Emote.tag_counts_on(:tags)
     
-    FavoriteEmote.uncached do
-      favorite_emotes = FavoriteEmote.where(:user_id => current_user.id).limit(15)
+    @emotes = current_user.favorites
+    # FavoriteEmote.uncached do
+    #   favorite_emotes = FavoriteEmote.where(:user_id => current_user.id).limit(15)
       
-      @emotes = []
-      favorite_emotes.each do |fe|
-        @emotes  << Emote.find(fe.emote_id, :include => [:tags])
-      end
-    end
+    #   @emotes = []
+    #   favorite_emotes.each do |fe|
+    #     @emotes  << Emote.find(fe.emote_id, :include => [:tags])
+    #   end
+    # end
     @emotes = EmoteList.sort_now @emotes, :sort_type => @sort
     
     respond_to do |format|

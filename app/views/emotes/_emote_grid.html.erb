@@ -1,6 +1,6 @@
 <% cache [ 'emote-list-v1', emote ] do %>
   <li id="emote-<%= emote.id %>">
-    <article class="width-<%= emote.width %>" <%== custom_styles emote %>>
+    <article data-favorite="false" class="width-<%= emote.width %>" <%== custom_styles emote %>>
       <a><%= emote.text %></a>
     </article>
     <aside><%= emote.note %></aside>
