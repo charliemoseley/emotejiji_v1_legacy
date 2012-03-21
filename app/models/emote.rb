@@ -3,12 +3,15 @@ class Emote < ActiveRecord::Base
   
   attr_accessible :text, :note, :tag_list
 
+  after_create   :create_redis_popularity_counter
+  before_destroy :destroy_redis_popularity_counter
+
   # Redis Objects
   counter :clicks
   counter :copies
   counter :favorites
   counter :favorites_all_time
-  counter :popularity
+  sorted_set :popularity, :global => true
   
   # Q?: Figure out how to set this properly ->
   # belongs_to :user, :foreign_key => "owner_id", :class_name => "Owner"
@@ -81,5 +84,15 @@ class Emote < ActiveRecord::Base
 
   def self.all_cached
     Rails.cache.fetch('Emotes.all') { Emote.all(:include => [:tags]) }
+  end
+
+  private
+
+  def create_redis_popularity_counter
+    Emote.popularity[self.id] = 0
+  end
+
+  def destroy_redis_popularity_counter
+    Emote.popularity.delete self.id
   end
 end

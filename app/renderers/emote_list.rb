@@ -32,7 +32,9 @@ class EmoteList
     when :random
       @emotes.sort_by! { rand }
     when :popular
-      @emotes.sort_by! {|emote| emote.popularity }
+      #@emotes.sort_by! {|emote| emote.popularity }
+      # Need to reprogram this to use redis sets
+      @emotes.sort_by! {|emote| Emote.popularity[emote.id]}
       @emotes.reverse!
     when :newest
       # Due to the default scoping of the emote's model, the emote_list will

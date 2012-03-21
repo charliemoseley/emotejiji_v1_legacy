@@ -50,7 +50,8 @@ class EmotesController < ApplicationController
     @emote = Emote.find(params[:id])
     @emote.tag_list.add(params[:emote][:tag_list].downcase)
     # Update the popularity value by 1
-    @emote.popularity.increment
+    #@emote.popularity.increment
+    Emote.popularity.increment @emote.id
     #@emote.popularity = @emote.popularity + 1
     
     # Q?: Is this what I really hae to do to achieve ownership tags with act-as-taggable-on?
@@ -171,7 +172,8 @@ class EmotesController < ApplicationController
     # emote.total_clicks = emote.total_clicks + 1
     # emote.save
     emote.clicks.increment
-    emote.popularity.increment
+    #emote.popularity.increment
+    Emote.popularity.increment emote.id
     
     render :text => ''
   end
@@ -188,7 +190,8 @@ class EmotesController < ApplicationController
           
           # Update the popularity value by 4
           # emote.popularity = emote.popularity + 4
-          emote.popularity.incr 4
+          # emote.popularity.incr 4
+          Emote.popularity.incr(emote.id, 4)
           emote.favorites.increment
           emote.favorites_all_time.increment
           
@@ -209,7 +212,7 @@ class EmotesController < ApplicationController
         favorite_emote = FavoriteEmote.where :user_id => current_user.id, :emote_id => params[:id]
         emote = Emote.find(params[:id])
 
-        emote.popularity.decr 4
+        Emote.popularity.decr(emote.id, 2)
         emote.favorites.decrement
         #emote.popularity = emote.popularity - 2
         
