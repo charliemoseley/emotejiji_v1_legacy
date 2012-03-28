@@ -4,7 +4,7 @@ class EmotesController < ApplicationController
   helper_method :to_js_array
   
   def index
-    Redis.current.set "time", Time.now
+    #Redis.current.set "time", Time.now
     # Q? This is a hack so I can use a form helper that automatically has the fields for 
     # updating an emote.  Any more elegant solution?
     
