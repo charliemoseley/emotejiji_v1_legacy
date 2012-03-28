@@ -7,13 +7,13 @@ class EmotesController < ApplicationController
     require "redis"
 
     # redis://redistogo:7138590ae359496101b83508d065a466@cod.redistogo.com:9935/
-    logger.info "1*"*20
-    redis = Redis.new(:url => "redis://redistogo:7138590ae359496101b83508d065a466@cod.redistogo.com:9935/")
-    redis.set "foo", Time.now
+    # logger.info "1*"*20
+    # redis = Redis.new(:url => "redis://redistogo:7138590ae359496101b83508d065a466@cod.redistogo.com:9935/")
+    # redis.set "foo", Time.now
 
-    logger.info "2*"*20
-    REDIS.set "foobar", Time.now
-    logger.info "3*"*20
+    # logger.info "2*"*20
+    # REDIS.set "foobar", Time.now
+    # logger.info "3*"*20
     #Redis.current.set "time", Time.now
     # Q? This is a hack so I can use a form helper that automatically has the fields for 
     # updating an emote.  Any more elegant solution?
