@@ -3,7 +3,8 @@ class EmotesController < ApplicationController
   autocomplete :tag, :name
   helper_method :to_js_array
   
-  def index   
+  def index
+    require 'redis'   
     @emote = Emote.first
     @display_type = 'all'
     @tags = Emote.tag_counts_on(:tags)
