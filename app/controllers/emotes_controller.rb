@@ -12,7 +12,7 @@ class EmotesController < ApplicationController
     # redis.set "foo", Time.now
 
     # logger.info "2*"*20
-    # REDIS.set "foobar", Time.now
+    REDIS.set "foobar", Time.now
     # logger.info "3*"*20
     #Redis.current.set "time", Time.now
     # Q? This is a hack so I can use a form helper that automatically has the fields for 
