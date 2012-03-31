@@ -1,3 +1,5 @@
+require 'benchmark'
+
 class EmotesController < ApplicationController
   before_filter :is_signed_in?, :only => [:new, :update, :recent]
   autocomplete :tag, :name
@@ -119,15 +121,12 @@ class EmotesController < ApplicationController
   end
   
   def favorites
-    logger.info 'F1*************************'
     @emote = Emote.first
     @display_type = 'favorites'
     @sort = :disable
     @tags = Emote.tag_counts_on(:tags)
-    logger.info 'F2*************************'
     
     @emotes = current_user.favorites
-    logger.info 'F3*************************'
     # FavoriteEmote.uncached do
     #   favorite_emotes = FavoriteEmote.where(:user_id => current_user.id).limit(15)
       
@@ -136,7 +135,6 @@ class EmotesController < ApplicationController
     #     @emotes  << Emote.find(fe.emote_id, :include => [:tags])
     #   end
     # end
-    logger.info 'F4*************************'
     @emotes = EmoteList.sort_now @emotes, :sort_type => @sort
     
     respond_to do |format|
@@ -151,12 +149,9 @@ class EmotesController < ApplicationController
   end
   
   def record_recent
-    logger.info '1*************************'
     emote = Emote.find(params[:id])
 
-    logger.info '2*************************'
     unless current_user.nil?
-      logger.info '3*************************'
       recent_emote = RecentEmote.where :user_id => current_user.id, :emote_id => emote.id
        # Q? Most elegant way to handle this?
       if recent_emote.empty?
@@ -166,15 +161,12 @@ class EmotesController < ApplicationController
       else
         recent_emote = recent_emote[0]
       end
-      logger.info '4*************************'
       recent_emote.updated_at = Time.now
       recent_emote.save
     end
 
-    logger.info '5*************************'
     emote.clicks.increment
     Emote.popularity.increment emote.id
-    logger.info '6*************************'
     
     render :text => ''
   end

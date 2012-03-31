@@ -21,7 +21,10 @@ class EmoteList
   end
   
   def self.sort_now(emotes, options = {})
-    emoteList = EmoteList.new emotes, options
+    emoteList = []
+    benchmark = Benchmark.realtime { emoteList = EmoteList.new emotes, options }
+    Rails.logger.info "***"*80
+    Rails.logger.info "[BENCHMARK]: Sort #{options[:sort_type]}: #{benchmark}"
     return emoteList.sort
   end
     
@@ -34,9 +37,7 @@ class EmoteList
     when :popular
       #@emotes.sort_by! {|emote| emote.popularity }
       # Need to reprogram this to use redis sets
-      logger.info 'F5*************************'
       @emotes.sort_by! {|emote| Emote.popularity[emote.id]}
-      logger.info 'F6*************************'
       @emotes.reverse!
     when :newest
       # Due to the default scoping of the emote's model, the emote_list will

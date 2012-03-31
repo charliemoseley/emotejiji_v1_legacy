@@ -22,12 +22,13 @@
   <% unless @emotes.count == 0 %>
     <ul>
       <%
-        #sorter = EmoteListSorter.new @emotes
-        #@emotes = sorter.sort
-        @emotes.each do |emote| 
+        benchmark = Benchmark.realtime { 
+          @emotes.each do |emote| %>
+            <%= render :partial => "emote_grid", :locals => { :emote => emote } %>
+          <% end
+        }
+        Rails.logger.info "[BENCHMARK]: Emote list render [#{@emotes.count}]: #{benchmark}"
       %>
-        <%= render :partial => "emote_grid", :locals => { :emote => emote } %>
-      <% end%>
     </ul>
   <% else %>
     <div class="no-emotes" style="text-align: center; margin-top: 40px; font-size: 16px; ">
