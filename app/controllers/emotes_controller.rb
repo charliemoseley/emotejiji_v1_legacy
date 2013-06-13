@@ -30,7 +30,8 @@ class EmotesController < ApplicationController
     emotes = Emote.all(:include => [:tags])
     emotes.each do |e|
       t = e.attributes
-      t["tags"] = e.tags.map{ |t| t.name }.uniq
+      tags = e.tags.map{ |t| t.name }
+      t["tags"] = tags.uniq
       json << t
     end
 
