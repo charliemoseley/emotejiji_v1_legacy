@@ -26,7 +26,7 @@ class EmotesController < ApplicationController
   end
   
   def json
-    render json: Emote.all
+    render json: Emote.all(:include => [:tags])
   end 
 
   def new
