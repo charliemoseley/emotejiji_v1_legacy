@@ -26,7 +26,15 @@ class EmotesController < ApplicationController
   end
   
   def json
-    render json: Emote.all(:include => [:tags])
+    json = []
+    emotes = Emote.all(:include => [:tags])
+    emotes.each do |e|
+      t = e.attributes
+      t["tags"] = e.tags.map { |t| t.name }
+      json << t
+    end
+
+    render json: json
   end 
 
   def new
