@@ -25,6 +25,10 @@ class EmotesController < ApplicationController
     end
   end
   
+  def json
+    render json: Emote.all
+  end 
+
   def new
     @emote = Emote.new
   end
